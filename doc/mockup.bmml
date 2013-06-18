@@ -58,20 +58,15 @@
         <text>A%20paragraph%20of%20text.%0AA%20second%20row%20of%20text.</text>
       </controlProperties>
     </control>
-    <control controlID="29" controlTypeID="com.balsamiq.mockups::CallOut" x="766" y="285" w="-1" h="-1" measuredW="36" measuredH="37" zOrder="13" locked="false" isInGroup="-1">
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::CallOut" x="766" y="285" w="-1" h="-1" measuredW="45" measuredH="40" zOrder="13" locked="false" isInGroup="-1">
       <controlProperties>
         <text>1</text>
       </controlProperties>
     </control>
     <control controlID="30" controlTypeID="com.balsamiq.mockups::ScratchOut" x="578" y="309" w="142" h="67" measuredW="205" measuredH="107" zOrder="14" locked="false" isInGroup="-1"/>
-    <control controlID="32" controlTypeID="com.balsamiq.mockups::ComboBox" x="1026" y="225" w="-1" h="-1" measuredW="62" measuredH="24" zOrder="15" locked="false" isInGroup="-1">
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::ComboBox" x="1048" y="183" w="71" h="-1" measuredW="62" measuredH="24" zOrder="15" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Color</text>
-      </controlProperties>
-    </control>
-    <control controlID="33" controlTypeID="com.balsamiq.mockups::ButtonBar" x="926" y="224" w="-1" h="-1" measuredW="89" measuredH="27" zOrder="16" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Clear</text>
       </controlProperties>
     </control>
   </controls>

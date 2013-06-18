@@ -48,15 +48,47 @@
       <h1>whiteboardr</h1>
       <p>A Chrome Experiment</p>
 
+      <div id="controls">
+    Size:
+    <select id="thickness" class="fixed">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+
+    Color:
+    <select id="color">
+      <option value="#FFFFFF">#FFFFFF</option>
+      <option value="#AAAAAA">#AAAAAA</option>
+      <option value="#666666">#666666</option>
+      <option value="#000000">#000000</option>
+      <option value="#9BA16C">#9BA16C</option>
+      <option value="#CC8F2B">#CC8F2B</option>
+      <option value="#63631D">#63631D</option>
+    </select>
+  </div>
+  
+  <!--The canvas where drawings will be displayed-->
+  <canvas id="canvas"></canvas>
+  
+  <!--A status text field, for displaying connection information-->
+  <div id="status"></div>
+
     </div> <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./js/main.js"></script>
+    <script type="text/javascript" src="http://cdn.unioncloud.io/OrbiterMicro_latest.js"></script>
+   
     <script src="./js/lib/jquery.min.js"></script>
     <script src="./js/lib/bootstrap.min.js"></script>
     <script src="./js/lib/angular.min.js"></script>
+     <script src="./js/sample.js"></script>
 
   </body>
 </html>
