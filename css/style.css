@@ -1,3 +1,30 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
+
+* {
+font-family:"Roboto";
+font-smoothing:"antialiased";
+}
+
+html {
+	height:100%;
+	width:100%;
+	background-image: #f7f8f9;
+background-image: -webkit-radial-gradient(50% 50%, circle farthest-side, #ffffff 0%, #eef0f2 100%);
+background-image: -moz-radial-gradient(50% 50%, circle farthest-side, #ffffff 0%, #eef0f2 100%);
+background-image: -o-radial-gradient(50% 50%, circle farthest-side, #ffffff 0%, #eef0f2 100%);
+background-image: -ms-radial-gradient(50% 50%, circle farthest-side, #ffffff 0%, #eef0f2 100%);
+background-image: radial-gradient(50% 50%, circle farthest-side, #ffffff 0%, #eef0f2 100%);
+	}
+
 body {
-	padding-top:60px;
+	padding:100px;
+	background: none !important;
+}
+
+.container {
+	background:none;
+}
+
+h1 {
+	font-weight:900;
 }
