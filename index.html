@@ -34,9 +34,18 @@
           <a class="brand" href="#">whiteboardr</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li class="question"><a style="color:white">Question 1: <b>What is the volume of the Earth?</b></a></li>
+
+              <li class="dropdown navbar-form ">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Options
+              <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+              ...
+              </ul>
+              </li>
+
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -45,35 +54,47 @@
 
     <div class="container">
 
-      <h1>whiteboardr</h1>
-      <p>A Chrome Experiment</p>
-
-      <div id="controls">
-    Size:
-    <select id="thickness" class="fixed">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="20">20</option>
-    </select>
-
-    Color:
-    <select id="color">
-      <option value="#FFFFFF">#FFFFFF</option>
-      <option value="#AAAAAA">#AAAAAA</option>
-      <option value="#666666">#666666</option>
-      <option value="#000000">#000000</option>
-      <option value="#9BA16C">#9BA16C</option>
-      <option value="#CC8F2B">#CC8F2B</option>
-      <option value="#63631D">#63631D</option>
-    </select>
-  </div>
+<div class="navbar navbar-fixed-bottom">
+    <div class="navbar-inner">
+        <div class="container">
+            
+              <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li style="margin-right:15px;">
+                Size:
+                <select id="thickness" class="input-mini">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                </select>
+              </li>
+              <li>
+                Color:
+                <select id="color" class="input-small">
+                <option value="#FFFFFF">#FFFFFF</option>
+                <option value="#AAAAAA">#AAAAAA</option>
+                <option value="#666666">#666666</option>
+                <option value="#000000">#000000</option>
+                <option value="#9BA16C">#9BA16C</option>
+                <option value="#CC8F2B">#CC8F2B</option>
+                <option value="#63631D">#63631D</option>
+                </select>
+              </li>
+            </ul>
+          </div>
+            
+        </div>
+    </div>
+</div>
   
   <!--The canvas where drawings will be displayed-->
   <canvas id="canvas"></canvas>
+
+  <img src="img/brin.jpg" id="photo-chat"/>
   
   <!--A status text field, for displaying connection information-->
   <div id="status"></div>

@@ -99,6 +99,9 @@ window.onload = init;
 
 // Main initialization function
 function init () {
+
+	$('.question').hide().slideDown();
+
   initCanvas();
   registerInputListeners();
   initOrbiter();
@@ -118,8 +121,8 @@ function initCanvas () {
   }
   
   // Size canvas
-  canvas.width  = 600;
-  canvas.height = 400;
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
   
   // Retrieve context reference, used to execute canvas drawing commands
   context = canvas.getContext('2d');
