@@ -100,7 +100,7 @@ window.onload = init;
 // Main initialization function
 function init () {
 
-	$('.question').hide().slideDown();
+	$('.question').hide().fadeIn(500);
 
   initCanvas();
   registerInputListeners();
