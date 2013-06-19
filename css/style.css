@@ -234,3 +234,30 @@ canvas:active {
 
   -webkit-font-smoothing:antialiased !important;
 }
+
+#user-list {
+  position:fixed;
+  top:80px;
+  right:0;
+  width:200px;
+  
+}
+
+.user-cell {
+  border-bottom:1px solid white;
+  background:#eee;
+  padding:5px;
+}
+
+.user-cell-id {
+  font-size:11px;
+  font-weight:400;
+  text-transform:uppercase;
+  width:20px;
+  padding:5px;
+}
+
+.user-cell-name {
+  font-size:14px;
+  font-weight:700;
+}

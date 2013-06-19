@@ -17,11 +17,12 @@
 	  <script src="../js/html5shiv.js"></script>
 	<![endif]-->
 
-   
+
    
   </head>
 
   <body>
+  	
 
 
 	<!-- TOP BAR -->
@@ -170,7 +171,15 @@
 		<img src="img/brin.jpg" id="video-chat-content"/>
 	</div>
   
-  
+
+	<script type="text/x-handlebars">
+		<div id="user-list">
+		{{#each WBR.UserController}}
+  			<div class="user-cell"><span class="user-cell-id">{{id}}</span><span class="user-cell-name">{{name}}</span></div>
+		{{/each}}
+		</div>
+	</script>
+
 
 	<!--A status text field, for displaying connection information-->
 	<div id="status"></div>
@@ -182,16 +191,19 @@
 	<!-- Le javascript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script type="text/javascript" src="http://cdn.unioncloud.io/OrbiterMicro_latest.js"></script>
+	
    
-	<script src="./js/lib/jquery.min.js"></script>
+	<script src="./js/lib/jquery-n.js"></script>
+   	<script type="text/javascript" src="http://cdn.unioncloud.io/OrbiterMicro_latest.js"></script>
 	<script src="./js/lib/bootstrap.min.js"></script>
-	<script src="./js/lib/ember.min.js"></script>
+  	<script src="./js/lib/ember-n.js"></script>
 	<script src="./js/app.js"></script>
 	<script src="./js/canvas.js"></script>
 	<script src="./js/question.js"></script>
 	<script src="./js/user.js"></script>
 	<script src="./js/room.js"></script>
+	
+	
 
   </body>
 </html>

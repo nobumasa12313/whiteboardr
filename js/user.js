@@ -1,8 +1,15 @@
-/*
+// each user hasd id and name
+
+
 
 // class CommunicationObject 
-WBR.Room.UserController = Ember.ArrayController.create({
-     content : []
+WBR.UserController = Ember.ArrayController.create({
+     content : [{name:"ajambrosino",id:"sda3"}],
+
 })
 
-*/
+
+
+WBR.ApplicationView = Ember.View.create({
+      templateName: 'table'
+})
