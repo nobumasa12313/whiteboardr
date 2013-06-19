@@ -6,6 +6,8 @@
 WBR.UserController = Ember.ArrayController.create({
      content : [{name:"ajambrosino",id:"sda3", tx:true}],
 
+     
+
      setTx: function(e) {
      	var id = $(e).find(".user-cell-id").text();
   		WBR.Room.setTx(id);
@@ -24,5 +26,7 @@ WBR.UserController = Ember.ArrayController.create({
 })
 
 WBR.ApplicationView = Ember.View.create({
-      templateName: 'table'
-})
+      templateName: 'table',
+
+ 
+});

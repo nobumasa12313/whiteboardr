@@ -9,7 +9,7 @@
 WBR = Ember.Application.create({
 
       roomID:"",
-      nickname:null,
+      nickname:"",
       admin:false,
 
       // Initialize the application
@@ -23,12 +23,12 @@ WBR = Ember.Application.create({
       // Join the room
       joinRoom: function() {
             if (document.getElementById('input-room-id').value == "")
-                  WBR.roomID = "whiteboardr.default";
+                  this.set('roomID', "whiteboardr.default");
             else
-                  WBR.roomID = document.getElementById('input-room-id').value;
+                  this.set('roomID', document.getElementById('input-room-id').value);
 
-            this.set('nickname' , document.getElementById('input-nickname').value);
-            this.set('admin' , $('#input-admin').attr('checked'));
+            this.set('nickname', document.getElementById('input-nickname').value);
+            this.set('admin', $('#input-admin').attr('checked'));
 
             this.Canvas.initialize();
             this.Room.initialize();

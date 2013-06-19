@@ -41,17 +41,19 @@
 						<li class="question">
 							<a style="color:white">
 
-							{{#if WBR.nickname}}
-								Question Name
-							{{/if}}
+							
+								Question 1: <b>What is the volume of the Earth?</b>
+							
 
 							</a>
 						</li>
 					</ul>
 					<ul class="nav pull-right">
-						
-						{{#if WBR.admin}}
+
 							<button class="btn btn-none">{{WBR.nickname}} in {{WBR.roomID}}</button>
+
+						{{#if WBR.admin}}
+							
 							<button class="btn btn-none">Administrator</button>
 							<button onclick="WBR.launchQuestionWindow()" class="btn btn-primary"><i class="icon-envelope icon-white"></i> Post Question</button>
 						{{else}}
@@ -237,12 +239,14 @@
 		{{#if WBR.admin}}
 		{{#each WBR.UserController}}
 
-
+			{{#if tx}}
+			<div class="user-cell enabled-user" onClick="WBR.UserController.setTx(this)">
+			{{else}}
 			<div class="user-cell" onClick="WBR.UserController.setTx(this)">
-  			
+			{{/if}}
+  	
   				<span class="user-cell-id">{{id}}</span>
   				<span class="user-cell-name">{{name}}</span>
-  				<span class="user-cell-name">{{tx}}</span>
 
   			</div>
   			
