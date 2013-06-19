@@ -306,7 +306,6 @@ WBR.Canvas = Ember.Object.create({
 
 
 	getValidThickness: function(value) 
-	{
 		value = parseInt(value);
 		var thickness = isNaN(value) ? defaultLineThickness : value;
 		return Math.max(1, Math.min(thickness, maxLineThickness));

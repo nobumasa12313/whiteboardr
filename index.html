@@ -237,7 +237,9 @@
 		<div id="user-list">
 		{{#if WBR.admin}}
 		{{#each WBR.UserController}}
-  			<div class="user-cell"><span class="user-cell-id">{{id}}</span><span class="user-cell-name">{{name}}</span></div>
+  			<div class="user-cell"><span class="user-cell-id">{{id}}</span><span class="user-cell-name">{{name}}</span>
+  			{{view Ember.Checkbox checkedBinding="isSelected"}}</div>
+
 		{{/each}}
 		{{/if}}
 		</div>
