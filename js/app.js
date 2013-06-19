@@ -7,18 +7,23 @@
 
 // class Applicatiom
 WBR = Ember.Application.create({
+
       roomID: "whiteboardr",
       nickname:"anonymous",
       users: [],
       role:"learner",
       currentQuestion: null,
 
+      // Initialize the application
       init: function() {
-        $('.question').hide();
-       $('.modal').modal();
-       initCanvas();
+            $('.question').hide();
+            $('.modal').modal();
+            initCanvas();
       }
+
 });
+
+
 
 
 // The Orbiter object, which is the root of Union's JavaScript client framework
