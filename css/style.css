@@ -219,7 +219,10 @@ border-style: solid;
 border-width: 1px;
 margin:5px 0 !important;
 text-transform:uppercase;
+}
 
+canvas:active {
+    cursor:default;
 }
 
 .question {

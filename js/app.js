@@ -4,6 +4,9 @@
 // using Bootstrap
 
 
+
+
+// class Applicatiom
 WBR = Ember.Application.create({
       roomID: "whiteboardr",
       nickname:"anonymous",
@@ -11,26 +14,6 @@ WBR = Ember.Application.create({
       role:"learner",
       currentQuestion: null,
 });
-
-
-WBR.Question = Ember.Object.extend({
-      name: "",
-      type: "",
-      options: "",
-})
-
-WBR.MultipleChoiceQuestion = WBR.Question.extend({
-      type: "multiple-choice"
-})
-
-WBR.OpenResponseQuestion = WBR.Question.extend({
-      type: "open-response"
-})
-
-WBR.Canvas = Ember.Controller.create({
-
-})
-
 
 
 // The Orbiter object, which is the root of Union's JavaScript client framework
