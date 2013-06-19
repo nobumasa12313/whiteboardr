@@ -1,10 +1,16 @@
 // class Canvas
 WBR.Canvas = Ember.Object.create({
 
-	id: null,
-	canvas: null,
-	context: null,
+	// Private Canvas
+	private-canvas-id: "private-canvas",
+	private-canvas: null,
+	private-context: null,
 
+	// Public Canvas
+	public-canvas-id: "public-canvas",
+	public-canvas: null,
+	public-context: null,
+	
 	init: function() {
 		
 	},
@@ -13,9 +19,20 @@ WBR.Canvas = Ember.Object.create({
 
 	},
 
-	resizeHandler: function() {
+	resizeCanvas: function() {
 
 	},
 
+	openPublic: function() {
+
+	},
+
+	closePublic: function() {
+
+	},
+
+	drawToCoordinate: function(x, y) {
+
+	},
 
 })

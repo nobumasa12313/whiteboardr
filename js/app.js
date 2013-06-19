@@ -158,7 +158,7 @@ function resizeCanvas()
 // Set up the drawing canvas
 function initCanvas () {
   // Retrieve canvas reference
-  canvas = document.getElementById("canvas");
+  canvas = document.getElementById("private-canvas");
   
   // If IE8, do IE-specific canvas initialization (required by excanvas.js)
   if (typeof G_vmlCanvasManager != "undefined") {
