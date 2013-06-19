@@ -24,12 +24,24 @@ body {
 	background: none !important;
 }
 
+form {
+  padding:0;
+  margin:0;
+}
+
 .container {
 	background:none;
 }
 
 h1 {
 	font-weight:900;
+}
+
+h3 {
+    padding:10px;
+    font-size:20px;
+    font-weight:900 !important;
+    font-family: "Raleway" !important;
 }
 
 .brand {
@@ -60,13 +72,23 @@ h1 {
   font-size:20px;
 }
 
-img#photo-chat {
-	position:fixed;
-	bottom:60px;
-	width:170px;
+#video-chat {
+  position:fixed;
+  bottom:60px;
+  right:10px;
+  z-index:2;
+  width:170px;
+  opacity:1;
+  -webkit-transition:opacity 0.2s;
+}
+
+#video-chat:hover {
+    
+    opacity:.5;
+}
+
+#video-chat-content {
 	border-radius:3px;
-	right:10px;
-	z-index:-1;
   box-shadow:0 0 3px rgba(0,0,0,.1);
 	border:1px solid rgba(0,0,0,.2);
 }

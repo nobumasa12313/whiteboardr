@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>whiteboardr</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<meta charset="utf-8">
+	<title>whiteboardr</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="./css/lib/bootstrap.css" rel="stylesheet">
-    <link href="./css/lib/bootstrap-responsive.css" rel="stylesheet">
-    <link href="./css/style.css" rel="stylesheet">
+	<!-- Le styles -->
+	<link href="./css/lib/bootstrap.css" rel="stylesheet">
+	<link href="./css/lib/bootstrap-responsive.css" rel="stylesheet">
+	<link href="./css/style.css" rel="stylesheet">
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../js/html5shiv.js"></script>
-    <![endif]-->
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="../js/html5shiv.js"></script>
+	<![endif]-->
 
    
    
@@ -23,124 +23,161 @@
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">whiteboardr</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="question"><a style="color:white">Question 1: <b>What is the volume of the Earth?</b></a></li>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="navbar-inner">
+		<div class="container">
+		  <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="brand" href="#">whiteboardr</a>
+		  <div class="nav-collapse collapse">
+			<ul class="nav">
+			  <li class="question"><a style="color:white">Question 1: <b>What is the volume of the Earth?</b></a></li>
 
-             
+			 
 
-            </ul>
-            <ul class="nav pull-right">
-              <button class="btn btn-primary">Raise Hand</button>
-              
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
+			</ul>
+			<ul class="nav pull-right">
+			  <button class="btn btn-primary">Raise Hand</button>
+			  
+			</ul>
+		  </div><!--/.nav-collapse -->
+		</div>
+	  </div>
+	</div>
 
-    <div class="container">
+	<div class="container">
 
 <div class="navbar navbar-fixed-bottom">
-    <div class="navbar-inner">
-        <div class="container bottom-bar">
-            
-              <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li>
-                <div class="btn-group" data-toggle="buttons-radio">
+	<div class="navbar-inner">
+		<div class="container bottom-bar">
+			
+			  <div class="nav-collapse collapse">
+			<ul class="nav">
+			  <li>
+				<div class="btn-group" data-toggle="buttons-radio">
   <button class="btn">Draw</button>
   <button class="btn">Erase</button>
   
 </div>
-              </li>
+			  </li>
 
-              <li>
+			  <li>
 <button class="btn" onclick="clearCanvas()">Clear</button>
-              </li>
+			  </li>
 
-              <li style="margin-right:15px;">
-                SIZE
-                <select id="thickness" class="input-mini">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                </select>
-              </li>
-              <li>
-                COLOR
-                <select id="color" class="input-small">
-                <option value="black">Black</option>
-                <option value="red">Red</option>
-                <option value="orange">Orange</option>
-                <option value="yellow">Yellow</option>
-                <option value="green">Green</option>
-                <option value="blue">Blue</option>
-                <option value="purple">Purple</option>
-                </select>
-              </li>
-            </ul>
-            <ul class="nav pull-right">
-              
-              <button class="btn btn-danger" onclick="location.reload()">Leave Room</button>
-            </ul>
-          </div>
-            
-        </div>
-    </div>
+			  <li style="margin-right:15px;">
+				SIZE
+				<select id="thickness" class="input-mini">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="20">20</option>
+				</select>
+			  </li>
+			  <li>
+				COLOR
+				<select id="color" class="input-small">
+				<option value="black">Black</option>
+				<option value="red">Red</option>
+				<option value="orange">Orange</option>
+				<option value="yellow">Yellow</option>
+				<option value="green">Green</option>
+				<option value="blue">Blue</option>
+				<option value="purple">Purple</option>
+				</select>
+			  </li>
+			</ul>
+			<ul class="nav pull-right">
+			  
+			  <button class="btn btn-danger" onclick="location.reload()">Leave Room</button>
+			</ul>
+		  </div>
+			
+		</div>
+	</div>
 </div>
 
 
 
+
+<!-- MODAL WINDOW GREETING -->
 <div class="modal hide fade">
-  <div class="modal-header">
-    <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
-    <h3>join classroom</h3>
-  </div>
-  <div class="modal-body">
-    <p>
-      <input type="text" id="roomID" placeholder="Room ID" class=" input input-large"/>
-    </p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn btn-primary" onclick="joinroom()">Join</a>
-  </div>
+
+	<div class="modal-header">
+		<h3>join classroom</h3>
+	</div>
+
+	<form class="form-horizontal">
+		<div class="modal-body">
+			<p>
+				<div class="control-group">
+					<label class="control-label" for="input-room-id">Room Code</label>
+					<div class="controls">
+						<input type="text" id="input-room-id" placeholder="Room Code" class=" input input-large"/>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="input-nickname">Nickname</label>
+					<div class="controls">
+						<input type="text" id="input-nickname" placeholder="Nickname" class=" input input-large"/>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="input-role">Role</label>
+					<div class="controls">
+						<div class="btn-group" data-toggle="buttons-radio">
+							  <button class="btn">Mentor</button>
+							  <button class="btn">Learner</button>
+						</div>
+					</div>
+				</div>
+
+			</p>
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" href="#" class="btn btn-primary" onclick="joinroom()">Join</button>
+		</div>
+
+	</form>
 </div>
   
 
 
-  <!--The canvas where drawings will be displayed-->
-  <canvas id="canvas"></canvas>
+	<!-- The canvas where drawings will be displayed -->
+	<canvas id="canvas"></canvas>
 
-  <img src="img/brin.jpg" id="photo-chat"/>
+
+	<!-- Video Chat Region -->
+	<div id="video-chat">
+		<img src="img/brin.jpg" id="video-chat-content"/>
+	</div>
   
-  <!--A status text field, for displaying connection information-->
-  <div id="status"></div>
 
-    </div> <!-- /container -->
+	<!--A status text field, for displaying connection information-->
+	<div id="status"></div>
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="http://cdn.unioncloud.io/OrbiterMicro_latest.js"></script>
+
+	</div> <!-- /container -->
+
+
+	<!-- Le javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script type="text/javascript" src="http://cdn.unioncloud.io/OrbiterMicro_latest.js"></script>
    
-    <script src="./js/lib/jquery.min.js"></script>
-    <script src="./js/lib/bootstrap.min.js"></script>
-    <script src="./js/lib/angular.min.js"></script>
-     <script src="./js/sample.js"></script>
+	<script src="./js/lib/jquery.min.js"></script>
+	<script src="./js/lib/bootstrap.min.js"></script>
+	<script src="./js/lib/ember.min.js"></script>
+	 <script src="./js/sample.js"></script>
 
   </body>
 </html>

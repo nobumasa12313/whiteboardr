@@ -1,7 +1,25 @@
 // WHITEBOARDR
 // using jQuery
-// using Angular
+// using Ember
 // using Bootstrap
+
+
+WBR = Ember.Application.create({
+
+      roomID: "whiteboardr",
+      nickname:"anonymous",
+      users: [],
+      role:"learner",
+
+});
+
+
+WBR.Question = Ember.Object.Extend({
+      name: "",
+      type: "",
+      options: "",
+})
+
 
 
 // The Orbiter object, which is the root of Union's JavaScript client framework
@@ -14,8 +32,10 @@ var msgManager;
 // list of valid client/server UPC messages. See: http://unionplatform.com/specs/upc/
 var UPC = net.user1.orbiter.UPC;
 
-// The ID of the room users will join in order to draw together
-var roomID = "whiteboardr";
+
+// MAIN SESSION PROPERTIES 
+
+
 
 // A hash of client attribute names used in this application. Each client sets a
 // "thickness" attribute and a "color" attribute, specify the thickness and 
@@ -93,10 +113,12 @@ window.onload = init;
 // code entered, now join the room
 function joinroom() 
 {
-        if (document.getElementById('roomID').value == "")
-                roomID = "whiteboardr.default"
+        if (document.getElementById('input-room-id').value == "")
+                WBR.roomID = "whiteboardr.default"
         else
-                roomID = document.getElementById('roomID').value;
+                WBR.roomID = document.getElementById('input-room-id').value;
+
+        WBR.nickname = document.getElementById('input-nickname').value;
 
         registerInputListeners();
         initOrbiter();
@@ -104,6 +126,8 @@ function joinroom()
 
         setStatus("connecting to whiteboardr...");
         $('.modal').modal("hide");
+
+        $('.question').hide().fadeIn(1000);
 }
 
 
@@ -124,7 +148,7 @@ function clearCanvas()
 // initialize everything
 function init () 
 {        
-        $('.question').hide().fadeIn(500);
+        $('.question').hide();
         $('.modal').modal();
         initCanvas();
 }
@@ -191,10 +215,6 @@ function initOrbiter () {
 }
 
 
-
-//==============================================================================
-// ORBITER EVENT LISTENERS
-//==============================================================================
 // Triggered when the connection to Union Server is ready
 function readyListener (e) {
   // Register for UPC messages from Union Server
@@ -265,6 +285,7 @@ function roomSnapshotListener (requestID,
   // The unnamed arguments following 'roomAttributes' is a list of 
   // clients in the room. Assign that list to clientList. 
   var clientList = Array.prototype.slice.call(arguments).slice(5);
+  users = clientList;
   var clientID;
   var roomAttrString;
   var roomAttrs;
