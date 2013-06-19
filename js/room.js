@@ -1,4 +1,7 @@
 // class Question
-WBR.Room = Ember.Object.extend({
-      
+WBR.Room = Ember.Object.create({
+      roomID: "",
+      connectedStudents: [],
+      connectedAdmins: [],
+      currentQuestion: null,
 });

@@ -10,15 +10,40 @@ WBR = Ember.Application.create({
 
       roomID: "whiteboardr",
       nickname:"anonymous",
-      users: [],
       role:"learner",
-      currentQuestion: null,
+
 
       // Initialize the application
       init: function() {
             $('.question').hide();
             $('.modal').modal();
             initCanvas();
+      },
+
+
+      // Join the room
+      joinRoom: function() {
+            if (document.getElementById('input-room-id').value == "")
+                  WBR.Room.roomID = "whiteboardr.default";
+            else
+                  WBR.Room.roomID = document.getElementById('input-room-id').value;
+
+            this.nickname = document.getElementById('input-nickname').value;
+
+            registerInputListeners();
+            initOrbiter();
+            iPhoneToTop();
+
+            setStatus("connecting to whiteboardr...");
+            $('.modal').modal("hide");
+
+            $('.question').hide().fadeIn(1000);
+      },
+
+
+      // Leave the room
+      leaveRoom: function() {
+            location.reload()
       }
 
 });
@@ -113,33 +138,6 @@ var processDrawingCommandsIntervalID;
 
 
 
-
-// code entered, now join the room
-function joinroom() 
-{
-        if (document.getElementById('input-room-id').value == "")
-                WBR.roomID = "whiteboardr.default"
-        else
-                WBR.roomID = document.getElementById('input-room-id').value;
-
-        WBR.nickname = document.getElementById('input-nickname').value;
-
-        registerInputListeners();
-        initOrbiter();
-        iPhoneToTop();
-
-        setStatus("connecting to whiteboardr...");
-        $('.modal').modal("hide");
-
-        $('.question').hide().fadeIn(1000);
-}
-
-
-// leave the room and refresh the page
-function leaveroom() 
-{
-
-}
 
 
 // clear the canvas
