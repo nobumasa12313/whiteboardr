@@ -1,35 +1,37 @@
+// WHITEBOARDR
 // using jQuery
 // using Angular
 // using Bootstrap
 
-//==============================================================================
-// ORBITER VARIABLES
-//==============================================================================
+
 // The Orbiter object, which is the root of Union's JavaScript client framework
 var orbiter;
+
 // The MessageManager object, for sending and receiving messages
 var msgManager;
+
 // A convenience reference to net.user1.orbiter.UPC, which provides a
 // list of valid client/server UPC messages. See: http://unionplatform.com/specs/upc/
 var UPC = net.user1.orbiter.UPC;
+
 // The ID of the room users will join in order to draw together
-var roomID = "examples.uniondraw";
+var roomID = "whiteboardr";
+
 // A hash of client attribute names used in this application. Each client sets a
 // "thickness" attribute and a "color" attribute, specify the thickness and 
 // color of the current line being drawn.
 var Attributes = {THICKNESS:"thickness", 
                   COLOR:"color"};
+
 // A hash of room message names used in this application. MOVE means move the
 // drawing pen to the specified position. PATH supplies a list of points to be
 // drawn.
 var Messages = {MOVE:"MOVE", 
                 PATH:"PATH"};
 
-//==============================================================================
-// LOCAL USER VARIABLES
-//==============================================================================
 // A flag to track whether the user is drawing or not
 var isPenDown = false;
+var isDrawMode = true;
 
 // Line defaults
 var defaultLineColor = "#AAAAAA";
@@ -45,70 +47,88 @@ var localLineThickness = defaultLineThickness;
 
 // A list of points in a path to send to other connected users
 var bufferedPath = [];
+
 // A timestamp indicating the last time a point was added to the bufferedPath
 var lastBufferTime = new Date().getTime();
 
-//==============================================================================
-// REMOTE USER VARIABLES
-//==============================================================================
 // A hash of pen positions for remote users, in the following 
 // format ("2345" is an example client ID):
 //  {"2345": {x:10, y:10}}
 var userCurrentPositions = {};
+
 // A hash of pending drawing commands sent by remote users, the following format: 
 //  {"2345": [{commandName:moveTo, arg:{x:10, y:10}}, {commandName:lineTo, arg:{x:55, y:35}}]};
 var userCommands = {};
+
 // A hash of line colors for remote users, in the following format:
 //  {"2345": "#CCCCCC"};
 var userColors = {};
+
 // A hash of line thicknesses for remote users, in the following format:
 //  {"2345": 5};
 var userThicknesses = {};
 
-//==============================================================================
-// DRAWING VARIABLES
-//==============================================================================
-// The HTML5 drawing canvas
 var canvas;
-// The drawing canvas's context, through which drawing commands are performed
 var context;
-// A hash of drawing commands executed by UnionDraw's rendering process
+var hasTouch = false;
+
 var DrawingCommands = {LINE_TO:       "lineTo",
                        MOVE_TO:       "moveTo",
                        SET_THICKNESS: "setThickness",
                        SET_COLOR:     "setColor"};
 
-//==============================================================================
-// TIMER VARIABLES
-//==============================================================================
+
 // The ID for a timer that sends the user's drawing path on a regular interval
 var broadcastPathIntervalID;
+
 // The ID for a timer that executes drawing commands sent by remote users
 var processDrawingCommandsIntervalID;
 
-//==============================================================================
-// TOUCH-DEVICE VARIABLES
-//==============================================================================
-var hasTouch = false;
 
-//==============================================================================
-// INITIALIZATION
-//==============================================================================
-// Trigger init() when the document finishes loading
+
 window.onload = init;
 
-// Main initialization function
-function init () {
 
-	$('.question').hide().fadeIn(500);
 
-  initCanvas();
-  registerInputListeners();
-  initOrbiter();
-  iPhoneToTop();
-  
-  setStatus("Connecting to UnionDraw...");
+// code entered, now join the room
+function joinroom() 
+{
+        if (document.getElementById('roomID').value == "")
+                roomID = "whiteboardr.default"
+        else
+                roomID = document.getElementById('roomID').value;
+
+        registerInputListeners();
+        initOrbiter();
+        iPhoneToTop();
+
+        setStatus("connecting to whiteboardr...");
+        $('.modal').modal("hide");
 }
+
+
+// leave the room and refresh the page
+function leaveroom() 
+{
+
+}
+
+
+// clear the canvas
+function clearCanvas() 
+{
+        context.clearRect(0, 0, canvas.width, canvas.height)
+}
+
+
+// initialize everything
+function init () 
+{        
+        $('.question').hide().fadeIn(500);
+        $('.modal').modal();
+        initCanvas();
+}
+
 
 // Set up the drawing canvas
 function initCanvas () {
@@ -120,18 +140,18 @@ function initCanvas () {
     this.canvas = G_vmlCanvasManager.initElement(this.canvas);
   }
   
-  // Size canvas
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
   
-  // Retrieve context reference, used to execute canvas drawing commands
   context = canvas.getContext('2d');
   context.lineCap = "round";
   
   // Set control panel defaults
   document.getElementById("thickness").selectedIndex = 0;
-  document.getElementById("color").selectedIndex = 1;
+  document.getElementById("color").selectedIndex = 0;
 }
+
+
 
 // Register callback functions to handle user input
 function registerInputListeners () {
@@ -144,6 +164,8 @@ function registerInputListeners () {
   document.getElementById("thickness").onchange = thicknessSelectListener;
   document.getElementById("color").onchange = colorSelectListener;
 }
+
+
 
 // Initialize Orbiter, which handles multiuser communications
 function initOrbiter () {
@@ -168,6 +190,8 @@ function initOrbiter () {
   orbiter.connect("johnamoore.com", 9100);
 }
 
+
+
 //==============================================================================
 // ORBITER EVENT LISTENERS
 //==============================================================================
@@ -190,6 +214,8 @@ function readyListener (e) {
   msgManager.sendUPC(UPC.JOIN_ROOM, roomID);
 }
 
+
+
 // Triggered when the connection to Union Server is closed
 function closeListener (e) {
   setStatus("Disconnected from UnionDraw.");
@@ -197,11 +223,15 @@ function closeListener (e) {
   clearInterval(processDrawingCommandsIntervalID);
 }
 
+
+
 // Triggered when this client has joined the server-side drawing room
 function joinedRoomListener (roomID) {
   // Periodically execute drawing commands sent by other users
   processDrawingCommandsIntervalID = setInterval(processDrawingCommands, 20);
 }
+
+
 
 // Triggered when this client is informed that number of users in the 
 // server-side drawing room has changed
@@ -215,6 +245,8 @@ function roomOccupantCountUpdateListener (roomID, numOccupants) {
     setStatus("Now drawing with " + (numOccupants-1) + " other people");
   }
 }
+
+
 
 //==============================================================================
 // HANDLE INCOMING CLIENT ATTRIBUTES
@@ -272,6 +304,8 @@ function clientAttributeUpdateListener (attrScope,
   }
 }
 
+
+
 // Triggered when a clients leaves the drawing room.
 function clientRemovedFromRoomListener (roomID, clientID) {
   // The client is gone now, so remove all information pertaining to that client
@@ -294,6 +328,8 @@ function processClientAttributeUpdate (clientID, attrName, attrVal) {
     addDrawingCommand(clientID, DrawingCommands.SET_COLOR, attrVal);
   }
 }
+
+
 
 //==============================================================================
 // HANDLE INCOMING CLIENT MESSAGES
@@ -320,6 +356,8 @@ function pathMessageListener (fromClientID, pathString) {
     addDrawingCommand(fromClientID, DrawingCommands.LINE_TO, position);
   }
 }
+
+
 
 //==============================================================================
 // BROADCAST DRAWING DATA TO OTHER USERS
@@ -359,6 +397,9 @@ function broadcastMove (x, y) {
                      "", 
                      x + "," + y);
 }
+
+
+
 
 //==============================================================================
 // PROCESS DRAWING COMMANDS FROM OTHER USERS
@@ -421,6 +462,9 @@ function processDrawingCommands () {
   }
 }
 
+
+
+
 //==============================================================================
 // TOUCH-INPUT EVENT LISTENERS
 //==============================================================================
@@ -447,6 +491,8 @@ function touchDownListener (e) {
   }
 }
 
+
+
 // On devices that support touch input, this function is triggered when the user
 // drags a finger across the screen.
 function touchMoveListener (e) {
@@ -458,12 +504,16 @@ function touchMoveListener (e) {
   penMove(touchX, touchY);
 }
 
+
+
 // On devices that support touch input, this function is triggered when the 
 // user stops touching the screen.
 function touchUpListener () {
   // "Lift" the drawing pen, so lines are no longer drawn
   penUp();
 }
+
+
 
 //==============================================================================
 // MOUSE-INPUT EVENT LISTENERS
@@ -475,6 +525,8 @@ function pointerDownListener (e) {
   if (hasTouch) {
     return;
   }
+
+
   
   // Retrieve a reference to the Event object for this mousedown event.
   // Internet Explorer uses window.event; other browsers use the event parameter
@@ -499,6 +551,8 @@ function pointerDownListener (e) {
   }
 }
 
+
+
 // Triggered when the mouse moves
 function pointerMoveListener (e) {
   if (hasTouch) {
@@ -519,6 +573,8 @@ function pointerMoveListener (e) {
   }
 }
 
+
+
 // Triggered when the mouse button is released
 function pointerUpListener (e) {
   if (hasTouch) {
@@ -527,6 +583,8 @@ function pointerUpListener (e) {
   // "Lift" the drawing pen
   penUp();
 }
+
+
 
 //==============================================================================
 // CONTROL PANEL MENU-INPUT EVENT LISTENERS
@@ -579,6 +637,8 @@ function colorSelectListener (e) {
   iPhoneToTop();
 }
 
+
+
 //==============================================================================
 // PEN
 //==============================================================================
@@ -615,11 +675,15 @@ function penMove (x, y) {
   }
 }
 
+
+
 // "Lifts" the drawing pen, so that lines are no longer draw when the mouse or
 // touch-input device moves.
 function penUp () {
   isPenDown = false;
 }
+
+
 
 //==============================================================================
 // DRAWING
@@ -635,6 +699,7 @@ function drawLine (color, thickness, x1, y1, x2, y2) {
   context.stroke();
 }
 
+
 //==============================================================================
 // STATUS
 //==============================================================================
@@ -642,6 +707,7 @@ function drawLine (color, thickness, x1, y1, x2, y2) {
 function setStatus (message) {
   document.getElementById("status").innerHTML = message;
 }
+
 
 //==============================================================================
 // IPHONE UTILS
@@ -654,6 +720,7 @@ function iPhoneToTop () {
     }, 100);
   }
 }
+
 
 //==============================================================================
 // DATA VALIDATION
