@@ -2,14 +2,14 @@
 WBR.Canvas = Ember.Object.create({
 
 	// Private Canvas
-	private-canvas-id: "private-canvas",
-	private-canvas: null,
-	private-context: null,
+	privateCanvasID: "private-canvas",
+	privateCanvas: null,
+	privateContext: null,
 
 	// Public Canvas
-	public-canvas-id: "public-canvas",
-	public-canvas: null,
-	public-context: null,
+	publicCanvasID: "public-canvas",
+	publicCanvas: null,
+	publicContext: null,
 	
 	init: function() {
 		
