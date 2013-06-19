@@ -32,6 +32,7 @@ WBR.Canvas = Ember.Object.create({
 
 	// A list of points in a path to send to other connected users
 	bufferedPath: [],
+	totalPath: [],
 
 	// A timestamp indicating the last time a point was added to the bufferedPath
 	lastBufferTime: new Date().getTime(),
@@ -149,7 +150,7 @@ WBR.Canvas = Ember.Object.create({
 
 		if (!WBR.Canvas.isPenDown) {
 			// Move the drawing pen to the position that was touched
-			WBR.Canvas.penDown(touchX, touchY);
+			WBR.Canvas.penDown(touchX/WBR.Canvas.currentCanvas.width, touchY/WBR.Canvas.currentCanvas.height);
 		}
 	},
 
@@ -160,7 +161,7 @@ WBR.Canvas = Ember.Object.create({
 		var touchX = e.changedTouches[0].clientX - WBR.Canvas.currentCanvas.offsetLeft;
 		var touchY = e.changedTouches[0].clientY - WBR.Canvas.currentCanvas.offsetTop;
 		// Draw a line to the position being touched.
-		WBR.Canvas.penMove(touchX, touchY);
+		WBR.Canvas.penMove(touchX/WBR.Canvas.currentCanvas.width, touchY/WBR.Canvas.currentCanvas.height);
 	},
 
 	touchUpListener: function() 
@@ -188,7 +189,7 @@ WBR.Canvas = Ember.Object.create({
 		var mouseY = event.clientY - WBR.Canvas.currentCanvas.offsetTop;
 
 		// Move the drawing pen to the position that was clicked
-		WBR.Canvas.penDown(mouseX, mouseY);
+		WBR.Canvas.penDown(mouseX/WBR.Canvas.currentCanvas.width, mouseY/WBR.Canvas.currentCanvas.height);
 
 		// We want mouse input to be used for drawing only, so we need to stop the 
 		// browser from/ performing default mouse actions, such as text selection. 
@@ -218,7 +219,7 @@ WBR.Canvas = Ember.Object.create({
 		var mouseY = event.clientY - WBR.Canvas.currentCanvas.offsetTop;
 
 		// Draw a line if the pen is down
-		WBR.Canvas.penMove(mouseX, mouseY);
+		WBR.Canvas.penMove(mouseX/WBR.Canvas.currentCanvas.width, mouseY/WBR.Canvas.currentCanvas.height);
 
 		if (event.preventDefault) {
 			event.preventDefault();
@@ -259,7 +260,7 @@ WBR.Canvas = Ember.Object.create({
 		//   attrScope (The room) 
 		//   attrOptions (An integer whose bits specify options. "4" means 
 		//                the attribute should be shared).
-		msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
 					WBR.Room.orbiter.getClientID(),
 					"",
 					WBR.Room.Attributes.THICKNESS,
@@ -281,7 +282,7 @@ WBR.Canvas = Ember.Object.create({
 		// Locally, set the line color to the selected value
 		WBR.Canvas.localLineColor = newColor;
 		// Share selected color with other users
-		msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
 					WBR.Room.orbiter.getClientID(),
 					"",
 					WBR.Room.Attributes.COLOR,
@@ -308,8 +309,8 @@ WBR.Canvas = Ember.Object.create({
 	getValidThickness: function(value) 
 	{
 		value = parseInt(value);
-		var thickness = isNaN(value) ? defaultLineThickness : value;
-		return Math.max(1, Math.min(thickness, maxLineThickness));
+		var thickness = isNaN(value) ? WBR.Canvas.defaultLineThickness : value;
+		return Math.max(1, Math.min(thickness, WBR.Canvas.maxLineThickness));
 	},
 
 
@@ -321,8 +322,8 @@ WBR.Canvas = Ember.Object.create({
 	penDown: function(x, y) 
 	{
 		WBR.Canvas.isPenDown = true;
-		WBR.Canvas.localPen.x = x;
-		WBR.Canvas.localPen.y = y;
+		WBR.Canvas.localPen.x = x*WBR.Canvas.currentCanvas.width;
+		WBR.Canvas.localPen.y = y*WBR.Canvas.currentCanvas.height;
 
 		// Send this user's new pen position to other users.
 		WBR.Room.broadcastMove(x, y);
@@ -340,18 +341,19 @@ WBR.Canvas = Ember.Object.create({
 			// of 100 points per second.
 			if ((new Date().getTime() - WBR.Canvas.lastBufferTime) > 10) {
 				WBR.Canvas.bufferedPath.push(x + "," + y);
+				WBR.Canvas.totalPath.push(x+","+y);
 				WBR.Canvas.lastBufferTime = new Date().getTime();
 			}
 
 			// Draw the line locally.
-			WBR.Canvas.drawLine(WBR.Canvas.llocalLineColor, 
-				WBR.Canvas.llocalLineThickness, 
+			WBR.Canvas.drawLine(WBR.Canvas.localLineColor, 
+				WBR.Canvas.localLineThickness, 
 				WBR.Canvas.localPen.x, 
-				WBR.Canvas.localPen.y, x, y);
+				WBR.Canvas.localPen.y, x*WBR.Canvas.currentCanvas.width, y*WBR.Canvas.currentCanvas.height);
 
 			// Move the pen to the end of the line that was just drawn.
-			WBR.Canvas.localPen.x = x;
-			WBR.Canvas.localPen.y = y;
+			WBR.Canvas.localPen.x = x*WBR.Canvas.currentCanvas.width;
+			WBR.Canvas.localPen.y = y*WBR.Canvas.currentCanvas.height;
 		}
 	},
 

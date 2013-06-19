@@ -1,7 +1,6 @@
 // class Question
 WBR.Room = Ember.Object.create({
 
-	roomID: "",
 	connectedStudents: [],
 	connectedAdmins: [],
 	currentQuestion: null,
@@ -12,6 +11,13 @@ WBR.Room = Ember.Object.create({
 
 	// The MessageManager object, for sending and receiving messages
 	msgManager: null,
+
+	//Who is transmitting
+	tx: 0,
+
+	clients: [],
+
+	mentor: 0,
 
 	// A convenience reference to net.user1.orbiter.UPC, which provides a
 	// list of valid client/server UPC messages. See: http://unionplatform.com/specs/upc/
@@ -27,7 +33,9 @@ WBR.Room = Ember.Object.create({
 	// drawing pen to the specified position. PATH supplies a list of points to be
 	// drawn.
 	Messages : { MOVE:"MOVE", 
-			 PATH:"PATH" },
+			 	PATH:"PATH",
+				SETTX: "SETTX",
+                SERIAL: "SERIAL"},
 
 	DrawingCommands : {LINE_TO:      "lineTo",
                        MOVE_TO:       "moveTo",
@@ -78,15 +86,87 @@ WBR.Room = Ember.Object.create({
 		WBR.Room.msgManager.addMessageListener(WBR.Room.UPC.ROOM_SNAPSHOT, this.roomSnapshotListener, this);
 		WBR.Room.msgManager.addMessageListener(WBR.Room.UPC.CLIENT_ATTR_UPDATE, this.clientAttributeUpdateListener, this);
 		WBR.Room.msgManager.addMessageListener(WBR.Room.UPC.CLIENT_REMOVED_FROM_ROOM, this.clientRemovedFromRoomListener, this);
+ 		WBR.Room.msgManager.addMessageListener(WBR.Room.UPC.CREATE_ROOM_RESULT, this.croomResult, this);
 
 		// Register for custom messages from other users
 		WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.MOVE, this.moveMessageListener, this, [WBR.roomID]);
 		WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.PATH, this.pathMessageListener, this, [WBR.roomID]);
+  WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SETTX, this.settxMessageListener, this, [WBR.roomID]);
+ WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SERIAL, this.serialMessageListener, this, [WBR.roomID]);
 
 		// Create a room for the drawing app, then join it
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.CREATE_ROOM, WBR.roomID);
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.JOIN_ROOM, WBR.roomID);
+
+		  //Set user's name
+    WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+                     WBR.Room.orbiter.getClientID(),
+                     "",
+                     WBR.Room.Attributes.NAME,
+                     WBR.nickname,
+                     WBR.roomID,
+                     "4");
 	},
+
+croomResult: function(roomID, status) {
+  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.mentor=true;} else {
+    WBR.Room.mentor = false;
+  }
+},
+
+
+settxMessageListener: function(fromClientID, datastr) {
+  //alert(datastr);
+    WBR.Room.tx = parseInt(datastr);
+    if (WBR.Room.tx == WBR.Room.orbiter.clientID) {
+      //We're the tx!
+      WBR.Room.transmitSerial();
+    }
+},
+
+serialMessageListener: function(fromClientID, datastr) {
+
+  if (WBR.Room.tx == fromClientID) {
+    WBR.Room.loadCanvas(datastr);
+  }
+},
+
+setTx: function(txn) {
+  WBR.Room.tx=txn;
+        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.SETTX, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     txn);
+},
+
+loadCanvas: function(canvasdata){
+  //alert('recv:'+canvasdata.toString());
+  canvasdata=JSON.parse(canvasdata);
+  for (var i = 0; i < canvasdata.length; i+=1) {
+WBR.Room.pathMessageListener(WBR.Room.tx, canvasdata[i]);
+
+}
+while (WBR.Canvas.userCommands.length > 0) {
+  WBR.Room.processDrawingCommands();
+}
+},
+
+transmitSerial: function() {
+//alert('tx:'+JSON.stringify(totalPath));
+WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.SERIAL, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     JSON.stringify(WBR.Canvas.totalPath));
+},
+roomResult:function(roomID, attrName, status) {
+
+},
+
+
 
 
 
@@ -120,6 +200,16 @@ WBR.Room = Ember.Object.create({
 		} else {
 			WBR.setStatus("Now drawing with " + (numOccupants-1) + " other people");
 		}
+		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.GET_ROOM_SNAPSHOT, 1, WBR.roomID);
+      if (WBR.Room.mentor) {
+        //alert("setting to " + tx)
+      WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.SETTX, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     WBR.Room.tx);
+    }
 	},
 
 
@@ -140,50 +230,39 @@ WBR.Room = Ember.Object.create({
 						observerCount,
 						roomAttributes)
 	{
-		// The unnamed arguments following 'roomAttributes' is a list of 
-		// clients in the room. Assign that list to clientList. 
-		var clientList = Array.prototype.slice.call(arguments).slice(5);
-		WBR.Room.users = clientList;
-		var clientID;
-		var roomAttrString;
-		var roomAttrs;
-		var attrName;
-		var attrVal;
-
-		// Loop through the list of clients in the room to get each client's
-		// "thickness" and "color" attributes.
-		for (var i = 0; i < clientList.length; i+=5) {
-			clientID = clientList[i];
-			// Each client's room-scoped client attributes are passed as a 
-			// pipe-delimited string. Split that string to get the attributes.
-			clientAttrString = clientList[i+4];
-			clientAttrs = clientAttrString == "" ? [] : clientAttrString.split("|");
-
-			// Pass each client attribute to processClientAttributeUpdate(), which will
-			// check for the "thickness" and "color" attributes.
-			for (var j = 0; j < clientAttrs.length; j++) {
-				attrName = clientAttrs[j];
-				attrVal  = clientAttrs[j+1];
-				WBR.Room.processClientAttributeUpdate(clientID, attrName, attrVal);
-			}
-		}
-	},
-
-
-
-	// Triggered when one of the clients in the drawing room changes an attribute
-	// value. When an attribute value changes, check to see whether it was either 
-	// the "thickness" attribute or the "color" attribute.
-	clientAttributeUpdateListener: function(attrScope, 
-								clientID,
-								userID,
-								attrName,
-								attrVal,
-								attrOptions) 
-	{ 
-		if (attrScope == WBR.roomID) {
-			WBR.Room.processClientAttributeUpdate(clientID, attrName, attrVal);
-		}
+		 // The unnamed arguments following 'roomAttributes' is a list of 
+  // clients in the room. Assign that list to clientList. 
+  var clientList = Array.prototype.slice.call(arguments).slice(5);
+  var clientID;
+  var roomAttrString;
+  var roomAttrs;
+  var attrName;
+  var attrVal;
+  WBR.Room.clients = [];
+  
+  // Loop through the list of clients in the room to get each client's
+  // "thickness" and "color" attributes.
+  for (var i = 0; i < clientList.length; i+=5) {
+    clientID = clientList[i];
+    // Each client's room-scoped client attributes are passed as a 
+    // pipe-delimited string. Split that string to get the attributes.
+    clientAttrString = clientList[i+4];
+    clientAttrs = clientAttrString == "" ? [] : clientAttrString.split("|");
+    WBR.Room.clients[i/5] = {id: clientID, name: "unknown"};
+    // Pass each client attribute to processClientAttributeUpdate(), which will
+    // check for the "thickness" and "color" attributes.
+    for (var j = 0; j < clientAttrs.length; j++) {
+      attrName = clientAttrs[j];
+      attrVal  = clientAttrs[j+1];
+      WBR.Room.processClientAttributeUpdate(clientID, attrName, attrVal);
+      if (attrName == WBR.Room.Attributes.NAME) {
+        WBR.Room.clients[i/5]['name'] = attrVal;
+      }
+    }
+    if (clientID == WBR.Room.orbiter.clientID) {
+        WBR.Room.clients[i/5]['name'] = WBR.nickname;
+    }
+  }
 	},
 
 
@@ -199,7 +278,16 @@ WBR.Room = Ember.Object.create({
 		delete WBR.Canvas.userCurrentPositions[clientID];
 	},
 
-
+clientAttributeUpdateListener: function(attrScope, 
+                                        clientID,
+                                        userID,
+                                        attrName,
+                                        attrVal,
+                                        attrOptions) { 
+  if (attrScope == WBR.roomID) {
+    WBR.Room.processClientAttributeUpdate(clientID, attrName, attrVal);
+  }
+},
 
 
 	// Checks for changes to the the "thickness" and "color" attributes.
@@ -227,9 +315,10 @@ WBR.Room = Ember.Object.create({
 	moveMessageListener: function(fromClientID, coordsString) {
 		// Parse the specified (x, y) coordinate
 		var coords = coordsString.split(",");
-		var position = {x:parseInt(coords[0]), y:parseInt(coords[1])};
-		// Push a "moveTo" command onto the drawing-command stack for the sender
-		WBR.Room.addDrawingCommand(fromClientID, WBR.Room.DrawingCommands.MOVE_TO, position);
+		var position = {x:parseFloat(coords[0])*WBR.Canvas.currentCanvas.width, y:parseFloat(coords[1])*WBR.Canvas.currentCanvas.height};
+  // Push a "moveTo" command onto the drawing-command stack for the sender
+  if (fromClientID == WBR.Room.tx) {
+  WBR.Room.addDrawingCommand(fromClientID, WBR.Room.DrawingCommands.MOVE_TO, position); }
 	},
 
 
@@ -241,11 +330,13 @@ WBR.Room = Ember.Object.create({
 
 		// For each point, push a "lineTo" command onto the drawing-command stack 
 		// for the sender
-		var position;
-		for (var i = 0; i < path.length; i+=2) {
-			position = {x:parseInt(path[i]), y:parseInt(path[i+1])};
-			WBR.Room.addDrawingCommand(fromClientID, WBR.Room.DrawingCommands.LINE_TO, position);
-		}
+  if (fromClientID == WBR.Room.tx) {
+  var position;
+  for (var i = 0; i < path.length; i+=2) {
+    position = {x:parseFloat(path[i])*WBR.Canvas.currentCanvas.width, y:parseFloat(path[i+1])*WBR.Canvas.currentCanvas.height};
+    WBR.Room.addDrawingCommand(fromClientID, WBR.Room.DrawingCommands.LINE_TO, position);
+  }
+}
 	},
 
 
@@ -267,13 +358,14 @@ WBR.Room = Ember.Object.create({
 		// Use SEND_MESSAGE_TO_ROOMS to deliver the message to all users in the room
 		// Parameters are: messageName, WBR.roomID, includeSelf, filters, ...args. For
 		// details, see http://unionplatform.com/specs/upc/.
+		 if (WBR.Room.tx == WBR.Room.orbiter.clientID) {
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
 					WBR.Room.Messages.PATH, 
 					WBR.roomID, 
 					"false", 
 					"", 
 					WBR.Canvas.bufferedPath.join(","));
-
+		}
 		// Clear the local user's outgoing path data
 		WBR.Canvas.bufferedPath = [];
 		// If the user is no longer drawing, stop broadcasting drawing information
