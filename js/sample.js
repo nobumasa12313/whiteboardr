@@ -20,11 +20,11 @@ WBR.Question = Ember.Object.extend({
 })
 
 WBR.MultipleChoiceQuestion = WBR.Question.extend({
-      type = "multiple-choice"
+      type: "multiple-choice"
 })
 
 WBR.OpenResponseQuestion = WBR.Question.extend({
-      type = "open-response"
+      type: "open-response"
 })
 
 WBR.Canvas = Ember.Controller.create({
