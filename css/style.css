@@ -273,6 +273,7 @@ font-weight:900;
   background:#eee;
   padding:5px;
   cursor:pointer;
+  border-radius:2px 0 0 2px;
 }
 
 .user-cell-id {
