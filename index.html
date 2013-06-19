@@ -26,6 +26,7 @@
 
 
 	<!-- TOP BAR -->
+	<script type="text/x-handlebars">
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
@@ -40,12 +41,17 @@
 						<li class="question"><a style="color:white">Question 1: <b>What is the volume of the Earth?</b></a></li>
 					</ul>
 					<ul class="nav pull-right">
-						<button class="btn btn-primary">Raise Hand</button>
+						{{#if WBR.admin}}
+							<button onclick="WBR.launchQuestionWindow()" class="btn btn-primary">Post Question</button>
+						{{else}}
+							<button class="btn btn-primary">Raise Hand</button>
+						{{/if}}
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
 		</div>
 	</div>
+	</script>
 	<!-- END TOP BAR -->
 
 
@@ -54,6 +60,7 @@
 
 
 <!-- BOTTOM BAR -->
+<script type="text/x-handlebars">
 <div class="navbar navbar-fixed-bottom">
 	<div class="navbar-inner">
 		<div class="container bottom-bar">
@@ -102,20 +109,27 @@
 				</ul>
 
 				<ul class="nav pull-right">
-					<button class="btn btn-danger" onclick="WBR.leaveRoom()">Leave Room</button>
+					{{#if WBR.admin}}
+							<button class="btn btn-danger" onclick="WBR.leaveRoom()">Close Room</button>
+						{{else}}
+							<button class="btn btn-danger" onclick="WBR.leaveRoom()">Leave Room</button>
+						{{/if}}
+
+					
 				</ul>
 
 			</div>
 		</div>
 	</div>
 </div>
+</script>
 <!-- END BOTTOM BAR -->
 
 
 
 
 <!-- MODAL WINDOW GREETING -->
-<div class="modal hide fade">
+<div id="login-modal" class="modal hide fade">
 
 	<div class="modal-header">
 		<h3>join classroom</h3>
@@ -157,6 +171,39 @@
 
 	</div>
 </div>
+
+
+
+
+
+<!-- MODAL WINDOW GREETING -->
+<div id="question-modal" class="modal hide fade">
+
+	<div class="modal-header">
+		<h3>post question</h3>
+	</div>
+
+	<div class="form-horizontal">
+		<div class="modal-body">
+			<p>
+				<div class="control-group">
+					<label class="control-label" for="input-room-id">Question</label>
+					<div class="controls">
+						<textarea type="text" id="input-question" placeholder="type your question here..." class=" input input-large"/></textarea>
+					</div>
+				</div>
+
+			</p>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn btn-primary" onclick="WBR.Room.postQuestion()">Post</button>
+		</div>
+
+	</div>
+</div>
+
+
   
 
 

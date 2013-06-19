@@ -9,13 +9,14 @@
 WBR = Ember.Application.create({
 roomID:"",
       nickname:"anonymous",
-      role:"learner",
+      admin:"true",
 
 
       // Initialize the application
       init: function() {
             $('.question').hide();
-            $('.modal').modal();
+            $('.modal').modal('hide');
+            $('#login-modal').modal('show');
             
       },
 
@@ -34,8 +35,13 @@ roomID:"",
             this.iPhoneToTop();
 
             this.setStatus("connecting to whiteboardr...");
-            $('.modal').modal("hide");
+            $('#login-modal').modal("hide");
             $('.question').hide().fadeIn(1000);
+      },
+
+
+      launchQuestionWindow: function() {
+            $('#question-modal').modal('show');
       },
 
 
