@@ -128,12 +128,20 @@ settxMessageListener: function(fromClientID, datastr) {
 serialMessageListener: function(fromClientID, datastr) {
 
   if (WBR.Room.tx == fromClientID) {
+  	WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
     WBR.Room.loadCanvas(datastr);
   }
 },
 
 setTx: function(txn) {
   WBR.Room.tx=txn;
+  for (var j = 0; j < WBR.Room.clients.length; j++) {
+  		if(WBR.Room.clients[j].id == txn) {
+  			WBR.Room.clients[j].tx = true;
+  		} else {
+  			WBR.Room.clients[j].tx = false;
+  		}
+  }
         WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
                      WBR.Room.Messages.SETTX, 
                      WBR.roomID, 
@@ -145,13 +153,54 @@ setTx: function(txn) {
 loadCanvas: function(canvasdata){
   //alert('recv:'+canvasdata.toString());
   canvasdata=JSON.parse(canvasdata);
-  for (var i = 0; i < canvasdata.length; i+=1) {
-WBR.Room.pathMessageListener(WBR.Room.tx, canvasdata[i]);
 
+//  for (var i = 0; i < canvasdata.length; i+=1) {
+//WBR.Room.pathMessageListener(WBR.Room.tx, canvasdata[i]);
+var command;
+		// Loop over all command stacks
+		for (var clientID in canvasdata) {
+			// Skip empty stacks
+			if (canvasdata[clientID].length == 0) {
+				continue;
+			}
+			while (canvasdata[clientID].length > 0) {
+			// Execute the user's oldest command
+			command = canvasdata[clientID].shift();
+
+			switch (command.commandName) {
+				case WBR.Room.DrawingCommands.MOVE_TO:
+					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg.y*WBR.Canvas.currentCanvas.height};
+					break;
+
+				case WBR.Room.DrawingCommands.LINE_TO:
+					if (WBR.Canvas.userCurrentPositions[clientID] == undefined) {
+						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg*WBR.Canvas.currentCanvas.height};
+					} else {
+						WBR.Canvas.drawLine(WBR.Canvas.userColors[clientID] || "black", 
+						WBR.Canvas.userThicknesses[clientID] || "black", 
+						WBR.Canvas.userCurrentPositions[clientID].x, 
+						WBR.Canvas.userCurrentPositions[clientID].y,
+						command.arg.x*WBR.Canvas.currentCanvas.width, 
+						command.arg.y*WBR.Canvas.currentCanvas.height);
+						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x*WBR.Canvas.currentCanvas.width; 
+						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y*WBR.Canvas.currentCanvas.height; 
+						}
+					break;
+
+				case WBR.Room.DrawingCommands.SET_THICKNESS:
+					WBR.Canvas.userThicknesses[clientID] = command.arg;
+					break;
+
+				case WBR.Room.DrawingCommands.SET_COLOR:
+					WBR.Canvas.userColors[clientID] = command.arg;
+					break;
+			}
 }
-while (WBR.Canvas.userCommands.length > 0) {
-  WBR.Room.processDrawingCommands();
-}
+		}
+
+//while (WBR.Canvas.userCommands.length > 0) {
+//  WBR.Room.processDrawingCommands();
+//}
 },
 
 transmitSerial: function() {
@@ -161,7 +210,7 @@ WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS,
                      WBR.roomID, 
                      "false", 
                      "", 
-                     JSON.stringify(WBR.Canvas.totalPath));
+                     JSON.stringify(WBR.Canvas.userCommandCache)); //totalPath
 },
 roomResult:function(roomID, attrName, status) {
 
@@ -320,7 +369,7 @@ clientAttributeUpdateListener: function(attrScope,
 	moveMessageListener: function(fromClientID, coordsString) {
 		// Parse the specified (x, y) coordinate
 		var coords = coordsString.split(",");
-		var position = {x:parseFloat(coords[0])*WBR.Canvas.currentCanvas.width, y:parseFloat(coords[1])*WBR.Canvas.currentCanvas.height};
+		var position = {x:parseFloat(coords[0]), y:parseFloat(coords[1])};
   // Push a "moveTo" command onto the drawing-command stack for the sender
   if (fromClientID == WBR.Room.tx) {
   WBR.Room.addDrawingCommand(fromClientID, WBR.Room.DrawingCommands.MOVE_TO, position); }
@@ -338,7 +387,7 @@ clientAttributeUpdateListener: function(attrScope,
   if (fromClientID == WBR.Room.tx) {
   var position;
   for (var i = 0; i < path.length; i+=2) {
-    position = {x:parseFloat(path[i])*WBR.Canvas.currentCanvas.width, y:parseFloat(path[i+1])*WBR.Canvas.currentCanvas.height};
+    position = {x:parseFloat(path[i]), y:parseFloat(path[i+1])};
     WBR.Room.addDrawingCommand(fromClientID, WBR.Room.DrawingCommands.LINE_TO, position);
   }
 }
@@ -371,6 +420,14 @@ clientAttributeUpdateListener: function(attrScope,
 					"", 
 					WBR.Canvas.bufferedPath.join(","));
 		}
+		var path = WBR.Canvas.bufferedPath;
+  
+  var position;
+  for (var i = 0; i < path.length; i+=2) {
+    position = {x:parseFloat(path[i]), y:parseFloat(path[i+1])};
+    WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.LINE_TO, position);
+  }
+
 		// Clear the local user's outgoing path data
 		WBR.Canvas.bufferedPath = [];
 		// If the user is no longer drawing, stop broadcasting drawing information
@@ -383,16 +440,28 @@ clientAttributeUpdateListener: function(attrScope,
 
 	// Sends all users in the drawing room an instruction to reposition the local
 	// user's pen.
-	broadcastMove: function(x, y) {
+	broadcastMove: function(ux, uy) {
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
 					WBR.Room.Messages.MOVE, 
 					WBR.roomID, 
 					"false", 
 					"", 
-					x + "," + y);
+					ux + "," + uy);
+		var position = {x:ux, y:uy};
+
+		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.MOVE_TO, position);
 	},
 
-
+	addCacheCommand: function(commandName, arg) {
+		if (WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID] == undefined) {
+			WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID] = [];
+		}
+		// Push the command onto the stack.
+		var command = {};
+		command["commandName"] = commandName;
+		command["arg"] = arg;
+		WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID].push(command);
+	},
 
 	//==============================================================================
 	// PROCESS DRAWING COMMANDS FROM OTHER USERS
@@ -429,21 +498,21 @@ clientAttributeUpdateListener: function(attrScope,
 
 			switch (command.commandName) {
 				case WBR.Room.DrawingCommands.MOVE_TO:
-					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x, y:command.arg.y};
+					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg.y*WBR.Canvas.currentCanvas.height};
 					break;
 
 				case WBR.Room.DrawingCommands.LINE_TO:
 					if (WBR.Canvas.userCurrentPositions[clientID] == undefined) {
-						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x, y:command.arg.y};
+						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg*WBR.Canvas.currentCanvas.height};
 					} else {
 						WBR.Canvas.drawLine(WBR.Canvas.userColors[clientID] || "black", 
 						WBR.Canvas.userThicknesses[clientID] || "black", 
 						WBR.Canvas.userCurrentPositions[clientID].x, 
 						WBR.Canvas.userCurrentPositions[clientID].y,
-						command.arg.x, 
-						command.arg.y);
-						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x; 
-						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y; 
+						command.arg.x*WBR.Canvas.currentCanvas.width, 
+						command.arg.y*WBR.Canvas.currentCanvas.height);
+						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x*WBR.Canvas.currentCanvas.width; 
+						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y*WBR.Canvas.currentCanvas.height; 
 						}
 					break;
 
