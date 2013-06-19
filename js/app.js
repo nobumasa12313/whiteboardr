@@ -5,7 +5,6 @@
 
 
 
-
 // class Applicatiom
 WBR = Ember.Application.create({
       roomID: "whiteboardr",
@@ -13,6 +12,12 @@ WBR = Ember.Application.create({
       users: [],
       role:"learner",
       currentQuestion: null,
+
+      init: function() {
+        $('.question').hide();
+       $('.modal').modal();
+       initCanvas();
+      }
 });
 
 
@@ -27,7 +32,7 @@ var msgManager;
 var UPC = net.user1.orbiter.UPC;
 
 
-// MAIN SESSION PROPERTIES 
+
 
 
 
@@ -100,7 +105,7 @@ var processDrawingCommandsIntervalID;
 
 
 
-window.onload = init;
+
 
 
 
@@ -135,17 +140,14 @@ function leaveroom()
 // clear the canvas
 function clearCanvas() 
 {
-        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-
-// initialize everything
-function init () 
-{        
-        $('.question').hide();
-        $('.modal').modal();
-        initCanvas();
+function resizeCanvas()
+{
+      
 }
+
 
 
 // Set up the drawing canvas
@@ -220,12 +222,12 @@ function readyListener (e) {
   msgManager.addMessageListener(UPC.CLIENT_REMOVED_FROM_ROOM, clientRemovedFromRoomListener, this);
   
   // Register for custom messages from other users
-  msgManager.addMessageListener(Messages.MOVE, moveMessageListener, this, [roomID]);
-  msgManager.addMessageListener(Messages.PATH, pathMessageListener, this, [roomID]);
+  msgManager.addMessageListener(Messages.MOVE, moveMessageListener, this, [WBR.roomID]);
+  msgManager.addMessageListener(Messages.PATH, pathMessageListener, this, [WBR.roomID]);
     
   // Create a room for the drawing app, then join it
-  msgManager.sendUPC(UPC.CREATE_ROOM, roomID);
-  msgManager.sendUPC(UPC.JOIN_ROOM, roomID);
+  msgManager.sendUPC(UPC.CREATE_ROOM, WBR.roomID);
+  msgManager.sendUPC(UPC.JOIN_ROOM, WBR.roomID);
 }
 
 
@@ -314,7 +316,7 @@ function clientAttributeUpdateListener (attrScope,
                                         attrName,
                                         attrVal,
                                         attrOptions) { 
-  if (attrScope == roomID) {
+  if (attrScope == WBR.roomID) {
     processClientAttributeUpdate(clientID, attrName, attrVal);
   }
 }
@@ -386,11 +388,11 @@ function broadcastPath () {
     return;
   }
   // Use SEND_MESSAGE_TO_ROOMS to deliver the message to all users in the room
-  // Parameters are: messageName, roomID, includeSelf, filters, ...args. For
+  // Parameters are: messageName, WBR.roomID, includeSelf, filters, ...args. For
   // details, see http://unionplatform.com/specs/upc/.
   msgManager.sendUPC(UPC.SEND_MESSAGE_TO_ROOMS, 
                      Messages.PATH, 
-                     roomID, 
+                     WBR.roomID, 
                      "false", 
                      "", 
                      bufferedPath.join(","));
@@ -407,7 +409,7 @@ function broadcastPath () {
 function broadcastMove (x, y) {
   msgManager.sendUPC(UPC.SEND_MESSAGE_TO_ROOMS, 
                      Messages.MOVE, 
-                     roomID, 
+                     WBR.roomID, 
                      "false", 
                      "", 
                      x + "," + y);
@@ -626,7 +628,7 @@ function thicknessSelectListener (e) {
                      "",
                      Attributes.THICKNESS,
                      newThickness,
-                     roomID,
+                     WBR.roomID,
                      "4");
   // After the user selects a value in the drop-down menu, the iPhone
   // automatically scrolls the page, so scroll back to the top-left. 
@@ -645,7 +647,7 @@ function colorSelectListener (e) {
                      "",
                      Attributes.COLOR,
                      newColor,
-                     roomID,
+                     WBR.roomID,
                      "4");
 
   // Scroll the iPhone back to the top-left. 
