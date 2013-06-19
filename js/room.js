@@ -249,7 +249,7 @@ roomResult:function(roomID, attrName, status) {
     // pipe-delimited string. Split that string to get the attributes.
     clientAttrString = clientList[i+4];
     clientAttrs = clientAttrString == "" ? [] : clientAttrString.split("|");
-    WBR.Room.clients[i/5] = {id: clientID, name: "unknown"};
+    WBR.Room.clients[i/5] = {id: clientID, name: "unknown", tx:false};
     // Pass each client attribute to processClientAttributeUpdate(), which will
     // check for the "thickness" and "color" attributes.
     for (var j = 0; j < clientAttrs.length; j++) {
@@ -262,6 +262,9 @@ roomResult:function(roomID, attrName, status) {
     }
     if (clientID == WBR.Room.orbiter.clientID) {
         WBR.Room.clients[i/5]['name'] = WBR.nickname;
+    }
+    if (clientID == WBR.Room.tx) {
+    	WBR.Room.clients[i/5]['tx'] = true;
     }
   }
   WBR.UserController.set('content', WBR.Room.clients);
