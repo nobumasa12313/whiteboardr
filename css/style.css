@@ -37,6 +37,10 @@ h1 {
 	font-weight:900;
 }
 
+.hidden {
+  display:none;
+}
+
 h3 {
     padding:10px;
     font-size:20px;
@@ -50,9 +54,9 @@ h3 {
   font-weight:800 !important;
 }
 
-#canvas {
+.canvas {
  
-  border:1px solid rgba(0,0,0,.1);
+
   position:fixed;
   top:0;
   bottom:0;
