@@ -41,6 +41,7 @@
 						<li class="question"><a style="color:white">Question 1: <b>What is the volume of the Earth?</b></a></li>
 					</ul>
 					<ul class="nav pull-right">
+						
 						{{#if WBR.admin}}
 							<button onclick="WBR.launchQuestionWindow()" class="btn btn-primary">Post Question</button>
 						{{else}}
@@ -153,12 +154,9 @@
 				</div>
 
 				<div class="control-group">
-					<label class="control-label" for="input-role">Role</label>
+					<label class="control-label" for="input-role">Admin</label>
 					<div class="controls">
-						<div class="btn-group" data-toggle="buttons-radio">
-							  <button class="btn">Mentor</button>
-							  <button class="btn">Learner</button>
-						</div>
+						<input type="checkbox" id="input-admin"></input>
 					</div>
 				</div>
 
@@ -221,9 +219,11 @@
 
 	<script type="text/x-handlebars">
 		<div id="user-list">
+		{{#if WBR.admin}}
 		{{#each WBR.UserController}}
   			<div class="user-cell"><span class="user-cell-id">{{id}}</span><span class="user-cell-name">{{name}}</span></div>
 		{{/each}}
+		{{/if}}
 		</div>
 	</script>
 

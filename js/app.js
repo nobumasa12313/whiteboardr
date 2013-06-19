@@ -7,10 +7,9 @@
 
 // class Applicatiom
 WBR = Ember.Application.create({
-roomID:"",
+      roomID:"",
       nickname:"anonymous",
-      admin:"true",
-
+      admin:false,
 
       // Initialize the application
       init: function() {
@@ -28,7 +27,8 @@ roomID:"",
             else
                   WBR.roomID = document.getElementById('input-room-id').value;
 
-            this.nickname = document.getElementById('input-nickname').value;
+            this.set('nickname' , document.getElementById('input-nickname').value);
+            this.set('admin' , $('#input-admin').attr('checked'));
 
             this.Canvas.initialize();
             this.Room.initialize();
@@ -67,9 +67,6 @@ roomID:"",
       },
 
 });
-
-
-
 
 
 
