@@ -170,21 +170,21 @@ var command;
 
 			switch (command.commandName) {
 				case WBR.Room.DrawingCommands.MOVE_TO:
-					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*1, y:command.arg.y*1};
+					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg.y*WBR.Canvas.currentCanvas.height};
 					break;
 
 				case WBR.Room.DrawingCommands.LINE_TO:
 					if (WBR.Canvas.userCurrentPositions[clientID] == undefined) {
-						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*1, y:command.arg*1};
+						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg*WBR.Canvas.currentCanvas.height};
 					} else {
 						WBR.Canvas.drawLine(WBR.Canvas.userColors[clientID] || "black", 
 						WBR.Canvas.userThicknesses[clientID] || "black", 
 						WBR.Canvas.userCurrentPositions[clientID].x, 
 						WBR.Canvas.userCurrentPositions[clientID].y,
-						command.arg.x,//*WBR.Canvas.currentCanvas.width, 
-						command.arg.y);//*WBR.Canvas.currentCanvas.height);
-						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x;//*WBR.Canvas.currentCanvas.width; 
-						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y;//*WBR.Canvas.currentCanvas.height; 
+						command.arg.x*WBR.Canvas.currentCanvas.width, 
+						command.arg.y*WBR.Canvas.currentCanvas.height);
+						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x*WBR.Canvas.currentCanvas.width; 
+						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y*WBR.Canvas.currentCanvas.height; 
 						}
 					break;
 
@@ -503,21 +503,21 @@ clientAttributeUpdateListener: function(attrScope,
 
 			switch (command.commandName) {
 				case WBR.Room.DrawingCommands.MOVE_TO:
-					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*1, y:command.arg.y*1};
+					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg.y*WBR.Canvas.currentCanvas.height};
 					break;
 
 				case WBR.Room.DrawingCommands.LINE_TO:
 					if (WBR.Canvas.userCurrentPositions[clientID] == undefined) {
-						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*1, y:command.arg*1};
+						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg*WBR.Canvas.currentCanvas.height};
 					} else {
 						WBR.Canvas.drawLine(WBR.Canvas.userColors[clientID] || "black", 
 						WBR.Canvas.userThicknesses[clientID] || "black", 
 						WBR.Canvas.userCurrentPositions[clientID].x, 
 						WBR.Canvas.userCurrentPositions[clientID].y,
-						command.arg.x,//*WBR.Canvas.currentCanvas.width, 
-						command.arg.y);//*WBR.Canvas.currentCanvas.height);
-						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x;//*WBR.Canvas.currentCanvas.width; 
-						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y;//*WBR.Canvas.currentCanvas.height; 
+						command.arg.x*WBR.Canvas.currentCanvas.width, 
+						command.arg.y*WBR.Canvas.currentCanvas.height);
+						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x*WBR.Canvas.currentCanvas.width; 
+						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y*WBR.Canvas.currentCanvas.height; 
 						}
 					break;
 
