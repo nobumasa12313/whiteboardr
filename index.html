@@ -42,10 +42,7 @@
 							<a style="color:white">
 
 							{{#if WBR.nickname}}
-								Your nickname is <b>{{WBR.nickname}}.</b> 
-								{{#if WBR.admin}}
-									You are an administrator.
-								{{/if}}
+								Question Name
 							{{/if}}
 
 							</a>
@@ -54,6 +51,8 @@
 					<ul class="nav pull-right">
 						
 						{{#if WBR.admin}}
+							<button class="btn btn-none">{{WBR.nickname}} in {{WBR.roomID}}</button>
+							<button class="btn btn-none">Administrator</button>
 							<button onclick="WBR.launchQuestionWindow()" class="btn btn-primary"><i class="icon-envelope icon-white"></i> Post Question</button>
 						{{else}}
 							<button class="btn btn-primary"><i class="icon-hand-up icon-white"></i> Raise Hand</button>
@@ -237,8 +236,16 @@
 		<div id="user-list">
 		{{#if WBR.admin}}
 		{{#each WBR.UserController}}
-  			<div class="user-cell"><span class="user-cell-id">{{id}}</span><span class="user-cell-name">{{name}}</span>
-  			{{view Ember.Checkbox checkedBinding="tx"}}</div>
+
+
+			<div class="user-cell" onClick="WBR.UserController.setTx(this)">
+  			
+  				<span class="user-cell-id">{{id}}</span>
+  				<span class="user-cell-name">{{name}}</span>
+  				<span class="user-cell-name">{{tx}}</span>
+
+  			</div>
+  			
 
 		{{/each}}
 		{{/if}}
