@@ -5,19 +5,30 @@
 
 
 WBR = Ember.Application.create({
-
       roomID: "whiteboardr",
       nickname:"anonymous",
       users: [],
       role:"learner",
-
+      currentQuestion: null,
 });
 
 
-WBR.Question = Ember.Object.Extend({
+WBR.Question = Ember.Object.extend({
       name: "",
       type: "",
       options: "",
+})
+
+WBR.MultipleChoiceQuestion = WBR.Question.extend({
+      type = "multiple-choice"
+})
+
+WBR.OpenResponseQuestion = WBR.Question.extend({
+      type = "open-response"
+})
+
+WBR.Canvas = Ember.Controller.create({
+
 })
 
 
