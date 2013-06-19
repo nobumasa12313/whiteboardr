@@ -156,6 +156,7 @@ loadCanvas: function(canvasdata){
 
 //  for (var i = 0; i < canvasdata.length; i+=1) {
 //WBR.Room.pathMessageListener(WBR.Room.tx, canvasdata[i]);
+WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
 var command;
 		// Loop over all command stacks
 		for (var clientID in canvasdata) {
@@ -169,21 +170,21 @@ var command;
 
 			switch (command.commandName) {
 				case WBR.Room.DrawingCommands.MOVE_TO:
-					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg.y*WBR.Canvas.currentCanvas.height};
+					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*1, y:command.arg.y*1};
 					break;
 
 				case WBR.Room.DrawingCommands.LINE_TO:
 					if (WBR.Canvas.userCurrentPositions[clientID] == undefined) {
-						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg*WBR.Canvas.currentCanvas.height};
+						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*1, y:command.arg*1};
 					} else {
 						WBR.Canvas.drawLine(WBR.Canvas.userColors[clientID] || "black", 
 						WBR.Canvas.userThicknesses[clientID] || "black", 
 						WBR.Canvas.userCurrentPositions[clientID].x, 
 						WBR.Canvas.userCurrentPositions[clientID].y,
-						command.arg.x*WBR.Canvas.currentCanvas.width, 
-						command.arg.y*WBR.Canvas.currentCanvas.height);
-						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x*WBR.Canvas.currentCanvas.width; 
-						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y*WBR.Canvas.currentCanvas.height; 
+						command.arg.x,//*WBR.Canvas.currentCanvas.width, 
+						command.arg.y);//*WBR.Canvas.currentCanvas.height);
+						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x;//*WBR.Canvas.currentCanvas.width; 
+						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y;//*WBR.Canvas.currentCanvas.height; 
 						}
 					break;
 
@@ -420,13 +421,17 @@ clientAttributeUpdateListener: function(attrScope,
 					"", 
 					WBR.Canvas.bufferedPath.join(","));
 		}
-		var path = WBR.Canvas.bufferedPath;
-  
+		var path = WBR.Canvas.bufferedPath.join(",").split(",");
+
+		// For each point, push a "lineTo" command onto the drawing-command stack 
+		// for the sender
+
   var position;
   for (var i = 0; i < path.length; i+=2) {
     position = {x:parseFloat(path[i]), y:parseFloat(path[i+1])};
     WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.LINE_TO, position);
-  }
+  
+}
 
 		// Clear the local user's outgoing path data
 		WBR.Canvas.bufferedPath = [];
@@ -498,21 +503,21 @@ clientAttributeUpdateListener: function(attrScope,
 
 			switch (command.commandName) {
 				case WBR.Room.DrawingCommands.MOVE_TO:
-					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg.y*WBR.Canvas.currentCanvas.height};
+					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*1, y:command.arg.y*1};
 					break;
 
 				case WBR.Room.DrawingCommands.LINE_TO:
 					if (WBR.Canvas.userCurrentPositions[clientID] == undefined) {
-						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg*WBR.Canvas.currentCanvas.height};
+						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*1, y:command.arg*1};
 					} else {
 						WBR.Canvas.drawLine(WBR.Canvas.userColors[clientID] || "black", 
 						WBR.Canvas.userThicknesses[clientID] || "black", 
 						WBR.Canvas.userCurrentPositions[clientID].x, 
 						WBR.Canvas.userCurrentPositions[clientID].y,
-						command.arg.x*WBR.Canvas.currentCanvas.width, 
-						command.arg.y*WBR.Canvas.currentCanvas.height);
-						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x*WBR.Canvas.currentCanvas.width; 
-						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y*WBR.Canvas.currentCanvas.height; 
+						command.arg.x,//*WBR.Canvas.currentCanvas.width, 
+						command.arg.y);//*WBR.Canvas.currentCanvas.height);
+						WBR.Canvas.userCurrentPositions[clientID].x = command.arg.x;//*WBR.Canvas.currentCanvas.width; 
+						WBR.Canvas.userCurrentPositions[clientID].y = command.arg.y;//*WBR.Canvas.currentCanvas.height; 
 						}
 					break;
 

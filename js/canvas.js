@@ -190,7 +190,7 @@ WBR.Canvas = Ember.Object.create({
 		var mouseY = event.clientY - WBR.Canvas.currentCanvas.offsetTop;
 
 		// Move the drawing pen to the position that was clicked
-		WBR.Canvas.penDown(mouseX/WBR.Canvas.currentCanvas.width, mouseY/WBR.Canvas.currentCanvas.height);
+		WBR.Canvas.penDown(mouseX/1, mouseY/1);
 
 		// We want mouse input to be used for drawing only, so we need to stop the 
 		// browser from/ performing default mouse actions, such as text selection. 
@@ -220,7 +220,7 @@ WBR.Canvas = Ember.Object.create({
 		var mouseY = event.clientY - WBR.Canvas.currentCanvas.offsetTop;
 
 		// Draw a line if the pen is down
-		WBR.Canvas.penMove(mouseX/WBR.Canvas.currentCanvas.width, mouseY/WBR.Canvas.currentCanvas.height);
+		WBR.Canvas.penMove(mouseX/1, mouseY/1);
 
 		if (event.preventDefault) {
 			event.preventDefault();
@@ -323,8 +323,8 @@ WBR.Canvas = Ember.Object.create({
 	penDown: function(x, y) 
 	{
 		WBR.Canvas.isPenDown = true;
-		WBR.Canvas.localPen.x = x*WBR.Canvas.currentCanvas.width;
-		WBR.Canvas.localPen.y = y*WBR.Canvas.currentCanvas.height;
+		WBR.Canvas.localPen.x = x;//*WBR.Canvas.currentCanvas.width;
+		WBR.Canvas.localPen.y = y;//*WBR.Canvas.currentCanvas.height;
 
 		// Send this user's new pen position to other users.
 		WBR.Room.broadcastMove(x, y);
@@ -350,11 +350,11 @@ WBR.Canvas = Ember.Object.create({
 			WBR.Canvas.drawLine(WBR.Canvas.localLineColor, 
 				WBR.Canvas.localLineThickness, 
 				WBR.Canvas.localPen.x, 
-				WBR.Canvas.localPen.y, x*WBR.Canvas.currentCanvas.width, y*WBR.Canvas.currentCanvas.height);
+				WBR.Canvas.localPen.y, x*1, y*1);
 
 			// Move the pen to the end of the line that was just drawn.
-			WBR.Canvas.localPen.x = x*WBR.Canvas.currentCanvas.width;
-			WBR.Canvas.localPen.y = y*WBR.Canvas.currentCanvas.height;
+			WBR.Canvas.localPen.x = x*1;
+			WBR.Canvas.localPen.y = y*1;
 		}
 	},
 
