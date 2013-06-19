@@ -7,12 +7,10 @@
 
 // class Applicatiom
 WBR = Ember.Application.create({
-
-      roomID: "whiteboardr",
+roomID:"",
       nickname:"anonymous",
       role:"learner",
 
-      userCommands: {},
 
       // Initialize the application
       init: function() {
@@ -25,9 +23,9 @@ WBR = Ember.Application.create({
       // Join the room
       joinRoom: function() {
             if (document.getElementById('input-room-id').value == "")
-                  WBR.Room.roomID = "whiteboardr.default";
+                  WBR.roomID = "whiteboardr.default";
             else
-                  WBR.Room.roomID = document.getElementById('input-room-id').value;
+                  WBR.roomID = document.getElementById('input-room-id').value;
 
             this.nickname = document.getElementById('input-nickname').value;
 

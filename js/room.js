@@ -305,14 +305,14 @@ WBR.Room = Ember.Object.create({
 	// causing remote user's drawings to appear on-screen. 
 	addDrawingCommand: function(clientID, commandName, arg) {
 		// If this client does not yet have a command stack, make one. 
-		if (WBR.userCommands[clientID] == undefined) {
-		WBR.userCommands[clientID] = [];
+		if (WBR.Canvas.userCommands[clientID] == undefined) {
+		WBR.Canvas.userCommands[clientID] = [];
 		}
 		// Push the command onto the stack.
 		var command = {};
 		command["commandName"] = commandName;
 		command["arg"] = arg;
-		WBR.userCommands[clientID].push(command);
+		WBR.Canvas.userCommands[clientID].push(command);
 	},
 
 
@@ -321,14 +321,14 @@ WBR.Room = Ember.Object.create({
 	processDrawingCommands: function() {
 		var command;
 		// Loop over all command stacks
-		for (var clientID in WBR.userCommands) {
+		for (var clientID in WBR.Canvas.userCommands) {
 			// Skip empty stacks
-			if (WBR.userCommands[clientID].length == 0) {
+			if (WBR.Canvas.userCommands[clientID].length == 0) {
 				continue;
 			}
 
 			// Execute the user's oldest command
-			command = WBR.userCommands[clientID].shift();
+			command = WBR.Canvas.userCommands[clientID].shift();
 
 			switch (command.commandName) {
 				case WBR.Room.DrawingCommands.MOVE_TO:
@@ -339,8 +339,8 @@ WBR.Room = Ember.Object.create({
 					if (WBR.Canvas.userCurrentPositions[clientID] == undefined) {
 						WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x, y:command.arg.y};
 					} else {
-						WBR.Canvas.drawLine(WBR.Canvas.userColors[clientID] || WBR.Canvas.defaultLineColor, 
-						WBR.Canvas.userThicknesses[clientID] || WBR.Canvas.defaultLineThickness, 
+						WBR.Canvas.drawLine(WBR.Canvas.userColors[clientID] || "black", 
+						WBR.Canvas.userThicknesses[clientID] || "black", 
 						WBR.Canvas.userCurrentPositions[clientID].x, 
 						WBR.Canvas.userCurrentPositions[clientID].y,
 						command.arg.x, 

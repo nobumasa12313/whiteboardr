@@ -23,10 +23,7 @@ WBR.Canvas = Ember.Object.create({
 	isPenDown: false,
 	hasTouch: false,
 
-	DrawingCommands : {LINE_TO:      "lineTo",
-                       MOVE_TO:       "moveTo",
-                       SET_THICKNESS: "setThickness",
-                       SET_COLOR:     "setColor"},
+
 
 	// Tracks the current location of the user's drawing pen
 	localPen: {},
@@ -267,7 +264,7 @@ WBR.Canvas = Ember.Object.create({
 					"",
 					WBR.Room.Attributes.THICKNESS,
 					newThickness,
-					WBR.roomID,
+					WBR.Room.roomID,
 					"4");
 		// After the user selects a value in the drop-down menu, the iPhone
 		// automatically scrolls the page, so scroll back to the top-left. 
@@ -289,7 +286,7 @@ WBR.Canvas = Ember.Object.create({
 					"",
 					WBR.Room.Attributes.COLOR,
 					newColor,
-					WBR.roomID,
+					WBR.Room.roomID,
 					"4");
 
 		// Scroll the iPhone back to the top-left. 

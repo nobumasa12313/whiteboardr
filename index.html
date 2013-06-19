@@ -24,7 +24,7 @@
   <body>
 
 
-  	<!-- TOP BAR -->
+	<!-- TOP BAR -->
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
@@ -51,58 +51,64 @@
 
 	<div class="container">
 
+
+<!-- BOTTOM BAR -->
 <div class="navbar navbar-fixed-bottom">
 	<div class="navbar-inner">
 		<div class="container bottom-bar">
-			
-			  <div class="nav-collapse collapse">
-			<ul class="nav">
-			  <li>
-				<div class="btn-group" data-toggle="buttons-radio">
-  <button class="btn">Draw</button>
-  <button class="btn">Erase</button>
-  
-</div>
-			  </li>
 
-			  <li>
-<button class="btn" onclick="WBR.Canvas.clear()">Clear</button>
-			  </li>
+			<div class="nav-collapse collapse">
 
-			  <li style="margin-right:15px;">
-				SIZE
-				<select id="thickness" class="input-mini">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="10">10</option>
-				<option value="20">20</option>
-				</select>
-			  </li>
-			  <li>
-				COLOR
-				<select id="color" class="input-small">
-				<option value="black">Black</option>
-				<option value="red">Red</option>
-				<option value="orange">Orange</option>
-				<option value="yellow">Yellow</option>
-				<option value="green">Green</option>
-				<option value="blue">Blue</option>
-				<option value="purple">Purple</option>
-				</select>
-			  </li>
-			</ul>
-			<ul class="nav pull-right">
-			  
-			  <button class="btn btn-danger" onclick="WBR.leaveRoom()">Leave Room</button>
-			</ul>
-		  </div>
-			
+				<ul class="nav">
+
+					<li>
+						<div class="btn-group" data-toggle="buttons-radio">
+							<button class="btn">Draw</button>
+							<button class="btn">Erase</button>
+						</div>
+					</li>
+
+					<li>
+						<button class="btn" onclick="WBR.Canvas.clear()">Clear</button>
+					</li>
+
+					<li style="margin-right:15px;">
+						SIZE
+						<select id="thickness" class="input-mini">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+						</select>
+					</li>
+
+					<li>
+						COLOR
+						<select id="color" class="input-small">
+							<option value="black">Black</option>
+							<option value="red">Red</option>
+							<option value="orange">Orange</option>
+							<option value="yellow">Yellow</option>
+							<option value="green">Green</option>
+							<option value="blue">Blue</option>
+							<option value="purple">Purple</option>
+						</select>
+					</li>
+
+				</ul>
+
+				<ul class="nav pull-right">
+					<button class="btn btn-danger" onclick="WBR.leaveRoom()">Leave Room</button>
+				</ul>
+
+			</div>
 		</div>
 	</div>
 </div>
+<!-- END BOTTOM BAR -->
 
 
 
@@ -158,10 +164,12 @@
 	<canvas class="canvas" id="private-canvas"></canvas>
 
 
+
 	<!-- Video Chat Region -->
 	<div id="video-chat">
 		<img src="img/brin.jpg" id="video-chat-content"/>
 	</div>
+  
   
 
 	<!--A status text field, for displaying connection information-->
