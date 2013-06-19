@@ -8,7 +8,7 @@
 // class Applicatiom
 WBR = Ember.Application.create({
       roomID:"",
-      nickname:"anonymous",
+      nickname:null,
       admin:false,
 
       // Initialize the application
@@ -67,6 +67,8 @@ WBR = Ember.Application.create({
       },
 
 });
+
+
 
 
 

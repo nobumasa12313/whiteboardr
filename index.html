@@ -38,7 +38,18 @@
 					<a class="brand" href="#">whiteboardr</a>
 					<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li class="question"><a style="color:white">Question 1: <b>What is the volume of the Earth?</b></a></li>
+						<li class="question">
+							<a style="color:white">
+
+							{{#if WBR.nickname}}
+								Your nickname is <b>{{WBR.nickname}}.</b> 
+								{{#if WBR.admin}}
+									You are an administrator.
+								{{/if}}
+							{{/if}}
+
+							</a>
+						</li>
 					</ul>
 					<ul class="nav pull-right">
 						
@@ -130,6 +141,7 @@
 
 
 <!-- MODAL WINDOW GREETING -->
+
 <div id="login-modal" class="modal hide fade">
 
 	<div class="modal-header">
@@ -150,6 +162,9 @@
 					<label class="control-label" for="input-nickname">Nickname</label>
 					<div class="controls">
 						<input type="text" id="input-nickname" placeholder="Nickname" class=" input input-large"/>
+						<script type="text/x-handlebars" data-template-name="nickname">
+							{{view Ember.TextField valueBinding="WBR.nickname"}}
+						</script>
 					</div>
 				</div>
 
@@ -175,6 +190,7 @@
 
 
 <!-- MODAL WINDOW GREETING -->
+
 <div id="question-modal" class="modal hide fade">
 
 	<div class="modal-header">
