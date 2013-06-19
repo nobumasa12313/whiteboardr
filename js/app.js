@@ -7,6 +7,7 @@
 
 // class Applicatiom
 WBR = Ember.Application.create({
+
       roomID:"",
       nickname:null,
       admin:false,
@@ -18,7 +19,6 @@ WBR = Ember.Application.create({
             $('#login-modal').modal('show');
             
       },
-
 
       // Join the room
       joinRoom: function() {

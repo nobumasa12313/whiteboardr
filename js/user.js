@@ -4,7 +4,7 @@
 
 // class CommunicationObject 
 WBR.UserController = Ember.ArrayController.create({
-     content : [{name:"ajambrosino",id:"sda3"}],
+     content : [{name:"ajambrosino",id:"sda3", isSelected:true}],
 
 })
 
