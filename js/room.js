@@ -138,7 +138,7 @@ WBR.Room = Ember.Object.create({
 						roomID,
 						occupantCount,
 						observerCount,
-						roomAttributes) 
+						roomAttributes)
 	{
 		// The unnamed arguments following 'roomAttributes' is a list of 
 		// clients in the room. Assign that list to clientList. 
