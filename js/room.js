@@ -27,7 +27,8 @@ WBR.Room = Ember.Object.create({
 	// "thickness" attribute and a "color" attribute, specify the thickness and 
 	// color of the current line being drawn.
 	Attributes : { THICKNESS:"thickness", 
-			   COLOR:"color"},
+			   COLOR:"color",
+				NAME: "name"},
 
 	// A hash of room message names used in this application. MOVE means move the
 	// drawing pen to the specified position. PATH supplies a list of points to be
@@ -109,7 +110,7 @@ WBR.Room = Ember.Object.create({
 	},
 
 croomResult: function(roomID, status) {
-  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.mentor=true;} else {
+  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.mentor=true; WBR.set('admin', true);} else {
     WBR.Room.mentor = false;
   }
 },
@@ -263,6 +264,7 @@ roomResult:function(roomID, attrName, status) {
         WBR.Room.clients[i/5]['name'] = WBR.nickname;
     }
   }
+  WBR.UserController.set('content', WBR.Room.clients);
 	},
 
 
