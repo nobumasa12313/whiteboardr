@@ -20,6 +20,9 @@ WBR.Canvas = Ember.Object.create({
 	isPenDown: false,
 	hasTouch: false,
 
+		draw:true,
+      lastColor:'black',
+      lastThickness:'1',
 
 
 	// Tracks the current location of the user's drawing pen

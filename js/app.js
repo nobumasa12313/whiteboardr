@@ -12,6 +12,7 @@ WBR = Ember.Application.create({
       nickname:"",
       admin:false,
       handRaised:false,
+      
 
       // Initialize the application
       init: function() {
@@ -19,6 +20,25 @@ WBR = Ember.Application.create({
             $('.modal').modal('hide');
             $('#login-modal').modal('show');
             
+      },
+
+      setDraw: function() {
+            if (WBR.Canvas.draw) return;
+            WBR.Canvas.draw = true;
+
+            $('#thickness').val(WBR.Canvas.lastThickness).trigger('onchange');
+            $('#color').val(WBR.Canvas.lastColor).trigger('onchange');
+      },
+
+      setErase: function() {
+            if (!WBR.Canvas.draw) return;
+            WBR.Canvas.draw = false;
+
+            WBR.Canvas.lastColor = $('#color').val();
+            WBR.Canvas.lastThickness = $('#thickness').val();
+
+            $('#thickness').val('20').trigger('onchange');
+            $('#color').val('white').trigger('onchange');
       },
 
       // Join the room
