@@ -243,11 +243,11 @@
 		<div id="user-list">
 
 		{{#if WBR.admin}}
-		<h6>USERS</h6>
+		<h6>USERS ({{WBR.Room.numOccupants}})</h6>
 		{{#each WBR.UserController}}
 
 			{{#if tx}}
-			<div class="user-cell" onClick="WBR.UserController.setTx(this)">
+			<div class="user-cell enabled-user" onClick="WBR.UserController.setTx(this)">
 			{{else}}
 			<div class="user-cell" onClick="WBR.UserController.setTx(this)">
 			{{/if}}
@@ -268,7 +268,7 @@
 			<h6>BOARDS</h6>
 
 			<div class="user-cell" onClick="WBR.UserController.setClientCanvasPublic(this)">
-  				<span class="user-cell-title"> Public Broadcast</span>
+  				<span class="user-cell-title"> Admin Board</span>
   			</div>
 
   			<div class="user-cell enabled-user" onClick="WBR.UserController.setClientCanvasMy(this)">

@@ -259,7 +259,7 @@ roomResult:function(roomID, attrName, status) {
 	// Triggered when this client is informed that number of users in the 
 	// server-side drawing room has changed
 	roomOccupantCountUpdateListener: function(roomID, numOccupants) {
-		WBR.Room.numOccupants = parseInt(numOccupants);
+		WBR.Room.set('numOccupants', parseInt(numOccupants));
 		if (numOccupants == 1) {
 			WBR.setStatus("Now drawing on your own (no one else is here at the moment)");
 		} else if (numOccupants == 2) {
@@ -267,6 +267,7 @@ roomResult:function(roomID, attrName, status) {
 		} else {
 			WBR.setStatus("Now drawing with " + (numOccupants-1) + " other people");
 		}
+
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.GET_ROOM_SNAPSHOT, 1, WBR.roomID);
       if (WBR.Room.mentor) {
         //alert("setting to " + tx)
