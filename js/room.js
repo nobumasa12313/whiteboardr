@@ -169,6 +169,9 @@ clearMessageListener: function(fromClientID, datastr) {
 	}
 },
 setTx: function(txn) {
+	if (txn == WBR.Room.tx) {
+		return;
+	}
 	if (txn != WBR.Room.adminID) {
 		WBR.Room.admincanvas = false;
 	} else {
