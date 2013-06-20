@@ -23,6 +23,7 @@ WBR.Room = Ember.Object.create({
 
 	admincanvas: false,
 
+	currentquestion: '(No Question)',
 
 	// A convenience reference to net.user1.orbiter.UPC, which provides a
 	// list of valid client/server UPC messages. See: http://unionplatform.com/specs/upc/
@@ -220,10 +221,12 @@ sendQuestion: function(qstr) {
                      "", 
                      qstr);
 	        WBR.displayQuestion(qstr);
+
 },
 
 sendQuestionListener: function(qstr) {
 	WBR.displayQuestion(qstr);
+	WBR.Room.currentquestion = qstr;
 },
 
 loadAdminCanvas: function(admincanvas) {
@@ -363,7 +366,7 @@ roomResult:function(roomID, attrName, status) {
                      WBR.roomID, 
                      "false", 
                      "", 
-                     qstr);
+                     WBR.Room.currentquestion);
       }
 
     }
