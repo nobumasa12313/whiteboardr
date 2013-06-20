@@ -248,9 +248,9 @@
 		{{#each WBR.UserController}}
 
 			{{#if tx}}
-			<div class="user-cell enabled-user" onClick="WBR.UserController.setTx(this)">
+			<div class="user-cell segment enabled-user" onClick="WBR.UserController.setTx(this)">
 			{{else}}
-			<div class="user-cell" onClick="WBR.UserController.setTx(this)">
+			<div class="user-cell segment" onClick="WBR.UserController.setTx(this)">
 			{{/if}}
   	
   				<span class="user-cell-id">{{id}}</span>
@@ -268,11 +268,11 @@
 
 			<h6>BOARDS</h6>
 
-			<div class="user-cell segment" onClick="WBR.UserController.setClientCanvasPublic(this)">
+			<div class="user-cell segment half" onClick="WBR.UserController.setClientCanvasPublic(this)">
   				<span class="user-cell-title"> Public Board</span>
   			</div>
 
-  			<div class="user-cell enabled-user segment" onClick="WBR.UserController.setClientCanvasMy(this)">
+  			<div class="user-cell enabled-user segment half" onClick="WBR.UserController.setClientCanvasMy(this)">
   				<span class="user-cell-title"> My Board</span>
   			</div>
   			

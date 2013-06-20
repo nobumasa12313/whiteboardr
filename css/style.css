@@ -314,6 +314,10 @@ font-weight:900;
   font-weight:700;
 }
 
+#status {
+  display:block;
+}
+
 
 @media only screen and  (max-width : 1250px) {
   .container {width:900px !important;}
@@ -334,8 +338,11 @@ font-weight:900;
   img { max-width: 100%  }
   .btn-none {display:none !important;}
   #video-chat {width:50px}
-  .status {display:none !important;}
-  
+  #status {display:none;}
+  .container {
+    padding-top:5px !important;
+    padding-bottom:5px !important;
+  }
 }
 
 @media only screen and (max-width : 585px) {
@@ -366,7 +373,7 @@ label {
   h6 {display:none;}
   .user-cell-title { margin-left:0px; }
   #user-list { position: fixed;
-top: 61px;
+top: 51px;
 left: 0;
 right: 0;
 width:100%;}
