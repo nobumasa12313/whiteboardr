@@ -141,6 +141,8 @@ serialMessageListener: function(fromClientID, datastr) {
 
 setTx: function(txn) {
   WBR.Room.tx=txn;
+  WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
+    WBR.Room.loadCanvas(WBR.Canvas.userCommandCache);
   for (var j = 0; j < WBR.Room.clients.length; j++) {
   		if(WBR.Room.clients[j].id == txn) {
   			WBR.Room.clients[j].tx = true;
@@ -336,9 +338,12 @@ roomResult:function(roomID, attrName, status) {
     }
     if (clientID == WBR.Room.adminID) {
     	WBR.Room.clients[i/5]['admin'] = true;
+    	temp = JSON.parse(JSON.stringify(WBR.Room.clients[0]));
+    	WBR.Room.clients[0] = WBR.Room.clients[i/5];
+    	WBR.Room.clients[i/5] = temp;
     }
   }
-  WBR.UserController.set('content', WBR.Room.clients.reverse());
+  WBR.UserController.set('content', WBR.Room.clients);
 	},
 
 
