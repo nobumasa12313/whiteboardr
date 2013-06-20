@@ -10,6 +10,7 @@ WBR.Canvas = Ember.Object.create({
 	currentContext: null,
 	userCommands: {},
 	userCommandCache: {},
+	adminCommandCache: {},
 
 	lineThickness: 1,
 	lineColor: "black",

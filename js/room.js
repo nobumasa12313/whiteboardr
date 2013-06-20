@@ -19,6 +19,8 @@ WBR.Room = Ember.Object.create({
 
 	mentor: 0,
 
+	adminID: 0,
+
 	// A convenience reference to net.user1.orbiter.UPC, which provides a
 	// list of valid client/server UPC messages. See: http://unionplatform.com/specs/upc/
 	UPC : net.user1.orbiter.UPC,
@@ -110,7 +112,7 @@ WBR.Room = Ember.Object.create({
 	},
 
 croomResult: function(roomID, status) {
-  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.mentor=true; WBR.set('admin', true);} else {
+  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.mentor=true; WBR.Room.adminID = WBR.Room.orbiter.clientID; WBR.set('admin', true);} else {
     WBR.Room.mentor = false;
   }
 },
@@ -118,6 +120,7 @@ croomResult: function(roomID, status) {
 
 settxMessageListener: function(fromClientID, datastr) {
   //alert(datastr);
+  WBR.Room.adminID = fromClientID;
     WBR.Room.tx = parseInt(datastr);
     if (WBR.Room.tx == WBR.Room.orbiter.clientID) {
       //We're the tx!
@@ -129,7 +132,7 @@ serialMessageListener: function(fromClientID, datastr) {
 
   if (WBR.Room.tx == fromClientID) {
   	WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
-    WBR.Room.loadCanvas(datastr);
+    WBR.Room.loadCanvas(JSON.parse(datastr));
   }
 },
 
@@ -150,9 +153,16 @@ setTx: function(txn) {
                      txn);
 },
 
-loadCanvas: function(canvasdata){
+loadAdminCanvas: function(admincanvas) {
+	if (admincanvas) {
+		WBR.Room.loadCanvas(WBR.Canvas.adminCommandCache);
+	} else {
+		WBR.Room.loadCanvas(WBR.Canvas.userCommandCache);
+	}
+},
+loadCanvas: function(canvasorig){
+	var canvasdata = JSON.parse(JSON.stringify(canvasorig));
   //alert('recv:'+canvasdata.toString());
-  canvasdata=JSON.parse(canvasdata);
 
 //  for (var i = 0; i < canvasdata.length; i+=1) {
 //WBR.Room.pathMessageListener(WBR.Room.tx, canvasdata[i]);
@@ -299,7 +309,7 @@ roomResult:function(roomID, attrName, status) {
     // pipe-delimited string. Split that string to get the attributes.
     clientAttrString = clientList[i+4];
     clientAttrs = clientAttrString == "" ? [] : clientAttrString.split("|");
-    WBR.Room.clients[i/5] = {id: clientID, name: "unknown", tx:false};
+    WBR.Room.clients[i/5] = {id: clientID, name: "unknown", tx:false, admin:false};
     // Pass each client attribute to processClientAttributeUpdate(), which will
     // check for the "thickness" and "color" attributes.
     for (var j = 0; j < clientAttrs.length; j++) {
@@ -315,6 +325,9 @@ roomResult:function(roomID, attrName, status) {
     }
     if (clientID == WBR.Room.tx) {
     	WBR.Room.clients[i/5]['tx'] = true;
+    }
+    if (clientID == WBR.Room.adminID) {
+    	WBR.Room.clients[i/5]['admin'] = true;
     }
   }
   WBR.UserController.set('content', WBR.Room.clients);
@@ -413,7 +426,7 @@ clientAttributeUpdateListener: function(attrScope,
 		// Use SEND_MESSAGE_TO_ROOMS to deliver the message to all users in the room
 		// Parameters are: messageName, WBR.roomID, includeSelf, filters, ...args. For
 		// details, see http://unionplatform.com/specs/upc/.
-		 if (WBR.Room.tx == WBR.Room.orbiter.clientID) {
+		 if (WBR.Room.tx == WBR.Room.orbiter.clientID || WBR.Room.orbiter.clientID == WBR.Room.adminID) {
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
 					WBR.Room.Messages.PATH, 
 					WBR.roomID, 
@@ -446,6 +459,7 @@ clientAttributeUpdateListener: function(attrScope,
 	// Sends all users in the drawing room an instruction to reposition the local
 	// user's pen.
 	broadcastMove: function(ux, uy) {
+		//if (WBR.Room.tx == WBR.Room.orbiter.clientID || WBR.Room.orbiter.clientID == WBR.Room.orbiter.adminID) {
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
 					WBR.Room.Messages.MOVE, 
 					WBR.roomID, 
@@ -453,7 +467,7 @@ clientAttributeUpdateListener: function(attrScope,
 					"", 
 					ux + "," + uy);
 		var position = {x:ux, y:uy};
-
+	//}
 		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.MOVE_TO, position);
 	},
 
@@ -479,11 +493,18 @@ clientAttributeUpdateListener: function(attrScope,
 		if (WBR.Canvas.userCommands[clientID] == undefined) {
 		WBR.Canvas.userCommands[clientID] = [];
 		}
+		if (WBR.Canvas.adminCommandCache[WBR.Room.adminID] == undefined) {
+		WBR.Canvas.adminCommandCache[WBR.Room.adminID] = [];
+		}
 		// Push the command onto the stack.
 		var command = {};
 		command["commandName"] = commandName;
 		command["arg"] = arg;
-		WBR.Canvas.userCommands[clientID].push(command);
+		if (clientID == WBR.Room.adminID) {
+			WBR.Canvas.adminCommandCache[clientID].push(command);
+		} else {
+			WBR.Canvas.userCommands[clientID].push(command);
+		}
 	},
 
 
