@@ -130,6 +130,9 @@ WBR.Canvas = Ember.Object.create({
 		WBR.Canvas.lastBufferTime = new Date().getTime();
 	}
 	},
+		saveCanvas: function() {
+		Canvas2Image.saveAsPNG(WBR.Canvas.currentCanvas);
+	},
 
 	drawToCoordinate: function(x, y) 
 	{
