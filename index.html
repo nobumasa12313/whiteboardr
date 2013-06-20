@@ -8,6 +8,7 @@
 	<meta name="author" content="">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
 
 	<!-- Le styles -->
 	<link href="./css/lib/bootstrap.css" rel="stylesheet">
@@ -129,7 +130,7 @@
 
 				<ul class="nav pull-right">
 					{{#if WBR.admin}}
-							<button class="btn btn-danger" onclick="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Close Room</span></button>
+							<button class="btn btn-danger" onclick="WBR.leaveRoom()" ontouchstart="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Close Room</span></button>
 						{{else}}
 							<button class="btn btn-danger" onclick="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Leave Room</span></button>
 						{{/if}}

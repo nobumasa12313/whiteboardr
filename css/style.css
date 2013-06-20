@@ -391,6 +391,10 @@ width:100%;}
 input {
   padding:10px !important
 }
+
+.modal button {
+  padding:10px 25px !important
+}
 }
 
 
