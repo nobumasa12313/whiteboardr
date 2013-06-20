@@ -342,13 +342,7 @@ roomResult:function(roomID, attrName, status) {
 		WBR.Room.processDrawingCommandsIntervalID = setInterval(WBR.Room.processDrawingCommands, 20);
 	},
 
-	resizeCanvas: function() {
-		if (WBR.Room.admincanvas == true) {
-			loadCanvas(WBR.Canvas.adminCommandCache);
-		} else {
-			loadCanvas(WBR.Canvas.userCommandCache);
-		}
-	},
+
 
 	// Triggered when this client is informed that number of users in the 
 	// server-side drawing room has changed
