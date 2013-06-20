@@ -277,7 +277,7 @@ WBR.Canvas = Ember.Object.create({
 					newThickness,
 					WBR.roomID,
 					"4");
-		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, WBR.Canvas.getValidThickness(newThickness));
+		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, newThickness);
 		// After the user selects a value in the drop-down menu, the iPhone
 		// automatically scrolls the page, so scroll back to the top-left. 
 		WBR.iPhoneToTop();

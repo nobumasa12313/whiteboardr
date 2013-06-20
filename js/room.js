@@ -116,9 +116,9 @@ WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.CLEAR, this.clearMessag
                      WBR.roomID,
                      "4");
 	    			      var newThickness = $('select#thickness').val();
-	      //WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, WBR.Canvas.getValidThickness(newThickness));
+	      WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, WBR.Canvas.getValidThickness(newThickness));
 		  var newColor = $('select#color').val();
-		  //WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
+		  WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
 		  		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
 					WBR.Room.orbiter.getClientID(),
 					"",
@@ -412,7 +412,8 @@ clientAttributeUpdateListener: function(attrScope,
 			// The "thickness" attribute changed, so push a "set thickness" command
 			// onto the drawing command stack for the specified client. But first, 
 			// bring the thickness into legal range if necessary (prevents thickness hacking).
-			WBR.Room.addDrawingCommand(clientID, WBR.Room.DrawingCommands.SET_THICKNESS, WBR.Canvas.getValidThickness(attrVal));
+			WBR.Room.addDrawingCommand(clientID, WBR.Room.DrawingCommands.SET_THICKNESS, attrVal);
+
 			} else if (attrName == WBR.Room.Attributes.COLOR) {
 			// The "color" attribute changed, so push a "set color" command
 			// onto the drawing command stack for the specified client
@@ -561,10 +562,16 @@ clientAttributeUpdateListener: function(attrScope,
 				WBR.Canvas.userCommands[clientID].push(command);
 			}
 		} else if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.orbiter.clientID) {
+				if (WBR.Room.admincanvas == false){
 				WBR.Canvas.userCommands[clientID].push(command);
+			}
 				WBR.Canvas.userCommandCache[clientID].push(command);
 		} else if (WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.Room.tx == clientID) {
 			WBR.Canvas.userCommands[clientID].push(command);
+		} else  if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) {
+			if (WBR.Room.admincanvas == false) {
+				WBR.Canvas.adminCommandCache[clientID].push(command);
+			}
 		}
 	},
 
