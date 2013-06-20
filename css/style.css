@@ -39,6 +39,12 @@ form {
   width:1200px !important;
 }
 
+.icon-user {
+  margin-top: 3px;
+margin-left: 6px;
+
+}
+
 h1 {
 	font-weight:900;
 }
@@ -314,8 +320,8 @@ font-weight:900;
 }
 
 .user-cell-name {
-  font-size:14px;
-  font-weight:700;
+  font-size:13px;
+  font-weight:600;
 }
 
 #status {
