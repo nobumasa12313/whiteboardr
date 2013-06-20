@@ -25,11 +25,13 @@
   	
 
 
+
 	<!-- TOP BAR -->
 	<script type="text/x-handlebars">
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
+
 					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -53,9 +55,14 @@
 						{{#if WBR.admin}}
 							
 							<button class="btn btn-none">Administrator</button>
-							<button onclick="WBR.launchQuestionWindow()" class="btn btn-primary"><i class="icon-envelope icon-white"></i> Post Question</button>
+							<button onclick="WBR.launchQuestionWindow()" class="btn btn-primary"><i class="icon-envelope icon-white"></i> <span class="buttontext">Post Question<span></button>
 						{{else}}
-							<button class="btn btn-primary"><i class="icon-hand-up icon-white"></i> Raise Hand</button>
+
+							<button class="btn btn-primary">
+									<i class="icon-hand-up icon-white"></i>  <!-- icon-->
+									<span class="buttontext">Raise Hand</span> <!-- text -->
+							</button>
+
 						{{/if}}
 					</ul>
 				</div><!--/.nav-collapse -->
@@ -82,13 +89,13 @@
 
 					<li>
 						<div class="btn-group" data-toggle="buttons-radio">
-							<button class="btn active"><i class="icon-pencil"></i> Draw</button>
-							<button class="btn"><i class="icon-remove-sign"></i> Erase</button>
+							<button class="btn active"><i class="icon-pencil"></i> <span class="buttontext">Draw</span></button>
+							<button class="btn"><i class="icon-remove-sign"></i> <span class="buttontext">Erase</span></button>
 						</div>
 					</li>
 
 					<li>
-						<button class="btn" onclick="WBR.Canvas.clear()"><i class="icon-trash"></i> Clear</button>
+						<button class="btn" onclick="WBR.Canvas.clear()"><i class="icon-trash"></i> <span class="buttontext">Clear</span></button>
 					</li>
 
 					<li style="margin-right:15px;">
@@ -121,9 +128,9 @@
 
 				<ul class="nav pull-right">
 					{{#if WBR.admin}}
-							<button class="btn btn-danger" onclick="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> Close Room</button>
+							<button class="btn btn-danger" onclick="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Close Room</span></button>
 						{{else}}
-							<button class="btn btn-danger" onclick="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> Leave Room</button>
+							<button class="btn btn-danger" onclick="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Leave Room</span></button>
 						{{/if}}
 
 					
@@ -227,10 +234,11 @@
 
 
 	<!-- Video Chat Region -->
+	<div id="video-chat-wrapper">
 	<div id="video-chat">
 		<img src="img/brin.jpg" id="video-chat-content"/>
 	</div>
-  
+	</div>  
 
 	<script type="text/x-handlebars">
 		<div id="user-list">
