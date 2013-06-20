@@ -1,6 +1,6 @@
 chrome.app.runtime.onLaunched.addListener(function() {
 	//what to launch and how
-	chrome.app.window.create('index.html', {
+	chrome.app.window.create('webview.html', {
 		bounds: {
 			width:800,
 			height:600,
@@ -10,6 +10,8 @@ chrome.app.runtime.onLaunched.addListener(function() {
 		minWidth: 800,
 		minHeight:600
 	});
+
+
 });
 
 chrome.runtime.onInstalled.addListener(function() {
@@ -21,3 +23,4 @@ chrome.runtime.onSuspend.addListener(function() {
 	//close open connections.
 	//do cleanup tasks
 })
+
