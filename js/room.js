@@ -337,7 +337,7 @@ roomResult:function(roomID, attrName, status) {
     	WBR.Room.clients[i/5]['admin'] = true;
     }
   }
-  WBR.UserController.set('content', WBR.Room.clients);
+  WBR.UserController.set('content', WBR.Room.clients.reverse());
 	},
 
 
