@@ -70,6 +70,8 @@ WBR = Ember.Application.create({
 
             document.title = "W | " + this.roomID;
 
+            $('body').removeClass('not-logged-in');
+
       },
 
 

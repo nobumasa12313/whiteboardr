@@ -11,5 +11,9 @@
 		}
 	},
 
-	"permissions": ["webview"]
+	"permissions": ["webview"],
+
+	"sandbox": {
+    		"pages": [ "index.html" ]
+  		 }
 }

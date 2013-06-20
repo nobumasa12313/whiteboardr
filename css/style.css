@@ -36,7 +36,7 @@ form {
 
 .container {
 	background:none;
-  width:1200px !important;
+  width:100% !important;
 }
 
 .icon-user {
@@ -47,23 +47,51 @@ margin-left: 6px;
 
 h1 {
 	font-weight:900;
+  font-family:"Roboto" !important;
+font-smoothing:"antialiased" !important;
+-webkit-font-smoothing:"antialiased" !important;
+-moz-font-smoothing:"antialiased" !important;
+-o-font-smoothing:"antialiased" !important;
 }
 
 .hidden {
   display:none;
 }
 
+.windowbutton {
+  float:left;
+  padding:13px 12px 6px ;
+  cursor:pointer;
+  opacity:0.7;
+}
+
+.windowbutton:hover {
+  opacity:1;
+}
+
 h3 {
     padding:10px;
     font-size:20px;
-    font-weight:900 !important;
+    font-weight:700 !important;
     font-family: "Raleway" !important;
+font-smoothing:"antialiased" !important;
+-webkit-font-smoothing:"antialiased" !important;
+-moz-font-smoothing:"antialiased" !important;
+-o-font-smoothing:"antialiased" !important;
 }
 
 .brand {
   font-family: "Raleway" !important;
-  color:white;
-  font-weight:800 !important;
+  color:white !important;
+  opacity:1 !important;
+  font-weight:600 !important;
+font-smoothing:"antialiased" !important;
+-webkit-font-smoothing:"antialiased" !important;
+-moz-font-smoothing:"antialiased" !important;
+-o-font-smoothing:"antialiased" !important;
+text-shadow:1px solid black;
+padding: 10px 20px 10px 7px !important;
+margin:0 !important;
 }
 
 .alert {
@@ -89,7 +117,8 @@ h3 {
   cursor: default;
   font-weight: 100 !important;
   top: 90px;
-  font-size:20px;
+  left:25px;
+  font-size:15px;
 }
 
 #video-chat {
@@ -117,15 +146,35 @@ h3 {
 	border:1px solid rgba(0,0,0,.2);
 }
 
+.modal.fade.in {
+top: 15%;
+}
+
+.not-logged-in .navbar-fixed-top button {
+  display:none;
+}
+
+
 
 .navbar-fixed-top {
   border-left:5px solid rgb(77, 144, 254);
 -webkit-app-region: drag;
+z-index:99999999;
 }
 
 .navbar-fixed-top .container {
   padding-top:10px;
   padding-bottom:10px;
+}
+
+.navbar-inner {
+  padding-left:10px !important;
+  padding-right:10px !important;
+}
+
+.navbar-fixed-top .navbar-inner {
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.1);
+  border-bottom:1px solid black;
 }
 
 .navbar-fixed-bottom .navbar-inner {
@@ -140,8 +189,8 @@ h3 {
 }
 
 .bottom-bar li {
-  margin-right:25px;
-  font-size:11px;
+  margin-right:10px;
+  font-size:12px;
 }
 
 
@@ -330,7 +379,7 @@ font-weight:900;
 
 
 @media only screen and  (max-width : 1250px) {
-  .container {width:900px !important;}
+
   #video-chat {width:10%;}
 }
 
@@ -339,7 +388,12 @@ font-weight:900;
 @media only screen and  (max-width : 900px) {
   img { max-width: 100%; }
   .question {display:none !important;}
-  .container {width:95% !important;}
+  .container {width:100% !important;}
+
+}
+
+@media only screen and  (max-width : 750px) {
+
   .buttontext {display:none !important;}
 }
 

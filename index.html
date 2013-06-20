@@ -24,7 +24,7 @@
    
   </head>
 
-  <body>
+  <body class="not-logged-in">
   	
 
 
@@ -40,12 +40,17 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
+
+					<a onclick="window.close()" class="windowbutton" style="margin-left:0;">
+						<i class="icon-white icon-remove"></i>
+					</a>
+
 					<a class="brand" href="#">whiteboardr</a>
 					<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li class="question">
 							<a id="question-text" style="color:white;font-weight:600;">
-								(No Question)
+								
 							</a>
 						</li>
 					</ul>
@@ -129,12 +134,15 @@
 				</ul>
 
 				<ul class="nav pull-right">
+					<li><button class="btn" onclick="WBR.Canvas.saveCanvas()"><i class="icon-arrow-down"></i> <span class="buttontext">Save Image</span></button></li>
+
+					<li style="">
 					{{#if WBR.admin}}
 							<button class="btn btn-danger" onclick="WBR.leaveRoom()" ontouchstart="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Close Room</span></button>
 						{{else}}
 							<button class="btn btn-danger" onclick="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Leave Room</span></button>
 						{{/if}}
-
+					</li>
 					
 				</ul>
 
