@@ -154,9 +154,16 @@ settxMessageListener: function(fromClientID, datastr) {
 
 serialMessageListener: function(fromClientID, datastr) {
 
-  if (WBR.Room.tx == fromClientID) {
+  if (WBR.Room.tx == fromClientID && WBR.Room.adminID == WBR.Room.orbiter.clientID) {
   	WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
     WBR.Room.loadCanvas(JSON.parse(datastr));
+  }
+  if (fromClientID == WBR.Room.adminID && WBR.Room.admincanvas == true) {
+  	WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
+    WBR.Room.loadCanvas(JSON.parse(datastr));
+    if (WBR.Canvas.adminCommandCache.length == 0) {
+    	WBR.Canvas.adminCommandCache = JSON.parse(datastr);
+    }
   }
 },
 clearMessageListener: function(fromClientID, datastr) {
@@ -179,7 +186,9 @@ setTx: function(txn) {
 	}
   WBR.Room.tx=txn;
   WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
+  if (txn == WBR.User.orbiter.clientID) {
     WBR.Room.loadCanvas(WBR.Canvas.userCommandCache);
+  }
   for (var j = 0; j < WBR.Room.clients.length; j++) {
   		if(WBR.Room.clients[j].id == txn) {
   			WBR.Room.clients[j].tx = true;
@@ -316,6 +325,9 @@ roomResult:function(roomID, attrName, status) {
                      "false", 
                      "", 
                      WBR.Room.tx);
+      if (WBR.Room.tx == WBR.Room.adminID) {
+      	WBR.Room.transmitSerial();
+      }
 
     }
 	},
