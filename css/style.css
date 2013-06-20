@@ -334,7 +334,52 @@ font-weight:900;
   img { max-width: 100%  }
   .btn-none {display:none !important;}
   #video-chat {width:50px}
+  .status {display:none !important;}
   
+}
+
+@media only screen and (max-width : 585px) {
+.modal {
+  position:absolute;
+  width:96%;
+
+  top:2% !important;
+  margin:0 !important;
+
+  left:2%;
+}
+
+.modal-body {
+  max-height:none;
+}
+
+label {
+  display:none;
+}
+
+.controls {
+  margin:auto !important;
+}
+
+  .select {display:None;}
+  .segment { float:left; padding:5px 0px; border-radius:0; width:50%; text-align:center;}
+  h6 {display:none;}
+  .user-cell-title { margin-left:0px; }
+  #user-list { position: fixed;
+top: 61px;
+left: 0;
+right: 0;
+width:100%;}
+
+input {
+  padding:10px !important
+}
+}
+
+
+
+@media only screen and (max-width : 433px) {
+  select {display:None;}
 }
 
 

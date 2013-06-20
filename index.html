@@ -99,7 +99,7 @@
 					</li>
 
 					<li style="margin-right:15px;">
-						SIZE
+						<span class="select">SIZE</span>
 						<select id="thickness" class="input-mini">
 							<option value="1">1</option>
 							<option value="2">2</option>
@@ -112,7 +112,7 @@
 					</li>
 
 					<li>
-						COLOR
+						<span class="select">COLOR</span>
 						<select id="color" class="input-small">
 							<option value="black">Black</option>
 							<option value="red">Red</option>
@@ -268,11 +268,11 @@
 
 			<h6>BOARDS</h6>
 
-			<div class="user-cell" onClick="WBR.UserController.setClientCanvasPublic(this)">
+			<div class="user-cell segment" onClick="WBR.UserController.setClientCanvasPublic(this)">
   				<span class="user-cell-title"> Public Board</span>
   			</div>
 
-  			<div class="user-cell enabled-user" onClick="WBR.UserController.setClientCanvasMy(this)">
+  			<div class="user-cell enabled-user segment" onClick="WBR.UserController.setClientCanvasMy(this)">
   				<span class="user-cell-title"> My Board</span>
   			</div>
   			
