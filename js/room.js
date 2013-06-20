@@ -136,7 +136,7 @@ WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.CLEAR, this.clearMessag
 	},
 
 croomResult: function(roomID, status) {
-  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.admincanvas  = true; WBR.Room.adminView = WBR.Room.orbiter.clientID; WBR.Room.mentor=true; WBR.Room.adminID = WBR.Room.orbiter.clientID; WBR.set('admin', true);} else {
+  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.admincanvas  = true; WBR.Room.adminView = WBR.Room.orbiter.clientID; WBR.Room.mentor=true; WBR.Room.adminID = WBR.Room.orbiter.clientID; WBR.set('admin', true); document.title = document.title + " (admin)";} else {
     WBR.Room.mentor = false;
   }
 },

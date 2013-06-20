@@ -18,8 +18,7 @@ WBR = Ember.Application.create({
       init: function() {
             $('.question').hide();
             $('.modal').modal('hide');
-            $('#login-modal').modal('show');
-            
+            $('#login-modal').modal('show');    
       },
 
       setDraw: function() {
@@ -49,7 +48,6 @@ WBR = Ember.Application.create({
                   this.set('roomID', document.getElementById('input-room-id').value);
 
             this.set('nickname', document.getElementById('input-nickname').value);
-            this.set('admin', $('#input-admin').attr('checked'));
 
             this.Canvas.initialize();
             this.Room.initialize();
@@ -58,6 +56,12 @@ WBR = Ember.Application.create({
             this.setStatus("connecting to whiteboardr...");
             $('#login-modal').modal("hide");
             $('.question').hide().fadeIn(1000);
+
+            $(window).resize(function() {
+                  console.log('window resized');
+            });
+
+            document.title = "W | " + this.roomID;
 
       },
 
