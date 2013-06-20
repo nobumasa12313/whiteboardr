@@ -228,6 +228,7 @@ sendQuestionListener: function(fromClientID, qstr) {
 	WBR.displayQuestion(qstr);
 	WBR.Room.currentquestion = qstr;
 },
+//
 
 loadAdminCanvas: function(admincanvas) {
 	if (admincanvas) {
