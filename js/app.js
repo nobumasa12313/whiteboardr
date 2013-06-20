@@ -90,14 +90,14 @@ WBR = Ember.Application.create({
             if (WBR.handRaised) {
                   WBR.set('handRaised',false);
                   $('#raise-hand-text').text('Raise Hand');
-                  WBR.raiseHand(false);
+                  WBR.Room.raiseHand(false);
 
             }
 
             else {
                   WBR.set('handRaised',true);
                   $('#raise-hand-text').text('Hand is Raised');
-                  WBR.raiseHand(true);
+                  WBR.Room.raiseHand(true);
             }
 
 
