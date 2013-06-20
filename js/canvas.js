@@ -247,9 +247,9 @@ WBR.Canvas = Ember.Object.create({
 	thicknessSelectListener: function(e) 
 	{
 		// Determine which option was selected
-		var newThickness = this.options[this.selectedIndex].value;
+		var newThickness = $('select#thickness').val();
 		// Locally, set the line thickness to the selected value
-		WBR.Canvas.lineThickness = getValidThickness(newThickness);
+		WBR.Canvas.localLineThickness = newThickness;
 		// Share the selected thickness with other users by setting the client
 		// attribute named "thickness". Attributes are automatically shared with other 
 		// clients in the room, triggering clientAttributeUpdateListener(). 
@@ -266,8 +266,9 @@ WBR.Canvas = Ember.Object.create({
 					"",
 					WBR.Room.Attributes.THICKNESS,
 					newThickness,
-					WBR.Room.roomID,
+					WBR.roomID,
 					"4");
+		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.THICKNESS, WBR.Canvas.getValidThickness(newThickness));
 		// After the user selects a value in the drop-down menu, the iPhone
 		// automatically scrolls the page, so scroll back to the top-left. 
 		WBR.iPhoneToTop();
@@ -279,7 +280,7 @@ WBR.Canvas = Ember.Object.create({
 	colorSelectListener: function(e) 
 	{
 		// Determine which option was selected
-		var newColor = WBR.Canvas.options[this.selectedIndex].value;
+		var newColor = $('select#color').val();
 		// Locally, set the line color to the selected value
 		WBR.Canvas.localLineColor = newColor;
 		// Share selected color with other users
@@ -288,9 +289,9 @@ WBR.Canvas = Ember.Object.create({
 					"",
 					WBR.Room.Attributes.COLOR,
 					newColor,
-					WBR.Room.roomID,
+					WBR.roomID,
 					"4");
-
+		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.COLOR, newColor);
 		// Scroll the iPhone back to the top-left. 
 		WBR.iPhoneToTop();
 	},
