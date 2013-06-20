@@ -82,7 +82,16 @@ WBR.Canvas = Ember.Object.create({
 	// Clear everything on the canvas
 	clear: function() 
 	{
+		if ((WBR.Room.admincanvas == false && WBR.Room.orbiter.clientID != WBR.Room.adminID) || (WBR.Room.admincanvas == true && WBR.Room.orbiter.clientID == WBR.Room.adminID)) {
 		this.currentContext.clearRect(0, 0, this.currentCanvas.width, this.currentCanvas.height);
+		        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.CLEAR, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     WBR.Room.orbiter.clientID);
+		WBR.Canvas.userCommandCache = {};
+	}
 	},
 
 

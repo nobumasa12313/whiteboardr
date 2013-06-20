@@ -41,7 +41,8 @@ WBR.Room = Ember.Object.create({
 	Messages : { MOVE:"MOVE", 
 			 	PATH:"PATH",
 				SETTX: "SETTX",
-                SERIAL: "SERIAL"},
+                SERIAL: "SERIAL",
+            	CLEAR: "CLEAR"},
 
 	DrawingCommands : {LINE_TO:      "lineTo",
                        MOVE_TO:       "moveTo",
@@ -100,6 +101,7 @@ WBR.Room = Ember.Object.create({
 		WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.PATH, this.pathMessageListener, this, [WBR.roomID]);
   WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SETTX, this.settxMessageListener, this, [WBR.roomID]);
  WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SERIAL, this.serialMessageListener, this, [WBR.roomID]);
+WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.CLEAR, this.clearMessageListener, this, [WBR.roomID]);
 
 		// Create a room for the drawing app, then join it
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.CREATE_ROOM, WBR.roomID);
@@ -157,8 +159,21 @@ serialMessageListener: function(fromClientID, datastr) {
     WBR.Room.loadCanvas(JSON.parse(datastr));
   }
 },
-
+clearMessageListener: function(fromClientID, datastr) {
+	var cid = parseInt(datastr);
+	if (WBR.Room.tx == cid && WBR.Room.admincanvas == false) {
+		WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
+	} else if (WBR.Room.tx == WBR.Room.adminID && WBR.Room.admincanvas == true) {
+		WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
+		WBR.Canvas.adminCommandCache = [];
+	}
+},
 setTx: function(txn) {
+	if (txn != WBR.Room.adminID) {
+		WBR.Room.admincanvas = false;
+	} else {
+		WBR.Room.admincanvas = true;
+	}
   WBR.Room.tx=txn;
   WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
     WBR.Room.loadCanvas(WBR.Canvas.userCommandCache);
