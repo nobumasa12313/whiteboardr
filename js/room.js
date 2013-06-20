@@ -519,6 +519,7 @@ clientAttributeUpdateListener: function(attrScope,
 	},
 
 	addCacheCommand: function(commandName, arg) {
+
 		if (WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID] == undefined) {
 			WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID] = [];
 		}
@@ -526,7 +527,11 @@ clientAttributeUpdateListener: function(attrScope,
 		var command = {};
 		command["commandName"] = commandName;
 		command["arg"] = arg;
+		if (WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.Room.admincanvas == false) {
+
+		} else {
 		WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID].push(command);
+	}
 	},
 
 	//==============================================================================
