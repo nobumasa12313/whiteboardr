@@ -102,6 +102,7 @@ WBR.Room = Ember.Object.create({
   WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SETTX, this.settxMessageListener, this, [WBR.roomID]);
  WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SERIAL, this.serialMessageListener, this, [WBR.roomID]);
 WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.CLEAR, this.clearMessageListener, this, [WBR.roomID]);
+WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.CLEAR, this.sendQuestionListener, this, [WBR.roomID]);
 
 		// Create a room for the drawing app, then join it
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.CREATE_ROOM, WBR.roomID);
@@ -207,6 +208,20 @@ setTx: function(txn) {
                      "", 
                      txn);
       
+},
+
+sendQuestion: function(qstr) {
+	        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.QUESTION, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     qstr);
+	        WBR.displayQuestion(qstr);
+},
+
+sendQuestionListener: function(qstr) {
+	WBR.displayQuestion(qstr);
 },
 
 loadAdminCanvas: function(admincanvas) {
@@ -331,6 +346,12 @@ roomResult:function(roomID, attrName, status) {
                      WBR.Room.tx);
       if (WBR.Room.tx == WBR.Room.adminID) {
       	WBR.Room.transmitSerial();
+      		        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.QUESTION, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     qstr);
       }
 
     }
