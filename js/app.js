@@ -11,6 +11,7 @@ WBR = Ember.Application.create({
       roomID:"",
       nickname:"",
       admin:false,
+      handRaised:false,
 
       // Initialize the application
       init: function() {
@@ -37,6 +38,7 @@ WBR = Ember.Application.create({
             this.setStatus("connecting to whiteboardr...");
             $('#login-modal').modal("hide");
             $('.question').hide().fadeIn(1000);
+
       },
 
 
@@ -49,6 +51,22 @@ WBR = Ember.Application.create({
       leaveRoom: function() {
             location.reload()
       },
+
+
+      raiseHand: function() {
+            if (WBR.handRaised) {
+                  WBR.set('handRaised',false);
+                  $('#raise-hand-text').text('Raise Hand');
+
+            }
+
+            else {
+                  WBR.set('handRaised',true);
+                  $('#raise-hand-text').text('Hand is Raised');
+            }
+
+      },
+
 
 
       // Do something to make iPhone look better

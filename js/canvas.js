@@ -6,11 +6,6 @@ WBR.Canvas = Ember.Object.create({
 	privateCanvas: null,
 	privateContext: null,
 
-	// Public Canvas
-	publicCanvasID: "public-canvas",
-	publicCanvas: null,
-	publicContext: null,
-
 	currentCanvas: null,
 	currentContext: null,
 	userCommands: {},
@@ -66,13 +61,6 @@ WBR.Canvas = Ember.Object.create({
 	      this.privateContext = this.privateCanvas.getContext('2d');
 	      this.privateContext.lineCap = "round";
 
-	      // Initialize Public Canvas
-	      this.publicCanvas = document.getElementById(this.publicCanvasID);
-	      this.publicCanvas.width  = window.innerWidth;
-	      this.publicCanvas.height = window.innerHeight;
-	      this.publicContext = this.publicCanvas.getContext('2d');
-	      this.publicContext.lineCap = "round";
-
 	      // Show the private, hide the public
 	     	this.currentContext = this.privateContext;
 	     	this.currentCanvas  = this.privateCanvas;
@@ -122,7 +110,6 @@ WBR.Canvas = Ember.Object.create({
 	registerEventListeners: function()
 	{
 		this.privateCanvas.onmousedown 	= this.pointerDownListener;
-		this.publicCanvas.onmousedown 	= this.pointerDownListener;
 		document.onmousemove 	= this.pointerMoveListener;
 		document.onmouseup 	= this.pointerUpListener;
 		document.ontouchstart 	= this.touchDownListener;

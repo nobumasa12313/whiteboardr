@@ -58,9 +58,9 @@
 							<button onclick="WBR.launchQuestionWindow()" class="btn btn-primary"><i class="icon-envelope icon-white"></i> <span class="buttontext">Post Question<span></button>
 						{{else}}
 
-							<button class="btn btn-primary">
+							<button id="raise-hand" class="btn btn-primary"  type="button" onClick="WBR.raiseHand()" data-toggle="button">
 									<i class="icon-hand-up icon-white"></i>  <!-- icon-->
-									<span class="buttontext">Raise Hand</span> <!-- text -->
+									<span id="raise-hand-text" class="buttontext">Raise Hand</span> <!-- text -->
 							</button>
 
 						{{/if}}
@@ -228,7 +228,6 @@
 
 
 	<!-- The canvas where drawings will be displayed -->
-	<canvas class="canvas hidden" id="public-canvas"></canvas>
 	<canvas class="canvas" id="private-canvas"></canvas>
 
 
@@ -242,7 +241,9 @@
 
 	<script type="text/x-handlebars">
 		<div id="user-list">
+
 		{{#if WBR.admin}}
+		<h6>Connected Users</h6>
 		{{#each WBR.UserController}}
 
 			{{#if tx}}
@@ -253,6 +254,10 @@
   	
   				<span class="user-cell-id">{{id}}</span>
   				<span class="user-cell-name">{{name}}</span>
+
+  				{{#if admin}}
+  					<i class="icon-user"></i>
+  				{{/if}}
 
   			</div>
   			
@@ -265,6 +270,9 @@
 
 	<!--A status text field, for displaying connection information-->
 	<div id="status"></div>
+
+
+
 
 
 	</div> <!-- /container -->
