@@ -23,7 +23,7 @@ WBR.Room = Ember.Object.create({
 
 	admincanvas: false,
 
-	currentquestion: '(No Question)',
+	currentquestion: '',
 
 	// A convenience reference to net.user1.orbiter.UPC, which provides a
 	// list of valid client/server UPC messages. See: http://unionplatform.com/specs/upc/
