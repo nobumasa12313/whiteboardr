@@ -65,7 +65,7 @@ WBR = Ember.Application.create({
             $('.question').hide().fadeIn(1000);
 
             $(window).resize(function() {
-                  console.log('window resized');
+                  WBR.Canvas.resizeCanvas();
             });
 
             document.title = "W | " + this.roomID;

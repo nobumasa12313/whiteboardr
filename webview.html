@@ -2,7 +2,13 @@
 <html>
 	<head></head>
 	<body>
-		<webview id="app" src="http://whiteboardr.org" style="position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%"></webview>
+		
+
+		</div id="chrome-content" style="position:absolute !important;top:00px;">
+			<webview id="app" src="http://whiteboardr.org" style="position:absolute !important;top:25px;left:0;right:0;bottom:0;height:auto !important;width:auto !important"></webview>
+		</div>
+
+		<div id="chrome-title-bar" style="top:0;left:0px;height:25px;background:#333;width:100% !important;-webkit-app-region: drag;position:absolute;" width="100%" height="100%"></div>
 
 		<script src="./js/webview.js"></script>
 	</body>
