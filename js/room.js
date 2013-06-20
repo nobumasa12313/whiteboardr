@@ -33,7 +33,8 @@ WBR.Room = Ember.Object.create({
 	// color of the current line being drawn.
 	Attributes : { THICKNESS:"thickness", 
 			   COLOR:"color",
-				NAME: "name"},
+				NAME: "name",
+				HAND: "hand"},
 
 	// A hash of room message names used in this application. MOVE means move the
 	// drawing pen to the specified position. PATH supplies a list of points to be
@@ -42,7 +43,8 @@ WBR.Room = Ember.Object.create({
 			 	PATH:"PATH",
 				SETTX: "SETTX",
                 SERIAL: "SERIAL",
-            	CLEAR: "CLEAR"},
+            	CLEAR: "CLEAR",
+            	QUESTION: "QUESTION"},
 
 	DrawingCommands : {LINE_TO:      "lineTo",
                        MOVE_TO:       "moveTo",
@@ -102,7 +104,7 @@ WBR.Room = Ember.Object.create({
   WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SETTX, this.settxMessageListener, this, [WBR.roomID]);
  WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SERIAL, this.serialMessageListener, this, [WBR.roomID]);
 WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.CLEAR, this.clearMessageListener, this, [WBR.roomID]);
-WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.CLEAR, this.sendQuestionListener, this, [WBR.roomID]);
+WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.QUESTION, this.sendQuestionListener, this, [WBR.roomID]);
 
 		// Create a room for the drawing app, then join it
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.CREATE_ROOM, WBR.roomID);
@@ -287,6 +289,16 @@ var command;
 //}
 },
 
+raiseHand: function(handraised) {
+    WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+                     WBR.Room.orbiter.getClientID(),
+                     "",
+                     WBR.Room.Attributes.HAND,
+                     handraised,
+                     WBR.roomID,
+                     "4");
+},
+
 transmitSerial: function() {
 //alert('tx:'+JSON.stringify(totalPath));
 WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
@@ -393,7 +405,7 @@ roomResult:function(roomID, attrName, status) {
     // pipe-delimited string. Split that string to get the attributes.
     clientAttrString = clientList[i+4];
     clientAttrs = clientAttrString == "" ? [] : clientAttrString.split("|");
-    WBR.Room.clients[i/5] = {id: clientID, name: "unknown", tx:false, admin:false};
+    WBR.Room.clients[i/5] = {id: clientID, name: "unknown", tx:false, admin:false, raisedHand: false};
     // Pass each client attribute to processClientAttributeUpdate(), which will
     // check for the "thickness" and "color" attributes.
     for (var j = 0; j < clientAttrs.length; j++) {
@@ -402,6 +414,9 @@ roomResult:function(roomID, attrName, status) {
       WBR.Room.processClientAttributeUpdate(clientID, attrName, attrVal);
       if (attrName == WBR.Room.Attributes.NAME) {
         WBR.Room.clients[i/5]['name'] = attrVal;
+      }
+      if (attrName == WBR.Room.Attributes.HAND) {
+      	WBR.Room.clients[i/5]['raisedHand'] = attrVal;
       }
     }
     if (clientID == WBR.Room.orbiter.clientID) {
@@ -458,6 +473,13 @@ clientAttributeUpdateListener: function(attrScope,
 			// The "color" attribute changed, so push a "set color" command
 			// onto the drawing command stack for the specified client
 			WBR.Room.addDrawingCommand(clientID, WBR.Room.DrawingCommands.SET_COLOR, attrVal);
+		} else if (attrName == WBR.Room.Attributes.HAND) {
+		for (var j = 0; j < WBR.Room.clients.length; j++) {
+			if (WBR.Room.clients[j]['id'] = clientID) {
+      			WBR.Room.clients[j]['raisedHand'] = attrVal;
+      	}
+      }
+        WBR.UserController.set('content', WBR.Room.clients);
 		}
 	},
 
