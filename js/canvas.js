@@ -127,6 +127,9 @@ WBR.Canvas = Ember.Object.create({
 
 	touchDownListener: function(e) 
 	{
+		if (WBR.Room.admincanvas && WBR.Room.orbiter.clientID != WBR.Room.adminID) {
+			return;
+		}
 		WBR.Canvas.hasTouch = true;
 
 		if (event.target.nodeName != "SELECT") {
@@ -165,6 +168,9 @@ WBR.Canvas = Ember.Object.create({
 
 	pointerDownListener: function(e) 
 	{
+		if (WBR.Room.admincanvas && WBR.Room.orbiter.clientID != WBR.Room.adminID) {
+			return;
+		}
 		if (WBR.Canvas.hasTouch) {
 			return;
 		}

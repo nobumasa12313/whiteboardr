@@ -21,6 +21,9 @@ WBR.Room = Ember.Object.create({
 
 	adminID: 0,
 
+	admincanvas: false,
+
+
 	// A convenience reference to net.user1.orbiter.UPC, which provides a
 	// list of valid client/server UPC messages. See: http://unionplatform.com/specs/upc/
 	UPC : net.user1.orbiter.UPC,
@@ -112,7 +115,7 @@ WBR.Room = Ember.Object.create({
 	},
 
 croomResult: function(roomID, status) {
-  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.adminView = WBR.Room.orbiter.clientID; WBR.Room.mentor=true; WBR.Room.adminID = WBR.Room.orbiter.clientID; WBR.set('admin', true);} else {
+  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.admincanvas  = true; WBR.Room.adminView = WBR.Room.orbiter.clientID; WBR.Room.mentor=true; WBR.Room.adminID = WBR.Room.orbiter.clientID; WBR.set('admin', true);} else {
     WBR.Room.mentor = false;
   }
 },
@@ -157,8 +160,10 @@ setTx: function(txn) {
 loadAdminCanvas: function(admincanvas) {
 	if (admincanvas) {
 		WBR.Room.loadCanvas(WBR.Canvas.adminCommandCache);
+		WBR.Room.admincanvas  = true;
 	} else {
 		WBR.Room.loadCanvas(WBR.Canvas.userCommandCache);
+		WBR.Room.admincanvas  = false;
 	}
 },
 loadCanvas: function(canvasorig){
