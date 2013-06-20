@@ -224,7 +224,7 @@ sendQuestion: function(qstr) {
 
 },
 
-sendQuestionListener: function(qstr) {
+sendQuestionListener: function(fromCanvasID, qstr) {
 	WBR.displayQuestion(qstr);
 	WBR.Room.currentquestion = qstr;
 },
@@ -478,7 +478,7 @@ clientAttributeUpdateListener: function(attrScope,
 			WBR.Room.addDrawingCommand(clientID, WBR.Room.DrawingCommands.SET_COLOR, attrVal);
 		} else if (attrName == WBR.Room.Attributes.HAND) {
 		for (var j = 0; j < WBR.Room.clients.length; j++) {
-			if (WBR.Room.clients[j]['id'] = clientID) {
+			if (WBR.Room.clients[j]['id'] == clientID) {
       			WBR.Room.clients[j]['raisedHand'] = attrVal;
       	}
       }
