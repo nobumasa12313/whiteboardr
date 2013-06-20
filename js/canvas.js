@@ -90,7 +90,9 @@ WBR.Canvas = Ember.Object.create({
                      "false", 
                      "", 
                      WBR.Room.orbiter.clientID);
+
 		WBR.Canvas.userCommandCache = {};
+
 	}
 	},
 

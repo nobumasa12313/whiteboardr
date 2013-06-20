@@ -50,7 +50,8 @@ WBR.Room = Ember.Object.create({
 	DrawingCommands : {LINE_TO:      "lineTo",
                        MOVE_TO:       "moveTo",
                        SET_THICKNESS: "setThickness",
-                       SET_COLOR:     "setColor"},
+                       SET_COLOR:     "setColor",
+                       CLEAR: "CLEAR"},
 
 	// The ID for a timer that sends the user's drawing path on a regular interval
 	broadcastPathIntervalID: null,
@@ -175,13 +176,14 @@ serialMessageListener: function(fromClientID, datastr) {
   }
 },
 clearMessageListener: function(fromClientID, datastr) {
-	var cid = parseInt(datastr);
-	if (WBR.Room.tx == cid && WBR.Room.admincanvas == false) {
-		WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
-	} else if (WBR.Room.tx == WBR.Room.adminID && WBR.Room.admincanvas == true) {
-		WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
-		WBR.Canvas.adminCommandCache = {};
-	}
+	WBR.Room.addDrawingCommand(fromClientID, WBR.Room.DrawingCommands.CLEAR, true);
+	//var cid = parseInt(datastr);
+	//if (WBR.Room.tx == WBR.Room.adminID) {
+//		if (WBR.Room.admincanvas == true) {
+//		WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
+//		}
+//		WBR.Canvas.adminCommandCache = {};
+//	} else 
 },
 setTx: function(txn) {
 	if (txn == WBR.Room.tx) {
@@ -284,6 +286,9 @@ var command;
 				case WBR.Room.DrawingCommands.SET_COLOR:
 					WBR.Canvas.userColors[clientID] = command.arg;
 					break;
+				case WBR.Room.DrawingCommands.CLEAR:
+					WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
+					break;
 			}
 }
 		}
@@ -337,7 +342,13 @@ roomResult:function(roomID, attrName, status) {
 		WBR.Room.processDrawingCommandsIntervalID = setInterval(WBR.Room.processDrawingCommands, 20);
 	},
 
-
+	resizeCanvas: function() {
+		if (WBR.Room.admincanvas == true) {
+			loadCanvas(WBR.Canvas.adminCommandCache);
+		} else {
+			loadCanvas(WBR.Canvas.userCommandCache);
+		}
+	},
 
 	// Triggered when this client is informed that number of users in the 
 	// server-side drawing room has changed
@@ -686,6 +697,10 @@ clientAttributeUpdateListener: function(attrScope,
 
 				case WBR.Room.DrawingCommands.SET_COLOR:
 					WBR.Canvas.userColors[clientID] = command.arg;
+					break;
+
+				case WBR.Room.DrawingCommands.CLEAR:
+					WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
 					break;
 			}
 
