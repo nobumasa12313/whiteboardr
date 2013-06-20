@@ -224,7 +224,7 @@ sendQuestion: function(qstr) {
 
 },
 
-sendQuestionListener: function(fromCanvasID, qstr) {
+sendQuestionListener: function(fromClientID, qstr) {
 	WBR.displayQuestion(qstr);
 	WBR.Room.currentquestion = qstr;
 },
@@ -477,13 +477,17 @@ clientAttributeUpdateListener: function(attrScope,
 			// onto the drawing command stack for the specified client
 			WBR.Room.addDrawingCommand(clientID, WBR.Room.DrawingCommands.SET_COLOR, attrVal);
 		} else if (attrName == WBR.Room.Attributes.HAND) {
+			temp = JSON.parse(JSON.stringify(WBR.Room.clients));
 		for (var j = 0; j < WBR.Room.clients.length; j++) {
-			if (WBR.Room.clients[j]['id'] == clientID) {
-      			WBR.Room.clients[j]['raisedHand'] = attrVal;
+			if (temp[j]['id'] == clientID) {
+      			temp[j].raisedHand = (attrVal == "true");
       	}
       }
-        WBR.UserController.set('content', WBR.Room.clients);
-		}
+      
+      WBR.Room.clients = JSON.parse(JSON.stringify(temp));
+      WBR.UserController.set('content', WBR.Room.clients);
+        }
+		
 	},
 
 
