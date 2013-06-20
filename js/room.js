@@ -540,16 +540,25 @@ clientAttributeUpdateListener: function(attrScope,
 		if (WBR.Canvas.userCommands[clientID] == undefined) {
 		WBR.Canvas.userCommands[clientID] = [];
 		}
-		if (WBR.Canvas.adminCommandCache[WBR.Room.adminID] == undefined) {
-		WBR.Canvas.adminCommandCache[WBR.Room.adminID] = [];
+		if (WBR.Canvas.adminCommandCache[clientID] == undefined) {
+		WBR.Canvas.adminCommandCache[clientID] = [];
+		}
+				if (WBR.Canvas.userCommandCache[clientID] == undefined) {
+		WBR.Canvas.userCommandCache[clientID] = [];
 		}
 		// Push the command onto the stack.
 		var command = {};
 		command["commandName"] = commandName;
 		command["arg"] = arg;
-		if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) {
+		if ((clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID)) {
 			WBR.Canvas.adminCommandCache[clientID].push(command);
-		} else {
+			if (WBR.Room.admincanvas == true) {
+				WBR.Canvas.userCommands[clientID].push(command);
+			}
+		} else if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.orbiter.clientID) {
+				WBR.Canvas.userCommands[clientID].push(command);
+				WBR.Canvas.userCommandCache[clientID].push(command);
+		} else if (WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.Room.tx == clientID) {
 			WBR.Canvas.userCommands[clientID].push(command);
 		}
 	},
