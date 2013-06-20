@@ -43,11 +43,18 @@ WBR = Ember.Application.create({
       // Join the room
       joinRoom: function() {
             if (document.getElementById('input-room-id').value == "")
-                  this.set('roomID', "whiteboardr.default");
+                  this.set('roomID', "public");
             else
                   this.set('roomID', document.getElementById('input-room-id').value);
 
-            this.set('nickname', document.getElementById('input-nickname').value);
+
+            if (document.getElementById('input-nickname').value == "")
+                  this.set('nickname', "anonymous");
+            else
+                  this.set('nickname', document.getElementById('input-nickname').value);
+
+
+            
 
             this.Canvas.initialize();
             this.Room.initialize();
@@ -72,7 +79,7 @@ WBR = Ember.Application.create({
 
       submitQuestion: function() {
             $('#question-modal').modal('hide');
-            WBR.Room.sendQuestion($('#input-question').text());
+            WBR.Room.sendQuestion($('#input-question').val());
       },
 
       displayQuestion: function(string) {
