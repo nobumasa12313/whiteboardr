@@ -11,6 +11,8 @@ WBR.UserController = Ember.ArrayController.create({
      setTx: function(e) {
      	var id = $(e).find(".user-cell-id").text();
   		WBR.Room.setTx(id);
+      console.log(id)
+
 
   		for (i = 0; i < this.content.length; i++) {
   			if (this.content[i].id == id)

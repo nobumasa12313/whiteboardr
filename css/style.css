@@ -70,7 +70,7 @@ h3 {
   left:0;
   min-height:100%;
   min-width:100%;
-  z-index:0;
+  z-index:-1;
 }
 
 #status {
@@ -348,12 +348,12 @@ font-weight:900;
 @media only screen and (max-width : 585px) {
 .modal {
   position:absolute;
-  width:96%;
+  width:100%;
 
-  top:2% !important;
+  top:0% !important;
   margin:0 !important;
 
-  left:2%;
+  left:0%;
 }
 
 .modal-body {
