@@ -131,7 +131,7 @@ WBR.Canvas = Ember.Object.create({
 	}
 	},
 		saveCanvas: function() {
-		Canvas2Image.saveAsPNG(WBR.Canvas.currentCanvas);
+		Canvas2Image.saveAsPNG(WBR.Canvas.currentCanvas, true);
 	},
 
 	drawToCoordinate: function(x, y) 

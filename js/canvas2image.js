@@ -154,8 +154,10 @@ var Canvas2Image = (function() {
 
 	// generates a <img> object containing the imagedata
 	var makeImageObject = function(strSource) {
-		var oImgElement = document.createElement("img");
-		oImgElement.src = strSource;
+		var oImgElement = document.createElement("a");
+		$(oImgElement).attr('href', strSource);
+		$(oImgElement).attr('download', 'download.png');
+		oImgElement.click();
 		return oImgElement;
 	}
 
@@ -184,7 +186,8 @@ var Canvas2Image = (function() {
 			var oScaledCanvas = scaleCanvas(oCanvas, iWidth, iHeight);
 			var strData = oScaledCanvas.toDataURL("image/png");
 			if (bReturnImg) {
-				return makeImageObject(strData);
+				//return makeImageObject(strData);
+				makeImageObject(strData.replace("image/png", strDownloadMime));
 			} else {
 				saveFile(strData.replace("image/png", strDownloadMime));
 			}
