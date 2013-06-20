@@ -112,7 +112,7 @@ WBR.Room = Ember.Object.create({
 	},
 
 croomResult: function(roomID, status) {
-  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.mentor=true; WBR.Room.adminID = WBR.Room.orbiter.clientID; WBR.set('admin', true);} else {
+  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.adminView = WBR.Room.orbiter.clientID; WBR.Room.mentor=true; WBR.Room.adminID = WBR.Room.orbiter.clientID; WBR.set('admin', true);} else {
     WBR.Room.mentor = false;
   }
 },
@@ -151,6 +151,7 @@ setTx: function(txn) {
                      "false", 
                      "", 
                      txn);
+      
 },
 
 loadAdminCanvas: function(admincanvas) {
@@ -270,6 +271,7 @@ roomResult:function(roomID, attrName, status) {
                      "false", 
                      "", 
                      WBR.Room.tx);
+
     }
 	},
 
@@ -385,7 +387,7 @@ clientAttributeUpdateListener: function(attrScope,
 		var coords = coordsString.split(",");
 		var position = {x:parseFloat(coords[0]), y:parseFloat(coords[1])};
   // Push a "moveTo" command onto the drawing-command stack for the sender
-  if (fromClientID == WBR.Room.tx) {
+  if (fromClientID == WBR.Room.tx || fromClientID == WBR.Room.adminID) {
   WBR.Room.addDrawingCommand(fromClientID, WBR.Room.DrawingCommands.MOVE_TO, position); }
 	},
 
@@ -398,7 +400,7 @@ clientAttributeUpdateListener: function(attrScope,
 
 		// For each point, push a "lineTo" command onto the drawing-command stack 
 		// for the sender
-  if (fromClientID == WBR.Room.tx) {
+  if (fromClientID == WBR.Room.tx || fromClientID == WBR.Room.adminID) {
   var position;
   for (var i = 0; i < path.length; i+=2) {
     position = {x:parseFloat(path[i]), y:parseFloat(path[i+1])};
@@ -459,7 +461,7 @@ clientAttributeUpdateListener: function(attrScope,
 	// Sends all users in the drawing room an instruction to reposition the local
 	// user's pen.
 	broadcastMove: function(ux, uy) {
-		//if (WBR.Room.tx == WBR.Room.orbiter.clientID || WBR.Room.orbiter.clientID == WBR.Room.orbiter.adminID) {
+	//	if (WBR.Room.tx == WBR.Room.orbiter.clientID || WBR.Room.orbiter.clientID == WBR.Room.orbiter.adminID) {
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
 					WBR.Room.Messages.MOVE, 
 					WBR.roomID, 
@@ -500,7 +502,7 @@ clientAttributeUpdateListener: function(attrScope,
 		var command = {};
 		command["commandName"] = commandName;
 		command["arg"] = arg;
-		if (clientID == WBR.Room.adminID) {
+		if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) {
 			WBR.Canvas.adminCommandCache[clientID].push(command);
 		} else {
 			WBR.Canvas.userCommands[clientID].push(command);
