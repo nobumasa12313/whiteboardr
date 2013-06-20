@@ -165,7 +165,7 @@ clearMessageListener: function(fromClientID, datastr) {
 		WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
 	} else if (WBR.Room.tx == WBR.Room.adminID && WBR.Room.admincanvas == true) {
 		WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
-		WBR.Canvas.adminCommandCache = [];
+		WBR.Canvas.adminCommandCache = {};
 	}
 },
 setTx: function(txn) {
