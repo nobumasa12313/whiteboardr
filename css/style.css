@@ -154,12 +154,15 @@ top: 15%;
   display:none;
 }
 
+.navbar {
 
+}
 
 .navbar-fixed-top {
   border-left:5px solid rgb(77, 144, 254);
--webkit-app-region: drag;
 z-index:99999999;
+-webkit-app-region: drag;
+
 }
 
 .navbar-fixed-top .container {
@@ -186,10 +189,12 @@ z-index:99999999;
 .bottom-bar {
   padding-top:10px;
   padding-bottom:12px;
+
 }
 
-.bottom-bar li {
-  margin-right:10px;
+.navbar li {
+  margin-right:5px;
+  margin-left:5px;
   font-size:12px;
 }
 
@@ -326,6 +331,10 @@ b {
 font-weight:900;
 }
 
+.modal {
+  
+}
+
 .btn-none, .btn-none:hover, .btn-none:active {
   background:none;
   box-shadow:none;
@@ -414,15 +423,18 @@ font-weight:900;
   position:absolute;
   width:100%;
 
-  top:0% !important;
+  top:0px !important;
   margin:0 !important;
-
+z-index:999999999999999999;
   left:0%;
+  border-radius:0;
 }
 
 .modal-body {
   max-height:none;
 }
+
+
 
 label {
   display:none;

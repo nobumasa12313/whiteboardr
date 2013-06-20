@@ -7,7 +7,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
 			left:100,
 			top:100
 		},
-		minWidth: 800,
+		minWidth: 320,
 		minHeight:600,
 		frame:"none",
 		transparentBackground: true
