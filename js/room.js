@@ -164,6 +164,10 @@ serialMessageListener: function(fromClientID, datastr) {
     if (WBR.Canvas.adminCommandCache.length == 0) {
     	WBR.Canvas.adminCommandCache = JSON.parse(datastr);
     }
+  } else if (fromClientID == WBR.Room.adminID) {
+    //if (WBR.Canvas.adminCommandCache.length == 0) {
+    	WBR.Canvas.adminCommandCache = JSON.parse(datastr);
+    //}  	
   }
 },
 clearMessageListener: function(fromClientID, datastr) {
@@ -186,7 +190,7 @@ setTx: function(txn) {
 	}
   WBR.Room.tx=txn;
   WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
-  if (txn == WBR.User.orbiter.clientID) {
+  if (txn == WBR.Room.orbiter.clientID) {
     WBR.Room.loadCanvas(WBR.Canvas.userCommandCache);
   }
   for (var j = 0; j < WBR.Room.clients.length; j++) {
