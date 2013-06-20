@@ -21,6 +21,19 @@ WBR.UserController = Ember.ArrayController.create({
 
   		$('.user-cell').removeClass('enabled-user');
   		$(e).addClass('enabled-user');
+     },
+
+
+     setClientCanvasPublic: function(e) {
+          $('.user-cell').removeClass('enabled-user');
+          $(e).addClass('enabled-user');
+          WBR.Room.loadAdminCanvas(true);
+     },
+
+     setClientCanvasMy: function(e) {
+          $('.user-cell').removeClass('enabled-user');
+          $(e).addClass('enabled-user');
+          WBR.Room.loadAdminCanvas(false);
      }
 
 })

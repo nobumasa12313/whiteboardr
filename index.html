@@ -243,7 +243,7 @@
 		<div id="user-list">
 
 		{{#if WBR.admin}}
-		<h6>Connected Users</h6>
+		<h6>USERS</h6>
 		{{#each WBR.UserController}}
 
 			{{#if tx}}
@@ -263,6 +263,22 @@
   			
 
 		{{/each}}
+		{{else}}
+
+			<h6>BOARDS</h6>
+
+			<div class="user-cell enabled-user" onClick="WBR.UserController.setClientCanvasPublic(this)">
+  				<span class="user-cell-title"> Public Broadcast</span>
+  			</div>
+
+  			<div class="user-cell" onClick="WBR.UserController.setClientCanvasMy(this)">
+  				<span class="user-cell-title"> My Board</span>
+  			</div>
+  			
+		
+
+
+
 		{{/if}}
 		</div>
 	</script>
