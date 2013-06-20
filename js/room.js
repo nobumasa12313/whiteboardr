@@ -78,6 +78,7 @@ WBR.Room = Ember.Object.create({
 
 		// Connect to Union Server (at the public testing site)
 		WBR.Room.orbiter.connect("johnamoore.com", 9100);
+
 	},
 
 
@@ -112,6 +113,24 @@ WBR.Room = Ember.Object.create({
                      WBR.nickname,
                      WBR.roomID,
                      "4");
+	    			      var newThickness = $('select#thickness').val();
+	      //WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, WBR.Canvas.getValidThickness(newThickness));
+		  var newColor = $('select#color').val();
+		  //WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
+		  		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+					WBR.Room.orbiter.getClientID(),
+					"",
+					WBR.Room.Attributes.THICKNESS,
+					newThickness,
+					WBR.roomID,
+					"4");
+		  		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+					WBR.Room.orbiter.getClientID(),
+					"",
+					WBR.Room.Attributes.COLOR,
+					newColor,
+					WBR.roomID,
+					"4");
 	},
 
 croomResult: function(roomID, status) {

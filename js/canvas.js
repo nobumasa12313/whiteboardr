@@ -73,6 +73,9 @@ WBR.Canvas = Ember.Object.create({
 	      this.lineColor      = document.getElementById("color").selectedIndex = 0;
 
 	      this.registerEventListeners();
+
+	
+
 	},
 
 
@@ -265,7 +268,7 @@ WBR.Canvas = Ember.Object.create({
 					newThickness,
 					WBR.roomID,
 					"4");
-		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.THICKNESS, WBR.Canvas.getValidThickness(newThickness));
+		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, WBR.Canvas.getValidThickness(newThickness));
 		// After the user selects a value in the drop-down menu, the iPhone
 		// automatically scrolls the page, so scroll back to the top-left. 
 		WBR.iPhoneToTop();
@@ -288,7 +291,7 @@ WBR.Canvas = Ember.Object.create({
 					newColor,
 					WBR.roomID,
 					"4");
-		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.COLOR, newColor);
+		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
 		// Scroll the iPhone back to the top-left. 
 		WBR.iPhoneToTop();
 	},
