@@ -4,8 +4,12 @@
 
 
 * {
-font-family:"ARIAL" !important;
+font-family:"Roboto" !important;
+font-smoothing:"antialiased" !important;
 -webkit-font-smoothing:"antialiased" !important;
+-moz-font-smoothing:"antialiased" !important;
+-o-font-smoothing:"antialiased" !important;
+
 }
 
 
@@ -77,7 +81,7 @@ h3 {
   color: #ccc;
   position: absolute;
   cursor: default;
-  font-weight: 100;
+  font-weight: 100 !important;
   top: 90px;
   font-size:20px;
 }

@@ -43,10 +43,8 @@
 					<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li class="question">
-							<a style="color:white">
-
-								Question 1: <b>What is the volume of the Earth?</b>
-
+							<a id="question-text" style="color:white;font-weight:600;">
+								(No Question)
 							</a>
 						</li>
 					</ul>
@@ -220,7 +218,7 @@
 		</div>
 
 		<div class="modal-footer">
-			<button class="btn btn-primary" onclick="WBR.Room.postQuestion()">Post</button>
+			<button class="btn btn-primary" onclick="WBR.submitQuestion()">Post</button>
 		</div>
 
 	</div>
@@ -260,6 +258,10 @@
 
   				{{#if admin}}
   					<i class="icon-user"></i>
+  				{{/if}}
+
+  				{{#if raisedHand}}
+  					<i class="icon-hand-up"></i>
   				{{/if}}
 
   			</div>

@@ -70,6 +70,15 @@ WBR = Ember.Application.create({
             $('#question-modal').modal('show');
       },
 
+      submitQuestion: function() {
+            $('#question-modal').modal('hide');
+            WBR.Room.sendQuestion($('#input-question').text());
+      },
+
+      displayQuestion: function(string) {
+            $('#question-text').text(string);
+      },
+
 
       // Leave the room
       leaveRoom: function() {
@@ -81,13 +90,16 @@ WBR = Ember.Application.create({
             if (WBR.handRaised) {
                   WBR.set('handRaised',false);
                   $('#raise-hand-text').text('Raise Hand');
+                  WBR.raiseHand(false);
 
             }
 
             else {
                   WBR.set('handRaised',true);
                   $('#raise-hand-text').text('Hand is Raised');
+                  WBR.raiseHand(true);
             }
+
 
       },
 
