@@ -78,6 +78,25 @@ WBR = Ember.Application.create({
       },
 
 
+      enterJoinRoom: function(e) {
+            
+            if (event.which == 13) {
+        event.preventDefault();
+        WBR.joinRoom();
+    }
+
+      },
+
+      enterQuestion: function(e) {
+
+
+            if (event.which == 13) {
+        event.preventDefault();
+        WBR.submitQuestion();
+    }
+      },
+
+
       launchQuestionWindow: function() {
             $('#question-modal').modal('show');
       },

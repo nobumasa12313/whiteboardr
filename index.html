@@ -170,14 +170,14 @@
 				<div class="control-group">
 					<label class="control-label" for="input-room-id">Room Code</label>
 					<div class="controls">
-						<input type="text" id="input-room-id" placeholder="Room Code" class=" input input-large"/>
+						<input type="text" id="input-room-id" onkeypress="WBR.enterJoinRoom()"  placeholder="Room Code" class=" input input-large"/>
 					</div>
 				</div>
 
 				<div class="control-group">
 					<label class="control-label" for="input-nickname">Nickname</label>
 					<div class="controls">
-						<input type="text" id="input-nickname" placeholder="Nickname" class=" input input-large"/>
+						<input type="text" id="input-nickname" onkeypress="WBR.enterJoinRoom()" placeholder="Nickname" class=" input input-large"/>
 						<script type="text/x-handlebars" data-template-name="nickname">
 							{{view Ember.TextField valueBinding="WBR.nickname"}}
 						</script>
@@ -219,7 +219,7 @@
 				<div class="control-group">
 					<label class="control-label" for="input-room-id">Question</label>
 					<div class="controls">
-						<textarea type="text" id="input-question" placeholder="type your question here..." class=" input input-large"/></textarea>
+						<textarea type="text" id="input-question" onkeypress="WBR.enterQuestion()" placeholder="type your question here..." class=" input input-large"/></textarea>
 					</div>
 				</div>
 
@@ -227,7 +227,7 @@
 		</div>
 
 		<div class="modal-footer">
-			<button class="btn btn-primary" onclick="WBR.submitQuestion()">Post</button>
+			<button class="btn btn-primary" onclick="WBR.submitQuestion()" ontouchend="WBR.submitQuestion()">Post</button>
 		</div>
 
 	</div>
