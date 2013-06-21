@@ -296,6 +296,7 @@ sendQuestion: function(qstr) {
                      "", 
                      qstr);
 	        WBR.displayQuestion(qstr);
+	        WBR.Room.currentquestion = qstr;
 
 },
 
