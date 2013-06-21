@@ -522,8 +522,7 @@ roomResult:function(roomID, attrName, status) {
                      WBR.Room.tx);
   		WBR.Room.transmitSerial();
   }
-      if (WBR.Room.tx == WBR.Room.adminID) {
-      	WBR.Room.transmitSerial();
+      if (WBR.Room.orbiter.clientID == WBR.Room.adminID) {
       		        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
                      WBR.Room.Messages.QUESTION, 
                      WBR.roomID, 
