@@ -99,7 +99,7 @@ WBR = Ember.Application.create({
 
       startBroadcast: function() {
             WBR.Room.startBroadcast();
-            if($('#broadcast').text() == "Start Broadcast") {
+            if (WBR.broadcast == false) {
                   $('#broadcast').text("Stop Broadcast");
                   WBR.set('broadcast', true);
             }
