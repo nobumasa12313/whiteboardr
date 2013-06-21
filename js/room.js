@@ -212,15 +212,8 @@ settxMessageListener: function(fromClientID, datastr) {
     if (WBR.Room.tx == WBR.Room.orbiter.clientID) {
       //We're the tx!
       WBR.Room.transmitSerial();
-      if (WBR.Room.broadcast == true && WBR.Room.tx == WBR.Room.orbiter.clientID) {
-      		WBR.Canvas.adminCommandCache = JSON.parse(JSON.stringify(WBR.Canvas.userCommandCache));
-	if (WBR.Room.admincanvas == true) {
-		 WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
- 
-		WBR.Room.loadCanvas(WBR.Canvas.adminCommandCache);
-	}
-      }
-    }
+     
+     }
 },
 
 serialMessageListener: function(fromClientID, datastr) {
@@ -233,7 +226,7 @@ if (WBR.Room.adminID == WBR.Room.orbiter.clientID && WBR.Room.broadcast == true)
                      "false", 
                      "", 
                      datastr);
-
+	        WBR.Canvas.adminCommandCache = JSON.parse(datastr);
 //WBR.Room.transmitSerial();
 	return;
 }
