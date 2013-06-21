@@ -218,7 +218,7 @@ settxMessageListener: function(fromClientID, datastr) {
 serialMessageListener: function(fromClientID, datastr) {
 
 if (WBR.Room.adminID == WBR.Room.orbiter.clientID && WBR.Room.broadcast == true) {
-//	WBR.Canvas.userCommandCache = JSON.parse(datastr);
+	WBR.Canvas.userCommandCache = JSON.parse(datastr);
 	        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
                      WBR.Room.Messages.SETADMINDATA, 
                      WBR.roomID, 
@@ -796,6 +796,7 @@ clientAttributeUpdateListener: function(attrScope,
                      "false", 
                      "", 
                      JSON.stringify(command));
+      	      WBR.Canvas.userCommandCache[clientID].push(command);
 
 			}
 			WBR.Canvas.userCommands[clientID].push(command);
