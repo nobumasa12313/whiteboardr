@@ -781,7 +781,7 @@ clientAttributeUpdateListener: function(attrScope,
 		if ((clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) || (clientID == WBR.Room.adminID && WBR.Room.broadcast == true)) {
 			WBR.Canvas.adminCommandCache[clientID].push(command);
 			//if (WBR.Room.admincanvas == false) {
-				WBR.Canvas.userCommands[clientID].push(command);
+				//WBR.Canvas.userCommands[clientID].push(command);
 				WBR.Canvas.userCommandCache[clientID].push(command);
 			//}
 		} else if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.orbiter.clientID) {
