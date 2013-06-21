@@ -458,7 +458,6 @@ font-weight:900;
 @media only screen and (max-width : 650px) {
   img { max-width: 100%  }
   .btn-none {display:none !important;}
-  #remotes video {width:50px}
   #status {display:none;}
   .container {
     padding-top:5px !important;
@@ -476,6 +475,10 @@ font-weight:900;
 z-index:999999999999999999;
   left:0%;
   border-radius:0;
+}
+
+video {
+  width:100px;
 }
 
 .modal-body {
