@@ -18,9 +18,7 @@ WBR = Ember.Application.create({
       init: function() {
             $('.question').hide();
             
-            $('.modal').modal({
-                  backdrop: 'static',
-            });
+
             $('.modal').modal('hide');
             $('#login-modal').modal('show');    
       },

@@ -116,23 +116,7 @@ WBR.Canvas = Ember.Object.create({
 	{
 
 	},
-	resizeCanvas: function() {
-		if ((new Date().getTime() - WBR.Canvas.lastBufferTime) > 100) {
 
-				
-		WBR.Canvas.privateCanvas.width  = window.innerWidth;
-	    WBR.Canvas.privateCanvas.height = window.innerHeight;
-		if (WBR.Room.admincanvas == true && WBR.Room.adminID != WBR.Room.orbiter.clientID) {
-			WBR.Room.loadCanvas(WBR.Canvas.adminCommandCache);
-		} else {
-			WBR.Room.loadCanvas(WBR.Canvas.userCommandCache);
-		}
-		WBR.Canvas.lastBufferTime = new Date().getTime();
-	}
-	},
-		saveCanvas: function() {
-		Canvas2Image.saveAsPNG(WBR.Canvas.currentCanvas, true);
-	},
 
 	drawToCoordinate: function(x, y) 
 	{
@@ -371,7 +355,7 @@ WBR.Canvas = Ember.Object.create({
 			//if ((new Date().getTime() - WBR.Canvas.lastBufferTime) > 5) {
 				WBR.Canvas.bufferedPath.push(x + "," + y);
 				WBR.Canvas.totalPath.push(x+","+y);
-				//WBR.Canvas.lastBufferTime = new Date().getTime();
+				WBR.Canvas.lastBufferTime = new Date().getTime();
 			//}
 
 			// Draw the line locally.

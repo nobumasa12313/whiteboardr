@@ -117,8 +117,8 @@ margin:0 !important;
   cursor: default;
   font-weight: 100 !important;
   top: 90px;
-  left:25px;
-  font-size:15px;
+  left:30px;
+  font-size:16px;
 }
 
 #video-chat {
@@ -350,7 +350,10 @@ font-weight:900;
   -webkit-font-smoothing:antialiased !important;
 }
 
-
+.question-text {
+  font-weight: 400;
+  font-size: 16px;
+}
 
 
 #user-list {
