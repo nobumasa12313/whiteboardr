@@ -785,15 +785,17 @@ clientAttributeUpdateListener: function(attrScope,
 		var command = {};
 		command["commandName"] = commandName;
 		command["arg"] = arg;
-		if ((clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) || (clientID == WBR.Room.adminID && WBR.Room.broadcast == true)) {
+		if ((clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) && WBR.Room.broadcast == false) {
 			WBR.Canvas.adminCommandCache[clientID].push(command);
-			if (WBR.Room.admincanvas == false || WBR.Room.broadcast) {
-				if (WBR.Room.tx != WBR.Room.orbiter.clientID) {
+			if (WBR.Room.admincanvas == false) {
+					WBR.Canvas.userCommands[clientID].push(command);
+			}
+		} else if ((clientID == WBR.Room.adminID && WBR.Room.broadcast == true)){
+				if (WBR.Room.admincanvas == false) {
 				WBR.Canvas.userCommands[clientID].push(command);
-			
+				}
 				WBR.Canvas.userCommandCache[clientID].push(command);
-			}
-			}
+			
 		} else if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.orbiter.clientID) {
 				if (WBR.Room.admincanvas == false){
 				WBR.Canvas.userCommands[clientID].push(command);
