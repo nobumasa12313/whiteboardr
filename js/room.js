@@ -161,7 +161,7 @@ croomResult: function(roomID, status) {
   	WBR.set('admin', true);
   	WBR.Room.showvideo = true;
   	document.title = document.title + " (admin)";
-  	        webrtc.createRoom(WBR.roomID, function (err, name) {});
+  	        WBR.Room.webrtc.createRoom(WBR.roomID, function (err, name) {});
   } else {
     WBR.Room.mentor = false;
   }
@@ -365,14 +365,14 @@ roomResult:function(roomID, attrName, status) {
 
 	startVideo: function() {
 
-    if (WBR.roomID && WBR.Room.orbiter.clientID != WBR.Room.adminID && WBR.Room.showvideo == false) { webrtc.joinRoom(WBR.roomID); WBR.Room.showvideo = true; }
+    if (WBR.roomID && WBR.Room.orbiter.clientID != WBR.Room.adminID && WBR.Room.showvideo == false) { WBR.Room.webrtc.joinRoom(WBR.roomID); WBR.Room.showvideo = true; }
 
 		WBR.startVideo();
 
 	},
 	stopVideo: function() {
 		if (WBR.Room.showvideo == true && WBR.Room.adminID != WBR.Room.orbiter.clientID) {
-			webrtc.leaveRoom();
+			WBR.Room.webrtc.leaveRoom();
 		}
 
 		WBR.stopVideo();
