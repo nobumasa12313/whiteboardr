@@ -506,12 +506,16 @@ roomResult:function(roomID, attrName, status) {
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.GET_ROOM_SNAPSHOT, 1, WBR.roomID);
       if (WBR.Room.mentor) {
         //alert("setting to " + tx)
+        if (WBR.Room.tx != WBR.Room.adminID) {
       WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
                      WBR.Room.Messages.SETTX, 
                      WBR.roomID, 
                      "false", 
                      "", 
                      WBR.Room.tx);
+  } else {
+  		WBR.Room.transmitSerial();
+  }
       if (WBR.Room.tx == WBR.Room.adminID) {
       	WBR.Room.transmitSerial();
       		        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
