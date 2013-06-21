@@ -175,6 +175,8 @@ adminDataListener: function(fromClientID, strdata) {
 		 WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
  
 		WBR.Room.loadCanvas(WBR.Canvas.adminCommandCache);
+	} else {
+		WBR.Room.loadCanvas(WBR.Canvas.userCommandCache);
 	}
 },
 croomResult: function(roomID, status) {
