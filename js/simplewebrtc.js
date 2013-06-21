@@ -208,7 +208,7 @@ function WebRTC(opts) {
     var self = this,
         options = opts || {},
         config = this.config = {
-            url: 'http://signaling.simplewebrtc.com:8888',
+            url: 'http://johnamoore.com:8888',
             log: false,
             localVideoEl: '',
             remoteVideosEl: '',
