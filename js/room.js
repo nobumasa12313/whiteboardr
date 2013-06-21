@@ -32,6 +32,8 @@ WBR.Room = Ember.Object.create({
 
 	admincanvas: false,
 
+	broadcast: false,
+
 	currentquestion: '',
 
 	// A convenience reference to net.user1.orbiter.UPC, which provides a
@@ -54,7 +56,10 @@ WBR.Room = Ember.Object.create({
 				SETTX: "SETTX",
                 SERIAL: "SERIAL",
             	CLEAR: "CLEAR",
-            	QUESTION: "QUESTION"},
+            	QUESTION: "QUESTION",
+            	SETADMINDATA: "SETADMINDATA",
+            	INJECTC: "INJECTC",
+            	BROADCAST: "BROADCAST"},
 
 	DrawingCommands : {LINE_TO:      "lineTo",
                        MOVE_TO:       "moveTo",
@@ -118,6 +123,9 @@ WBR.Room = Ember.Object.create({
  WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SERIAL, this.serialMessageListener, this, [WBR.roomID]);
 WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.CLEAR, this.clearMessageListener, this, [WBR.roomID]);
 WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.QUESTION, this.sendQuestionListener, this, [WBR.roomID]);
+WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.SETADMINDATA, this.adminDataListener, this, [WBR.roomID]);
+WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.INJECTC, this.injListener, this, [WBR.roomID]);
+WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.BROADCAST, this.bListener, this, [WBR.roomID]);
 
 		// Create a room for the drawing app, then join it
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.CREATE_ROOM, WBR.roomID);
@@ -151,6 +159,24 @@ WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.QUESTION, this.sendQues
 					"4");
 	},
 
+	injListener: function(fromClientID, strdata) {
+		var command = JSON.parse(strdata);
+			if(fromClientID == WBR.Room.adminID) {
+				WBR.Room.addDrawingCommand(fromClientID, command["commandName"], command["arg"]);
+			}
+	},
+		bListener: function(fromClientID, strdata) {
+		WBR.Room.broadcast = (strdata == "true");
+	},
+
+adminDataListener: function(fromClientID, strdata) {
+	WBR.Canvas.adminCommandCache = JSON.parse(strdata);
+	if (WBR.Room.admincanvas == true) {
+		 WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
+ 
+		WBR.Room.loadCanvas(WBR.Canvas.adminCommandCache);
+	}
+},
 croomResult: function(roomID, status) {
   if (status=="SUCCESS") { 
   	WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID);
@@ -191,6 +217,17 @@ settxMessageListener: function(fromClientID, datastr) {
 
 serialMessageListener: function(fromClientID, datastr) {
 
+if (WBR.Room.adminID == WBR.Room.orbiter.clientID && WBR.Room.broadcast == true) {
+//	WBR.Canvas.userCommandCache = JSON.parse(datastr);
+	        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.SETADMINDATA, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     datastr);
+//WBR.Room.transmitSerial();
+	return;
+}
   if (WBR.Room.tx == fromClientID && WBR.Room.adminID == WBR.Room.orbiter.clientID) {
   	WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
     WBR.Room.loadCanvas(JSON.parse(datastr));
@@ -198,7 +235,7 @@ serialMessageListener: function(fromClientID, datastr) {
   if (fromClientID == WBR.Room.adminID && WBR.Room.admincanvas == true) {
   	WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
     WBR.Room.loadCanvas(JSON.parse(datastr));
-    if (WBR.Canvas.adminCommandCache.length == 0) {
+    if (WBR.Canvas.adminCommandCache.length == 0 || WBR.Room.broadcast == true) {
     	WBR.Canvas.adminCommandCache = JSON.parse(datastr);
     }
   } else if (fromClientID == WBR.Room.adminID) {
@@ -264,6 +301,48 @@ sendQuestionListener: function(fromClientID, qstr) {
 },
 //
 
+stopBroadcast: function() {
+		      	WBR.Room.transmitSerial();
+      		        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.BROADCAST, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     "false");
+      		        WBR.Room.broadcast = false;
+
+},
+startBroadcast: function() {
+	if (WBR.Room.broadcast) {
+		WBR.Room.stopBroadcast();
+		return;
+	}
+	if (WBR.Room.adminID == WBR.Room.orbiter.clientID) {
+	WBR.Room.broadcast = true;
+	      	WBR.Room.transmitSerial();
+      		        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.BROADCAST, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     "true");
+WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.CLEAR, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     WBR.Room.adminID);
+WBR.Canvas.userCommandCache = {};
+        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.SETTX, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     WBR.Room.tx);
+}
+
+},
+
 loadAdminCanvas: function(admincanvas) {
 	if (admincanvas) {
 		WBR.Room.loadCanvas(WBR.Canvas.adminCommandCache);
@@ -290,7 +369,9 @@ var command;
 			while (canvasdata[clientID].length > 0) {
 			// Execute the user's oldest command
 			command = canvasdata[clientID].shift();
-
+			if (WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.admincanvas == true) {
+			WBR.Canvas.userCommandCache[clientID].push(command);
+		}
 			switch (command.commandName) {
 				case WBR.Room.DrawingCommands.MOVE_TO:
 					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg.y*WBR.Canvas.currentCanvas.height};
@@ -697,7 +778,7 @@ clientAttributeUpdateListener: function(attrScope,
 		var command = {};
 		command["commandName"] = commandName;
 		command["arg"] = arg;
-		if ((clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID)) {
+		if ((clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) || (clientID == WBR.Room.adminID && WBR.Room.broadcast == true)) {
 			WBR.Canvas.adminCommandCache[clientID].push(command);
 			if (WBR.Room.admincanvas == true) {
 				WBR.Canvas.userCommands[clientID].push(command);
@@ -707,8 +788,18 @@ clientAttributeUpdateListener: function(attrScope,
 				WBR.Canvas.userCommands[clientID].push(command);
 			}
 				WBR.Canvas.userCommandCache[clientID].push(command);
-		} else if (WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.Room.tx == clientID) {
+		} else if ((WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.Room.tx == clientID)) {
+			if (WBR.Room.broadcast == true) {
+      	      WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.INJECTC, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     JSON.stringify(command));
+
+			}
 			WBR.Canvas.userCommands[clientID].push(command);
+
 		} else  if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) {
 			if (WBR.Room.admincanvas == false) {
 				WBR.Canvas.adminCommandCache[clientID].push(command);
