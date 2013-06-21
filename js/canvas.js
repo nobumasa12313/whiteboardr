@@ -124,6 +124,13 @@ WBR.Canvas = Ember.Object.create({
 	    WBR.Canvas.privateCanvas.height = window.innerHeight;
 		if (WBR.Room.admincanvas == true && WBR.Room.adminID != WBR.Room.orbiter.clientID) {
 			WBR.Room.loadCanvas(WBR.Canvas.adminCommandCache);
+		} else if (WBR.Room.adminID == WBR.Room.orbiter.clientID && WBR.Room.admincanvas == false) {
+        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.SETTX, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     WBR.Room.tx);
 		} else {
 			WBR.Room.loadCanvas(WBR.Canvas.userCommandCache);
 		}
