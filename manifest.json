@@ -1,5 +1,5 @@
 {
-	"name": "whiteboardr",
+	"name": "Whiteboardr",
 	"version": "1",
 	"manifest_version":2,
 	
@@ -15,5 +15,7 @@
 
 	"sandbox": {
     		"pages": [ "index.html" ]
-  		 }
+  		 },
+
+    "icons": {"128": "img/logo.png" }
 }

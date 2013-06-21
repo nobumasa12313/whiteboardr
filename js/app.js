@@ -21,6 +21,7 @@ WBR = Ember.Application.create({
 
             $('.modal').modal('hide');
             $('#login-modal').modal('show');    
+            $('#video-chat').hide();
       },
 
       setDraw: function() {
@@ -130,6 +131,15 @@ WBR = Ember.Application.create({
       setStatus: function(message) {
             document.getElementById("status").innerHTML = message;
       },
+
+
+      startVideo: function() {
+            $('#video-chat').hide().fadeIn();
+      },
+
+      stopVideo: function() {
+            $('#video-chat').show().fadeOut();
+      }
 
 });
 
