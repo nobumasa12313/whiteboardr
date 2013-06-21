@@ -370,7 +370,7 @@ WBR.Canvas = Ember.Object.create({
 			// of 100 points per second.
 			//if ((new Date().getTime() - WBR.Canvas.lastBufferTime) > 5) {
 				WBR.Canvas.bufferedPath.push(x + "," + y);
-				WBR.Canvas.totalPath.push(x+","+y);
+				//WBR.Canvas.totalPath.push(x+","+y);
 				//WBR.Canvas.lastBufferTime = new Date().getTime();
 			//}
 

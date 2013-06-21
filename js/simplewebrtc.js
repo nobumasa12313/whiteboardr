@@ -311,14 +311,15 @@ WebRTC.prototype.getEl = function (idOrEl) {
 // and either the video tag itself or a container
 // that will be used to put the video tag into.
 WebRTC.prototype.getLocalVideoContainer = function () {
-    var el = this.getEl(this.config.localVideoEl);
-    if (el && el.tagName === 'VIDEO') {
-        return el;
-    } else {
-        var video = document.createElement('video');
-        el.appendChild(video);
-        return video;
-    }
+    //var el = this.getEl(this.config.localVideoEl);
+    //if (el && el.tagName === 'VIDEO') {
+    //    return el;
+    //} else {
+    //    var video = document.createElement('video');
+    //    el.appendChild(video);
+    //    return video;
+    //}
+    return true;
 };
 
 WebRTC.prototype.getRemoteVideoContainer = function () {
@@ -371,7 +372,7 @@ WebRTC.prototype.testReadiness = function () {
 WebRTC.prototype.startLocalVideo = function (element) {
     var self = this;
     getUserMedia(this.config.media, function (stream) {
-        attachMediaStream(element || self.getLocalVideoContainer(), stream);
+        //attachMediaStream(element || self.getLocalVideoContainer(), stream);
         self.localStream = stream;
         self.testReadiness();
     }, function () {
@@ -406,7 +407,7 @@ function Conversation(options) {
         'mandatory': {
             'OfferToReceiveAudio':true,
             'OfferToReceiveVideo':true
-        }
+        }  
     };
     WildEmitter.call(this);
 
