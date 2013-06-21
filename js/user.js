@@ -9,6 +9,7 @@ WBR.UserController = Ember.ArrayController.create({
      
 
      setTx: function(e) {
+      if (WBR.broadcast) return;
      	var id = $(e).find(".user-cell-id").text();
   		WBR.Room.setTx(id);
       console.log(id)
@@ -27,12 +28,14 @@ WBR.UserController = Ember.ArrayController.create({
 
 
      setClientCanvasPublic: function(e) {
+      if (WBR.broadcast) return;
           $('.user-cell').removeClass('enabled-user');
           $(e).addClass('enabled-user');
           WBR.Room.loadAdminCanvas(true);
      },
 
      setClientCanvasMy: function(e) {
+      if (WBR.broadcast) return;
           $('.user-cell').removeClass('enabled-user');
           $(e).addClass('enabled-user');
           WBR.Room.loadAdminCanvas(false);

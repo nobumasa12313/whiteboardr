@@ -12,6 +12,7 @@ WBR = Ember.Application.create({
       nickname:"",
       admin:false,
       handRaised:false,
+      broadcast:false,
       
 
       // Initialize the application
@@ -96,6 +97,17 @@ WBR = Ember.Application.create({
     }
       },
 
+      startBroadcast: function() {
+            WBR.Room.startBroadcast();
+            if($('#broadcast').text() == "Start Broadcast") {
+                  $('#broadcast').text("Stop Broadcast");
+                  WBR.set('broadcast', true);
+            }
+            else {
+                  $('#broadcast').text("Start Broadcast");
+                  WBR.set('broadcast', false);
+            }
+      },
 
       launchQuestionWindow: function() {
             $('#question-modal').modal('show');

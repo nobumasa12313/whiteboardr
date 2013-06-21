@@ -134,7 +134,14 @@
 				</ul>
 
 				<ul class="nav pull-right">
-					<li><button class="btn" onclick="WBR.Canvas.saveCanvas()" ontouchend="WBR.Canvas.saveCanvas()"><i class="icon-arrow-down"></i> <span class="buttontext">Save Image</span></button></li>
+
+				<li>
+				<button class="btn" onclick="WBR.startBroadcast()" ontouchend="WBR.startBroadcast()" id="broadcast">
+					Start Broadcast
+					</button>
+				</li>
+
+					<li><button class="btn" onclick="WBR.Canvas.saveCanvas()" ontouchend="WBR.Canvas.saveCanvas()"><i class="icon-arrow-down"></i> <span class="buttontext" >Save Image</span></button></li>
 
 					<li style="">
 					{{#if WBR.admin}}
