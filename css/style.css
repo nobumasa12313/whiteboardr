@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500,700,900);
 @import url(http://fonts.googleapis.com/css?family=Raleway:400,200,600,500,700,800);
 
 
@@ -80,6 +80,9 @@ font-smoothing:"antialiased" !important;
 -o-font-smoothing:"antialiased" !important;
 }
 
+
+
+
 .brand {
   font-family: "Raleway" !important;
   color:white !important;
@@ -121,12 +124,13 @@ margin:0 !important;
   font-size:16px;
 }
 
+
+
+#video-chat-wrapper {
+  position:absolute;width:310px;bottom:0;top:70px;right:0;
+}
+
 #video-chat {
-  bottom:60px;
-  right:10px;
-  position:absolute;
-  z-index:2;
-  width:170px;
   opacity:1;
   transition: 0.2s;
   -webkit-transition: 0.2s;
@@ -136,15 +140,35 @@ margin:0 !important;
 }
 
 #video-chat:hover {
-    
     opacity:.5;
 }
 
 #video-chat-content {
-	border-radius:3px;
   box-shadow:0 0 3px rgba(0,0,0,.1);
 	border:1px solid rgba(0,0,0,.2);
 }
+
+video {
+  height:auto;
+  border-radius:3px !important;
+  box-shadow:0 0 5px rgba(0,0,0,.1);
+  border:2px solid white;
+  position:absolute;
+}
+
+#localVideo {
+  width:120px;
+  z-index:3;
+  margin-top:15px;
+}
+
+#remotes video {
+  width:210px;
+  margin-left:90px;
+  z-index:2;
+}
+
+
 
 .modal.fade.in {
 top: 20%;
@@ -424,7 +448,7 @@ font-weight:900;
 
 @media only screen and  (max-width : 1250px) {
 
-  #video-chat {width:10%;}
+  #remotes video {width:10%;}
 }
 
 
@@ -445,7 +469,7 @@ font-weight:900;
 @media only screen and (max-width : 650px) {
   img { max-width: 100%  }
   .btn-none {display:none !important;}
-  #video-chat {width:50px}
+  #remotes video {width:50px}
   #status {display:none;}
   .container {
     padding-top:5px !important;
