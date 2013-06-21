@@ -127,44 +127,33 @@ margin:0 !important;
 
 
 #video-chat-wrapper {
-  position:absolute;width:310px;bottom:0;top:70px;right:0;
+  position:absolute;width:290px;height:220px;bottom:0;right:0;
 }
 
-#video-chat {
-  opacity:1;
-  transition: 0.2s;
-  -webkit-transition: 0.2s;
-  -moz-transition: 0.2s;
-  -ms-transition: 0.2s;
-  -o-transition: 0.2s;
-}
 
-#video-chat:hover {
-    opacity:.5;
-}
-
-#video-chat-content {
-  box-shadow:0 0 3px rgba(0,0,0,.1);
-	border:1px solid rgba(0,0,0,.2);
-}
 
 video {
   height:auto;
-  border-radius:3px !important;
-  box-shadow:0 0 5px rgba(0,0,0,.1);
   border:2px solid white;
   position:absolute;
 }
 
 #localVideo {
-  width:120px;
+  width:100px;
   z-index:3;
+  visibility: hidden;
   margin-top:15px;
+}
+
+#remotes {
+ 
+overflow: hidden;
+
 }
 
 #remotes video {
   width:210px;
-  margin-left:90px;
+  margin-left:70px;
   z-index:2;
 }
 
@@ -448,7 +437,7 @@ font-weight:900;
 
 @media only screen and  (max-width : 1250px) {
 
-  #remotes video {width:10%;}
+ 
 }
 
 

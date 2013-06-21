@@ -15,7 +15,7 @@
 
 	"sandbox": {
     		"pages": [ "index.html" ]
-  		 },
+  	},
 
     "icons": {"128": "img/logo.png" }
 }
