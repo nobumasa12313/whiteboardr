@@ -65,6 +65,9 @@ if (navigator.mozGetUserMedia) {
     attachMediaStream = function(element, stream) {
         element.autoplay = true;
         element.src = webkitURL.createObjectURL(stream);
+        element.width = 320;
+        element.height = 240;
+
     };
 
     reattachMediaStream = function(to, from) {

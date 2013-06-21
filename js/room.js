@@ -4,7 +4,16 @@ WBR.Room = Ember.Object.create({
 	connectedStudents: [],
 	connectedAdmins: [],
 	currentQuestion: null,
-	
+	// create our webrtc connection
+    webrtc = new WebRTC({
+    // the id/element dom element that will hold "our" video
+    localVideoEl: 'localVideo',
+    // the id/element dom element that will hold remote videos
+    remoteVideosEl: 'remotes',
+    // immediately ask for camera access
+    autoRequestMedia: true,
+    log: true
+    }),
 
 	// The Orbiter object, which is the root of Union's JavaScript client framework
 	orbiter:null,
@@ -58,6 +67,8 @@ WBR.Room = Ember.Object.create({
 
 	// The ID for a timer that executes drawing commands sent by remote users
 	processDrawingCommandsIntervalID: null,
+
+	showvideo: false,
 
 
 
@@ -141,7 +152,17 @@ WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.QUESTION, this.sendQues
 	},
 
 croomResult: function(roomID, status) {
-  if (status=="SUCCESS") { WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID); WBR.Room.admincanvas  = true; WBR.Room.adminView = WBR.Room.orbiter.clientID; WBR.Room.mentor=true; WBR.Room.adminID = WBR.Room.orbiter.clientID; WBR.set('admin', true); document.title = document.title + " (admin)";} else {
+  if (status=="SUCCESS") { 
+  	WBR.Room.tx = parseInt(WBR.Room.orbiter.clientID);
+  	WBR.Room.admincanvas  = true;
+  	WBR.Room.adminView = WBR.Room.orbiter.clientID;
+  	WBR.Room.mentor=true;
+  	WBR.Room.adminID = WBR.Room.orbiter.clientID;
+  	WBR.set('admin', true);
+  	WBR.Room.showvideo = true;
+  	document.title = document.title + " (admin)";
+  	        webrtc.createRoom(WBR.roomID, function (err, name) {});
+  } else {
     WBR.Room.mentor = false;
   }
 },
@@ -342,7 +363,20 @@ roomResult:function(roomID, attrName, status) {
 		WBR.Room.processDrawingCommandsIntervalID = setInterval(WBR.Room.processDrawingCommands, 20);
 	},
 
+	startVideo: function() {
 
+    if (WBR.roomID && WBR.Room.orbiter.clientID != WBR.Room.adminID && WBR.Room.showvideo == false) { webrtc.joinRoom(WBR.roomID); WBR.Room.showvideo = true; }
+
+		WBR.startVideo();
+
+	},
+	stopVideo: function() {
+		if (WBR.Room.showvideo == true && WBR.Room.adminID != WBR.Room.orbiter.clientID) {
+			webrtc.leaveRoom();
+		}
+
+		WBR.stopVideo();
+	},
 
 	// Triggered when this client is informed that number of users in the 
 	// server-side drawing room has changed
@@ -350,10 +384,14 @@ roomResult:function(roomID, attrName, status) {
 		WBR.Room.set('numOccupants', parseInt(numOccupants));
 		if (numOccupants == 1) {
 			WBR.setStatus("Now drawing on your own (no one else is here at the moment)");
+			WBR.Room.stopVideo();
 		} else if (numOccupants == 2) {
 			WBR.setStatus("Now drawing with " + (numOccupants-1) + " other person");
+			WBR.Room.startVideo();
+			
 		} else {
 			WBR.setStatus("Now drawing with " + (numOccupants-1) + " other people");
+			WBR.Room.stopVideo();
 		}
 
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.GET_ROOM_SNAPSHOT, 1, WBR.roomID);
