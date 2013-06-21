@@ -5,7 +5,7 @@ WBR.Room = Ember.Object.create({
 	connectedAdmins: [],
 	currentQuestion: null,
 	// create our webrtc connection
-    webrtc: new WebRTC({
+    webrtc: (typeof WebRTC == 'undefined' ? undefined : new WebRTC({
     // the id/element dom element that will hold "our" video
     localVideoEl: 'localVideo',
     // the id/element dom element that will hold remote videos
@@ -13,7 +13,7 @@ WBR.Room = Ember.Object.create({
     // immediately ask for camera access
     autoRequestMedia: false,
     log: true
-    }),
+    })),
 
 	// The Orbiter object, which is the root of Union's JavaScript client framework
 	orbiter:null,
@@ -161,7 +161,9 @@ croomResult: function(roomID, status) {
   	WBR.set('admin', true);
   	WBR.Room.showvideo = true;
   	document.title = document.title + " (admin)";
+  	if (typeof WebRTC != 'undefined') {
   	WBR.Room.webrtc.startLocalVideo();
+
 
     	if (!(WBR.Room.webrtc.localStream && WBR.Room.webrtc.sessionReady)) {
     		WBR.Room.webrtc.on('readyToCall', function () {
@@ -170,7 +172,7 @@ croomResult: function(roomID, status) {
     	} else {
 			WBR.Room.webrtc.createRoom(WBR.roomID, function (err, name) {});
     	}
-  	        
+  	        }
   } else {
     WBR.Room.mentor = false;
   }
@@ -404,14 +406,20 @@ roomResult:function(roomID, attrName, status) {
 		WBR.Room.set('numOccupants', parseInt(numOccupants));
 		if (numOccupants == 1) {
 			WBR.setStatus("Now drawing on your own (no one else is here at the moment)");
+				if (typeof WebRTC != 'undefined' ) {
 			WBR.Room.stopVideo();
+		}
 		} else if (numOccupants == 2) {
 			WBR.setStatus("Now drawing with " + (numOccupants-1) + " other person");
+				if (typeof WebRTC != 'undefined') {
 			WBR.Room.startVideo();
+		}
 			
 		} else {
 			WBR.setStatus("Now drawing with " + (numOccupants-1) + " other people");
+				if (typeof WebRTC != 'undefined') {
 			WBR.Room.stopVideo();
+		}
 		}
 
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.GET_ROOM_SNAPSHOT, 1, WBR.roomID);
