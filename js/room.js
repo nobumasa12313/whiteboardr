@@ -11,7 +11,7 @@ WBR.Room = Ember.Object.create({
     // the id/element dom element that will hold remote videos
     remoteVideosEl: 'remotes',
     // immediately ask for camera access
-    autoRequestMedia: true,
+    autoRequestMedia: false,
     log: true
     }),
 
@@ -161,7 +161,16 @@ croomResult: function(roomID, status) {
   	WBR.set('admin', true);
   	WBR.Room.showvideo = true;
   	document.title = document.title + " (admin)";
-  	        WBR.Room.webrtc.createRoom(WBR.roomID, function (err, name) {});
+  	WBR.Room.webrtc.startLocalVideo();
+
+    	if (!(WBR.Room.webrtc.localStream && WBR.Room.webrtc.sessionReady)) {
+    		WBR.Room.webrtc.on('readyToCall', function () {
+    		WBR.Room.webrtc.createRoom(WBR.roomID, function (err, name) {});
+    		});
+    	} else {
+			WBR.Room.webrtc.createRoom(WBR.roomID, function (err, name) {});
+    	}
+  	        
   } else {
     WBR.Room.mentor = false;
   }
@@ -365,7 +374,18 @@ roomResult:function(roomID, attrName, status) {
 
 	startVideo: function() {
 
-    if (WBR.roomID && WBR.Room.orbiter.clientID != WBR.Room.adminID && WBR.Room.showvideo == false) { WBR.Room.webrtc.joinRoom(WBR.roomID); WBR.Room.showvideo = true; }
+    if (WBR.roomID && WBR.Room.orbiter.clientID != WBR.Room.adminID && WBR.Room.showvideo == false) { 
+    	WBR.Room.webrtc.startLocalVideo();
+    	if (!(WBR.Room.webrtc.localStream && WBR.Room.webrtc.sessionReady)) {
+    		WBR.Room.webrtc.on('readyToCall', function () {
+    		WBR.Room.webrtc.joinRoom(WBR.roomID);
+    		});
+    	} else {
+			WBR.Room.webrtc.joinRoom(WBR.roomID);
+    	}
+
+    	WBR.Room.showvideo = true; 
+    }
 
 		WBR.startVideo();
 
