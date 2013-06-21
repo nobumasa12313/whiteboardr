@@ -808,8 +808,13 @@ clientAttributeUpdateListener: function(attrScope,
 			if (WBR.Room.tx == WBR.Room.orbiter.clientID) {
 				if (WBR.Room.admincanvas == false) {
 				WBR.Canvas.userCommands[clientID].push(command);
-				}
 				WBR.Canvas.userCommandCache[clientID].push(command);
+				WBR.Canvas.adminCommandCache[clientID].push(command);
+				} else {
+					WBR.Canvas.adminCommandCache[clientID].push(command);
+					WBR.Canvas.userCommands[clientID].push(command);
+				}
+				
 				//WBR.Canvas.adminCommandCache[clientID].push(command);
 
 			} else {
