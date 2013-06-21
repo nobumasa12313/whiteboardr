@@ -209,7 +209,7 @@ settxMessageListener: function(fromClientID, datastr) {
   //alert(datastr);
   WBR.Room.adminID = fromClientID;
     WBR.Room.tx = parseInt(datastr);
-    if (WBR.Room.tx == WBR.Room.orbiter.clientID) {
+    if (datastr == WBR.Room.orbiter.clientID) {
       //We're the tx!
       WBR.Room.transmitSerial();
       if (WBR.Room.broadcast == true && WBR.Room.tx == WBR.Room.orbiter.clientID) {
@@ -233,6 +233,7 @@ if (WBR.Room.adminID == WBR.Room.orbiter.clientID && WBR.Room.broadcast == true)
                      "false", 
                      "", 
                      datastr);
+
 //WBR.Room.transmitSerial();
 	return;
 }
