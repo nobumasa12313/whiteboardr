@@ -514,6 +514,12 @@ roomResult:function(roomID, attrName, status) {
                      "", 
                      WBR.Room.tx);
   } else {
+  	      WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.SETTX, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     WBR.Room.tx);
   		WBR.Room.transmitSerial();
   }
       if (WBR.Room.tx == WBR.Room.adminID) {
@@ -794,9 +800,6 @@ clientAttributeUpdateListener: function(attrScope,
 			if (WBR.Room.admincanvas == true) {
 					WBR.Canvas.userCommands[clientID].push(command);
 			}
-			if (WBR.Room.adminID == WBR.Room.orbiter.clientID) {
-				WBR.Canvas.userCommandCache[clientID].push(command);
-			}
 		} else if ((clientID == WBR.Room.adminID && WBR.Room.broadcast == true)){
 			if (WBR.Room.tx == WBR.Room.orbiter.clientID) {
 				if (WBR.Room.admincanvas == false) {
@@ -839,6 +842,7 @@ WBR.Canvas.adminCommandCache[clientID].push(command);
 				WBR.Canvas.adminCommandCache[clientID].push(command);
 			}
 		}
+		
 	},
 
 
