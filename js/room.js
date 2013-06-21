@@ -780,19 +780,16 @@ clientAttributeUpdateListener: function(attrScope,
 		command["arg"] = arg;
 		if ((clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) || (clientID == WBR.Room.adminID && WBR.Room.broadcast == true)) {
 			WBR.Canvas.adminCommandCache[clientID].push(command);
-			if (WBR.Room.admincanvas == true) {
+			if (WBR.Room.admincanvas == false) {
 				WBR.Canvas.userCommands[clientID].push(command);
 			}
 		} else if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.orbiter.clientID) {
 				if (WBR.Room.admincanvas == false){
 				WBR.Canvas.userCommands[clientID].push(command);
 			}
-			if (WBR.Room.broadcast == false) {
+
 				WBR.Canvas.userCommandCache[clientID].push(command);
-			} else {
-				WBR.Canvas.userCommandCache[clientID].push(command);
-				WBR.Canvas.userCommands[clientID].push(command);
-			}
+
 		} else if ((WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.Room.tx == clientID)) {
 			if (WBR.Room.broadcast == true) {
       	      WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
