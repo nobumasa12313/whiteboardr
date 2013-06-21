@@ -154,13 +154,34 @@ top: 15%;
   display:none;
 }
 
-.navbar {
+.bottom-bar .container *,
+.bottom-bar .container *,
+ {
+  
+}
 
+.navbar-fixed-bottom {
+  opacity:1; 
+    transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  -o-transition:opacity  0.5s;
+}
+
+.not-logged-in .navbar-fixed-bottom {
+  opacity:0; 
+}
+
+
+
+.navbar {
+z-index:99999999;
 }
 
 .navbar-fixed-top {
   border-left:5px solid rgb(77, 144, 254);
-z-index:99999999;
+
 -webkit-app-region: drag;
 
 }
