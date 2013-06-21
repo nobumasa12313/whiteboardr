@@ -520,6 +520,13 @@ roomResult:function(roomID, attrName, status) {
                      "false", 
                      "", 
                      WBR.Room.currentquestion);
+      		        WBR.Canvas.userCommandCache = {};
+        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
+                     WBR.Room.Messages.BROADCAST, 
+                     WBR.roomID, 
+                     "false", 
+                     "", 
+                     WBR.Room.broadcast.toString());
       }
 
     }
