@@ -800,7 +800,7 @@ clientAttributeUpdateListener: function(attrScope,
 
 			} else {
 				if (WBR.Room.admincanvas == false) {
-
+WBR.Canvas.adminCommandCache[clientID].push(command);
 				} else {
 					WBR.Canvas.adminCommandCache[clientID].push(command);
 					WBR.Canvas.userCommands[clientID].push(command);
