@@ -449,7 +449,7 @@ font-weight:900;
 
 @media only screen and  (max-width : 900px) {
   img { max-width: 100%; }
-  .question {display:none !important;}
+  .question {}
   .container {width:100% !important;}
 
 }
