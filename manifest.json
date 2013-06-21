@@ -11,7 +11,7 @@
 		}
 	},
 
-	"permissions": ["audioCapture", "videoCapture"],
+	"permissions": ["webview","audioCapture", "videoCapture"],
 
 	"sandbox": {
     		"pages": [ "index.html" ]
