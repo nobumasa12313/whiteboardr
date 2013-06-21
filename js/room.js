@@ -212,6 +212,14 @@ settxMessageListener: function(fromClientID, datastr) {
     if (WBR.Room.tx == WBR.Room.orbiter.clientID) {
       //We're the tx!
       WBR.Room.transmitSerial();
+      if (WBR.Room.broadcast == true && WBR.Room.tx == WBR.Room.orbiter.clientID) {
+      		WBR.Canvas.adminCommandCache = WBR.Canvas.userCommandCache;
+	if (WBR.Room.admincanvas == true) {
+		 WBR.Canvas.currentCanvas.getContext('2d').clearRect(0, 0, WBR.Canvas.currentCanvas.width, WBR.Canvas.currentCanvas.height);
+ 
+		WBR.Room.loadCanvas(WBR.Canvas.adminCommandCache);
+	}
+      }
     }
 },
 
