@@ -49,7 +49,7 @@ h1 {
 }
 
 h3 {
-      padding:10px;
+      padding:5px;
       font-size:20px;
       font-weight:700 !important;
       font-family: "Raleway" !important;
@@ -246,6 +246,26 @@ video {
 
 .btn-group {
       margin-top:0px !important;
+}
+
+#login-modal .control-group {
+      margin-bottom: 13px !important;
+}
+
+#login-modal .control-group input {
+      padding: 8px !important;
+}
+
+#login-modal label {
+      font-size:12px;
+      font-weight:500;
+      color:#555;
+      padding-top:10px;
+}
+
+.modal-footer,
+.modal-header {
+      padding:10px 15px;
 }
 
 .btn,  select {
