@@ -30,7 +30,7 @@ form {
 }
 
 .icon-user {
-      margin-top: 3px;
+      margin-top: 1px !important;
       margin-left: 6px;
 }
 
