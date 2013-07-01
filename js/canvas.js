@@ -340,6 +340,8 @@ WBR.Canvas = Ember.Object.create({
 	{
 		this.currentContext.strokeStyle = color;
 		this.currentContext.lineWidth   = thickness;
+		    	this.currentContext.lineJoin = 'round';
+    	this.currentContext.lineCap = 'round';
 		this.currentContext.beginPath();
 		this.currentContext.moveTo(x1, y1)
 		this.currentContext.lineTo(x2, y2);
