@@ -162,7 +162,7 @@ croomResult: function(roomID, status) {
   	WBR.set('admin', true);
   	WBR.Room.showvideo = true;
   	document.title = document.title + " (admin)";
-  	setTimeout("initRTC", 1000);
+  	setTimeout("WBR.Room.initRTC()", 1000);
   		    			      var newThickness = $('select#thickness').val();
 	      WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, newThickness);
 		  var newColor = $('select#color').val();
@@ -217,6 +217,8 @@ serialMessageListener: function(fromClientID, datastr) {
 },
 clearMessageListener: function(fromClientID, datastr) {
 	WBR.Room.addDrawingCommand(fromClientID, WBR.Room.DrawingCommands.CLEAR, true);
+
+
 	//var cid = parseInt(datastr);
 	//if (WBR.Room.tx == WBR.Room.adminID) {
 //		if (WBR.Room.admincanvas == true) {

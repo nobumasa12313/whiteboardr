@@ -68,7 +68,8 @@ WBR.Canvas = Ember.Object.create({
 	      // Show the private, hide the public
 	     	this.currentContext = this.privateContext;
 	     	this.currentCanvas  = this.privateCanvas;
-
+    	this.currentContext.lineJoin = 'round';
+    	this.currentContext.lineCap = 'round';
 	      this.lineThickness  = document.getElementById("thickness").selectedIndex = 0;
 	      this.lineColor      = document.getElementById("color").selectedIndex = 0;
 
