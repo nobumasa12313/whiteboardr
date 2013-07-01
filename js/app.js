@@ -25,15 +25,20 @@ WBR = Ember.Application.create({
             $('#video-chat').hide();
       },
 
-      setDraw: function() {
+      setDraw: function(isTouch) {
             if (WBR.Canvas.draw) return;
             WBR.Canvas.draw = true;
 
             $('#thickness').val(WBR.Canvas.lastThickness).trigger('onchange');
             $('#color').val(WBR.Canvas.lastColor).trigger('onchange');
+
+            if(isTouch) {
+                  $("#setDraw").addClass('active');
+                  $("#setErase").removeClass('active');
+            }
       },
 
-      setErase: function() {
+      setErase: function(isTouch) {
             if (!WBR.Canvas.draw) return;
             WBR.Canvas.draw = false;
 
@@ -42,6 +47,11 @@ WBR = Ember.Application.create({
 
             $('#thickness').val('20').trigger('onchange');
             $('#color').val('white').trigger('onchange');
+
+            if(isTouch) {
+                  $("#setDraw").removeClass('active');
+                  $("#setErase").addClass('active');
+            }
       },
 
       // Join the room
