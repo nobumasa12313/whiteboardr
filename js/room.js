@@ -162,6 +162,12 @@ croomResult: function(roomID, status) {
   	WBR.set('admin', true);
   	WBR.Room.showvideo = true;
   	document.title = document.title + " (admin)";
+  	setTimeout("initRTC", 1000);
+  } else {
+    WBR.Room.mentor = false;
+  }
+},
+initRTC: function() {
   	if (typeof WebRTC != 'undefined' && webRTCSupport == true) {
   	WBR.Room.webrtc.startLocalVideo();
 
@@ -174,9 +180,6 @@ croomResult: function(roomID, status) {
 			WBR.Room.webrtc.createRoom(WBR.roomID, function (err, name) {});
     	}
   	        }
-  } else {
-    WBR.Room.mentor = false;
-  }
 },
 
 
@@ -415,7 +418,7 @@ roomResult:function(roomID, attrName, status) {
 		} else if (numOccupants == 2) {
 			WBR.setStatus("Now drawing with " + (numOccupants-1) + " other person");
 				if (typeof WebRTC != 'undefined' && webRTCSupport == true) {
-			WBR.Room.startVideo();
+			setTimeout("WBR.Room.startVideo()", 1000);
 		}
 			
 		} else {
