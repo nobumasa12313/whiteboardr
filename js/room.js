@@ -133,7 +133,7 @@ WBR.Room.msgManager.addMessageListener(WBR.Room.Messages.QUESTION, this.sendQues
                      WBR.roomID,
                      "4");
 	    			      var newThickness = $('select#thickness').val();
-	      WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, WBR.Canvas.getValidThickness(newThickness));
+	      WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, newThickness);
 		  var newColor = $('select#color').val();
 		  WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
 		  		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
@@ -163,6 +163,10 @@ croomResult: function(roomID, status) {
   	WBR.Room.showvideo = true;
   	document.title = document.title + " (admin)";
   	setTimeout("initRTC", 1000);
+  		    			      var newThickness = $('select#thickness').val();
+	      WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, newThickness);
+		  var newColor = $('select#color').val();
+      		        		  WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
   } else {
     WBR.Room.mentor = false;
   }
@@ -431,13 +435,17 @@ roomResult:function(roomID, attrName, status) {
 		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.GET_ROOM_SNAPSHOT, 1, WBR.roomID);
       if (WBR.Room.mentor) {
         //alert("setting to " + tx)
+        	    			      var newThickness = $('select#thickness').val();
+	      //WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, newThickness);
+		  var newColor = $('select#color').val();
+      		//        		  WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
+
       WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
                      WBR.Room.Messages.SETTX, 
                      WBR.roomID, 
                      "false", 
                      "", 
                      WBR.Room.tx);
-      if (WBR.Room.tx == WBR.Room.adminID) {
       	WBR.Room.transmitSerial();
       		        WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SEND_MESSAGE_TO_ROOMS, 
                      WBR.Room.Messages.QUESTION, 
@@ -445,7 +453,21 @@ roomResult:function(roomID, attrName, status) {
                      "false", 
                      "", 
                      WBR.Room.currentquestion);
-      }
+      		        		  		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+					WBR.Room.orbiter.getClientID(),
+					"",
+					WBR.Room.Attributes.THICKNESS,
+					newThickness,
+					WBR.roomID,
+					"4");
+		  		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+					WBR.Room.orbiter.getClientID(),
+					"",
+					WBR.Room.Attributes.COLOR,
+					newColor,
+					WBR.roomID,
+					"4");
+
 
     }
 	},
@@ -692,6 +714,9 @@ WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID].push(command);
 	// At a regular interval, commands are pulled off the stack and executed,
 	// causing remote user's drawings to appear on-screen. 
 	addDrawingCommand: function(clientID, commandName, arg) {
+		if (WBR.Room.adminID == 0) {
+			WBR.Room.adminID = clientID;
+		}
 		// If this client does not yet have a command stack, make one. 
 		if (WBR.Canvas.userCommands[clientID] == undefined) {
 		WBR.Canvas.userCommands[clientID] = [];
@@ -711,7 +736,7 @@ WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID].push(command);
 			if (WBR.Room.admincanvas == true) {
 				WBR.Canvas.userCommands[clientID].push(command);
 			}if ((commandName == WBR.Room.DrawingCommands.SET_COLOR || commandName == WBR.Room.DrawingCommands.SET_THICKNESS)) {
-WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID].push(command);
+WBR.Canvas.userCommandCache[clientID].push(command);
 if (WBR.Room.admincanvas == false) {
 WBR.Canvas.userCommands[clientID].push(command);
 }
@@ -735,6 +760,11 @@ WBR.Canvas.adminCommandCache[clientID].push(command);
 			if (WBR.Room.admincanvas == false) {
 				WBR.Canvas.adminCommandCache[clientID].push(command);
 			}
+		} else if ((commandName == WBR.Room.DrawingCommands.SET_COLOR || commandName == WBR.Room.DrawingCommands.SET_THICKNESS)) {
+			if(clientID == WBR.Room.adminID) {
+WBR.Canvas.userCommandCache[clientID].push(command);
+WBR.Canvas.adminCommandCache[clientID].push(command);
+		}
 		}
 	},
 
