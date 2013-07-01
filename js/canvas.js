@@ -92,6 +92,10 @@ WBR.Canvas = Ember.Object.create({
                      WBR.Room.orbiter.clientID);
 
 		WBR.Canvas.userCommandCache = {};
+			    			      var newThickness = $('select#thickness').val();
+	      WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_THICKNESS, newThickness);
+		  var newColor = $('select#color').val();
+		  WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
 
 	}
 	},
