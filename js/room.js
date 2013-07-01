@@ -290,7 +290,9 @@ var command;
 			while (canvasdata[clientID].length > 0) {
 			// Execute the user's oldest command
 			command = canvasdata[clientID].shift();
-
+      if (WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.admincanvas == true) {
+      WBR.Canvas.userCommandCache[clientID].push(command);
+    }
 			switch (command.commandName) {
 				case WBR.Room.DrawingCommands.MOVE_TO:
 					WBR.Canvas.userCurrentPositions[clientID] = {x:command.arg.x*WBR.Canvas.currentCanvas.width, y:command.arg.y*WBR.Canvas.currentCanvas.height};
@@ -406,7 +408,7 @@ roomResult:function(roomID, attrName, status) {
 		WBR.Room.set('numOccupants', parseInt(numOccupants));
 		if (numOccupants == 1) {
 			WBR.setStatus("Now drawing on your own (no one else is here at the moment)");
-				if (typeof WebRTC != 'undefined' ) {
+				if (typeof WebRTC != 'undefined') {
 			WBR.Room.stopVideo();
 		}
 		} else if (numOccupants == 2) {
@@ -671,6 +673,9 @@ clientAttributeUpdateListener: function(attrScope,
 		command["arg"] = arg;
 		if (WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.Room.admincanvas == false) {
 
+if ((commandName == WBR.Room.DrawingCommands.SET_COLOR || commandName == WBR.Room.DrawingCommands.SET_THICKNESS)) {
+WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID].push(command);
+}
 		} else {
 		WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID].push(command);
 	}
@@ -701,12 +706,25 @@ clientAttributeUpdateListener: function(attrScope,
 			WBR.Canvas.adminCommandCache[clientID].push(command);
 			if (WBR.Room.admincanvas == true) {
 				WBR.Canvas.userCommands[clientID].push(command);
-			}
+			}if ((commandName == WBR.Room.DrawingCommands.SET_COLOR || commandName == WBR.Room.DrawingCommands.SET_THICKNESS)) {
+WBR.Canvas.userCommandCache[WBR.Room.orbiter.clientID].push(command);
+if (WBR.Room.admincanvas == false) {
+WBR.Canvas.userCommands[clientID].push(command);
+}
+}
 		} else if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.orbiter.clientID) {
 				if (WBR.Room.admincanvas == false){
 				WBR.Canvas.userCommands[clientID].push(command);
 			}
-				WBR.Canvas.userCommandCache[clientID].push(command);
+			
+WBR.Canvas.userCommandCache[clientID].push(command);	
+if ((commandName == WBR.Room.DrawingCommands.SET_THICKNESS || commandName == WBR.Room.DrawingCommands.SET_COLOR)) {
+WBR.Canvas.adminCommandCache[clientID].push(command);
+			if (WBR.Room.admincanvas == true) {
+				WBR.Canvas.userCommands[clientID].push(command);
+			}
+}
+
 		} else if (WBR.Room.orbiter.clientID == WBR.Room.adminID && WBR.Room.tx == clientID) {
 			WBR.Canvas.userCommands[clientID].push(command);
 		} else  if (clientID == WBR.Room.adminID && WBR.Room.tx == WBR.Room.adminID) {
