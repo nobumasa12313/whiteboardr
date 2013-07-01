@@ -162,6 +162,10 @@ video {
       border: none;
 }
 
+.question-body {
+      overflow-y: visible;
+}
+
 .modal.fade.in {
       top: 20%;
 }
