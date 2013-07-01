@@ -1,3 +1,5 @@
+var webRTCSupport = true;
+
 ;(function () {
 
 var logger = {
@@ -11,8 +13,8 @@ var RTCPeerConnection = null,
     getUserMedia = null,
     attachMediaStream = null,
     reattachMediaStream = null,
-    browser = null,
-    webRTCSupport = true;
+    browser = null;
+    
 
 if (navigator.mozGetUserMedia) {
     logger.log("This appears to be Firefox");
