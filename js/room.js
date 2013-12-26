@@ -19,6 +19,8 @@ WBR.Room = Ember.Object.create({
 	// The Orbiter object, which is the root of Union's JavaScript client framework
 	orbiter:null,
 
+	conn: null,
+
 	// The MessageManager object, for sending and receiving messages
 	msgManager: null,
 
@@ -34,6 +36,8 @@ WBR.Room = Ember.Object.create({
 	admincanvas: false,
 
 	currentquestion: '',
+
+	dbg: null,
 
 	// A convenience reference to net.user1.orbiter.UPC, which provides a
 	// list of valid client/server UPC messages. See: http://unionplatform.com/specs/upc/
@@ -76,29 +80,18 @@ WBR.Room = Ember.Object.create({
 	// Initialize Orbiter, which handles multiuser communications
 	initialize: function() 
 	{
-		// Create the Orbiter instance, used to connect to and communicate with Union
-		WBR.Room.orbiter = new net.user1.orbiter.Orbiter();
-
-		// If required JavaScript capabilities are missing, abort
-		if (!WBR.Room.orbiter.getSystem().isJavaScriptCompatible()) {
-			this.setStatus("Your browser is not supported.")
-			return;
-		}
-
-		// Register for Orbiter's connection events
-		WBR.Room.orbiter.addEventListener(net.user1.orbiter.OrbiterEvent.READY, this.readyListener, this);
-		WBR.Room.orbiter.addEventListener(net.user1.orbiter.OrbiterEvent.CLOSE, this.closeListener, this);
-
-		// Retrieve a reference to the MessageManager, used for sending messages to
-		// and receiving messages from Union Server
-		WBR.Room.msgManager = this.orbiter.getMessageManager();
-
-		// Connect to Union Server (at the public testing site)
-		WBR.Room.orbiter.connect("johnamoore.com", 9100);
+		alert("joining");
+		WBR.Room.conn = new WebSocket('ws://54.200.154.131:80/' + WBR.roomID);
+    	WBR.Room.conn.onmessage = function(e) { WBR.Room.processMsg(e.data) };
 
 	},
 
-
+	processMsg: function(data) {
+		response = JSON.parse(data);
+		alert(response);
+		WBR.Room.dbg = response;
+		WBR.Room.conn.send('{"opcode":"sessid", "msg":"sessid"}');
+	},
 
 	// Triggered when the connection to Union Server is ready
 	readyListener: function(e) 

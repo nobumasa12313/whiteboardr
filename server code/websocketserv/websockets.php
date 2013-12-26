@@ -12,20 +12,29 @@ class WhiteboardrServ implements MessageComponentInterface {
     public function __construct($channel) {
         $this->clients = new \SplObjectStorage;
         $this->channel = $channel;
+        print("channel " .$this->channel ." created");
     }
 
     public function onOpen(ConnectionInterface $conn) {
-        print($conn->channel);
         $this->clients->attach($conn);
+        $response = array("opcode" => "connect", "msg" => "success");
+        $conn->send(json_encode($response));
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        print("message on channel ".$this->channel);
-        foreach ($this->clients as $client) {
-            if ($from != $client) {
-                $client->send($msg);
-            }
+        print("message on channel ".$this->channel." :".$msg);
+        $msg = json_decode($msg);
+        switch ($msg->{'opcode'}) {
+            case "sessid":
+                print("session id:".$msg->{'msg'});
+            break;
         }
+
+//        foreach ($this->clients as $client) {
+  //          if ($from != $client) {
+    //            $client->send($msg);
+      //      }
+        //}
     }
 
     public function onClose(ConnectionInterface $conn) {
