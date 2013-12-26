@@ -19,8 +19,6 @@ WBR.Room = Ember.Object.create({
 	// The Orbiter object, which is the root of Union's JavaScript client framework
 	orbiter:null,
 
-	conn: null,
-
 	// The MessageManager object, for sending and receiving messages
 	msgManager: null,
 
@@ -38,6 +36,10 @@ WBR.Room = Ember.Object.create({
 	currentquestion: '',
 
 	dbg: null,
+
+	conn: null,
+
+	clientID: 0,
 
 	// A convenience reference to net.user1.orbiter.UPC, which provides a
 	// list of valid client/server UPC messages. See: http://unionplatform.com/specs/upc/
@@ -87,11 +89,76 @@ WBR.Room = Ember.Object.create({
 	},
 
 	processMsg: function(data) {
+		alert(data);
 		response = JSON.parse(data);
-		alert(response);
+		opcode = response['opcode'];
 		WBR.Room.dbg = response;
-		WBR.Room.conn.send('{"opcode":"sessid", "msg":"sessid"}');
+		if (opcode == "connect") {
+			WBR.Room.connectListener(response);
+		} else if (opcode == "join") {
+			WBR.Room.joinListener(response);
+		} else if (opcode == "roomupdate") {
+			WBR.Room.roomUpdateListener(response);
+		}
 	},
+
+	connectListener: function(response) {
+		if (response['rescode'] == "success") {
+			sessiondata = {};
+			sessiondata.opcode = "sessiondata";
+			sessiondata.sessid = WBR.Room.readCookie('PHPSESSID');
+			sessiondata.nickname = WBR.nickname;
+			WBR.Room.conn.send(JSON.stringify(sessiondata));
+		} else {
+			//exception: connect failed
+		}
+	},
+
+	joinListener: function(response) {
+		if (response['rescode'] == "success") {
+			//room joined
+			WBR.Room.clientID = parseInt(response['id']);
+			//WBR.Room.processDrawingCommandsIntervalID = setInterval(WBR.Room.processDrawingCommands, 20);
+		} else {
+			//exception: join failed
+		}
+	},
+
+	roomUpdateListener: function(response) {
+		numOccupants = parseInt(response['numOccupants']);
+		WBR.Room.set('numOccupants', numOccupants);
+		if (numOccupants == 1) {
+			WBR.setStatus("Now drawing on your own (no one else is here at the moment)");
+				if (typeof WebRTC != 'undefined' && webRTCSupport == true) {
+			WBR.Room.stopVideo();
+		}
+		} else if (numOccupants == 2) {
+			WBR.setStatus("Now drawing with " + (numOccupants-1) + " other person");
+				if (typeof WebRTC != 'undefined' && webRTCSupport == true) {
+			setTimeout("WBR.Room.startVideo()", 1000);
+		}
+			
+		} else {
+			WBR.setStatus("Now drawing with " + (numOccupants-1) + " other people");
+				if (typeof WebRTC != 'undefined' && webRTCSupport == true) {
+			WBR.Room.stopVideo();
+		}
+		}
+
+	},
+
+
+	readCookie: function(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		}
+		return null;
+	},
+
 
 	// Triggered when the connection to Union Server is ready
 	readyListener: function(e) 

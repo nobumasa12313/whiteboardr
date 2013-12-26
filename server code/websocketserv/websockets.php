@@ -8,37 +8,64 @@ use Ratchet\App;
 class WhiteboardrServ implements MessageComponentInterface {
     protected $clients;
     protected $channel;
+    protected $currentid;
+    protected $sessids;
 
     public function __construct($channel) {
         $this->clients = new \SplObjectStorage;
         $this->channel = $channel;
+        $this->currentid = 0;
+        $this->sessids = array();
         print("channel " .$this->channel ." created");
     }
 
     public function onOpen(ConnectionInterface $conn) {
-        $this->clients->attach($conn);
-        $response = array("opcode" => "connect", "msg" => "success");
+        $newid = $this->generateID();
+        $conn->id = $newid;
+        $this->clients->attach($conn, $newid);
+        $response = array("opcode" => "connect", "rescode" => "success");
         $conn->send(json_encode($response));
     }
 
-    public function onMessage(ConnectionInterface $from, $msg) {
-        print("message on channel ".$this->channel." :".$msg);
-        $msg = json_decode($msg);
-        switch ($msg->{'opcode'}) {
-            case "sessid":
-                print("session id:".$msg->{'msg'});
+    public function onMessage(ConnectionInterface $from, $data) {
+        print("message on channel ".$this->channel." :".$data);
+        $data = json_decode($data);
+        switch ($data->{'opcode'}) {
+            case "sessiondata":
+                $sessid = $data->{'sessid'};
+                $nickname = $data->{'nickname'};
+                //validate . . .
+                if (true) {
+                    $packet = array("opcode" => "join", "rescode" => "success", "id" => $from->id);
+                    $this->sessids[$from->id] = $sessid;
+                    $from->send(json_encode($packet));
+                    $this->updateOccupancy();
+                } else {
+                    $from->close();
+                    $this->clients->detach($from);
+                }
             break;
         }
+    }
 
-//        foreach ($this->clients as $client) {
-  //          if ($from != $client) {
-    //            $client->send($msg);
-      //      }
-        //}
+    public function generateID() {
+        $this->currentid++;
+        return $this->currentid;
+    }
+
+    public function updateOccupancy() {
+        $packet = array("opcode" => "roomupdate", "numOccupants" => count($this->clients));
+        foreach ($this->clients as $client) {
+            $client->send(json_encode($packet));
+        }
     }
 
     public function onClose(ConnectionInterface $conn) {
+        if (isset($this->sessids[$conn->id])) {
+            unlink($this->sessids[$conn->id]);
+        }
         $this->clients->detach($conn);
+        $this->updateOccupancy();
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
