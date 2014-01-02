@@ -124,13 +124,13 @@ font-weight: 600 !important;
 }
 
 #status {
-      color: #ccc;
-      position: absolute;
-      cursor: default;
-      font-weight: 100 !important;
-      top: 90px;
-      left:30px;
-      font-size:16px;
+color: #ccc;
+position: absolute;
+cursor: default;
+font-weight: 400 !important;
+bottom: 15px;
+left: 20px;
+font-size: 14px;
 }
 
 #video-chat-wrapper {
