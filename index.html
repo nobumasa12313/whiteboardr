@@ -12,7 +12,7 @@
 
 	<!-- Le styles -->
 	<link href="./css/lib/bootstrap.css" rel="stylesheet">
-	<link href="./css/lib/bootstrap-responsive.css" rel="stylesheet">
+	
 	<link href="./css/style.css" rel="stylesheet">
 
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -30,9 +30,10 @@
 
 
 	<!-- TOP BAR -->
-	<script type="text/x-handlebars">
+	
 	<div class="navbar navbar-inverse navbar-fixed-top" id="bar-top">
 		<div class="navbar-inner">
+			
 			<div class="container">
 
 					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -40,12 +41,12 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-
+<!--
 					<a onclick="window.close()" ontouchend="window.close()" class="windowbutton" style="margin-left:0;">
 						<i class="icon-white icon-remove"></i>
 					</a>
-
-					<a class="brand" href="#">whiteboardr</a>
+-->
+					<a class="brand" href="#">Whiteboardr</a>
 					<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li class="question">
@@ -54,28 +55,34 @@
 							</a>
 						</li>
 					</ul>
+					
 					<ul class="nav pull-right">
-
+						<li>
+							<script type="text/x-handlebars">
 							<button class="btn btn-none">{{WBR.nickname}} in {{WBR.roomID}}</button>
-
+							</script>
+						</li>
+						
+					
+					<li >
+						<script type="text/x-handlebars">
 						{{#if WBR.admin}}
-							
-							<button class="btn btn-none">Administrator</button>
-							<button onclick="WBR.launchQuestionWindow()" ontouchend="WBR.launchQuestionWindow()" class="btn btn-primary"><i class="icon-envelope icon-white"></i> <span class="buttontext">Post Question<span></button>
+							<button class="btn btn-danger" onclick="WBR.leaveRoom()"  ontouchend="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Close Room</span></button>
 						{{else}}
-
-							<button id="raise-hand" class="btn btn-primary"  type="button" onClick="WBR.raiseHand()" ontouchend="WBR.raiseHand()" data-toggle="button">
-									<i class="icon-hand-up icon-white"></i>  <!-- icon-->
-									<span id="raise-hand-text" class="buttontext">Raise Hand</span> <!-- text -->
-							</button>
-
+							<button class="btn btn-danger" onclick="WBR.leaveRoom()" ontouchend="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Leave</span></button>
 						{{/if}}
-					</ul>
+					</script>
+						
+					</li>
+					
+
+
 				</div><!--/.nav-collapse -->
 			</div>
+			
 		</div>
 	</div>
-	</script>
+	
 	<!-- END TOP BAR -->
 
 
@@ -84,7 +91,7 @@
 
 
 <!-- BOTTOM BAR -->
-<script type="text/x-handlebars">
+
 <div class="navbar navbar-fixed-bottom" id="bar-bottom">
 	<div class="navbar-inner">
 		<div class="container bottom-bar">
@@ -95,14 +102,27 @@
 
 					<li>
 						<div class="btn-group" data-toggle="buttons-radio">
-							<button id="setDraw" class="btn active" onClick="WBR.setDraw(false)" ontouchend="WBR.setDraw(true)" ><i class="icon-pencil"></i> <span class="buttontext">Draw</span></button>
-							<button id="setErase" class="btn" onClick="WBR.setErase(false)" ontouchend="WBR.setErase(true)"><i class="icon-remove-sign"></i> <span class="buttontext">Erase</span></button>
+							<button id="setDraw" class="btn active" onClick="WBR.setDraw(false)" ontouchend="WBR.setDraw(true)" ><i class="icon-pencil icon-white"></i> <span class="buttontext">Draw</span></button>
+							<button id="setErase" class="btn" onClick="WBR.setErase(false)" ontouchend="WBR.setErase(true)"><i class="icon-remove-sign icon-white"></i> <span class="buttontext">Erase</span></button>
 						</div>
 					</li>
 
 					<li>
-						<button class="btn" onclick="WBR.Canvas.clear()" ontouchend="WBR.Canvas.clear()"><i class="icon-trash"></i> <span class="buttontext">Clear</span></button>
+						<button class="btn" onclick="WBR.Canvas.clear()" ontouchend="WBR.Canvas.clear()"><i class="icon-trash icon-white"></i> <span class="buttontext">Clear</span></button>
 					</li>
+
+
+					<li>
+						<div class="color-picker">
+						      <button id="btn-color" type="button" style="background:black;text-align:right;" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+						      <span class="caret"></span>
+						      </button>
+						      <ul class="dropdown-menu drop-color" role="menu">
+						        
+						      </ul>
+					      </div>
+				      </li>
+
 
 					<li style="margin-right:15px;">
 						<span class="select">SIZE</span>
@@ -116,7 +136,7 @@
 							<option value="20">20</option>
 						</select>
 					</li>
-
+<!--
 					<li>
 						<span class="select">COLOR</span>
 						<select id="color" class="input-small">
@@ -131,27 +151,41 @@
 						</select>
 					</li>
 
+
+-->
+
 				</ul>
 
 				<ul class="nav pull-right">
+					<script type="text/x-handlebars">
 {{#if WBR.admin}}
 				<li>
 				<!--
 				<button class="btn" onclick="WBR.startBroadcast()" ontouchend="WBR.startBroadcast()" id="broadcast">
-					<i class="icon-signal"></i> <span id="broadcaster" class="buttontext"></span>
+					<i class="icon-signal icon-white"></i> <span id="broadcaster" class="buttontext"></span>
 					</button>
 					-->
 				</li>
 {{/if}}
-					<li><button class="btn" onclick="WBR.Canvas.saveCanvas()" ontouchend="WBR.Canvas.saveCanvas()"><i class="icon-arrow-down"></i> <span class="buttontext" >Save Image</span></button></li>
+</script>
 
-					<li style="margin-right:0 !important">
+					<li><button class="btn" onclick="WBR.Canvas.saveCanvas()" ontouchend="WBR.Canvas.saveCanvas()"><i class="icon-arrow-down icon-white"></i> <span class="buttontext" >Save Image</span></button></li>
+
+<li>
+	<script type="text/x-handlebars">
 					{{#if WBR.admin}}
-							<button class="btn btn-danger" onclick="WBR.leaveRoom()"  ontouchend="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Close Room</span></button>
+							
+							<button onclick="WBR.launchQuestionWindow()" ontouchend="WBR.launchQuestionWindow()" class="btn btn-primary"><i class="icon-envelope icon-white"></i> <span class="buttontext">Post Question<span></button>
 						{{else}}
-							<button class="btn btn-danger" onclick="WBR.leaveRoom()" ontouchend="WBR.leaveRoom()"><i class="icon-remove icon-white"></i> <span class="buttontext">Leave Room</span></button>
+
+							<button id="raise-hand" class="btn "  type="button" onClick="WBR.raiseHand()" ontouchend="WBR.raiseHand()" data-toggle="button">
+									<i class="icon-hand-up icon-white"></i>  <!-- icon-->
+									<span id="raise-hand-text" class="buttontext">Raise Hand</span> <!-- text -->
+							</button>
+
 						{{/if}}
-					</li>
+						</script>
+						</li> 
 					
 				</ul>
 
@@ -159,7 +193,7 @@
 		</div>
 	</div>
 </div>
-</script>
+
 <!-- END BOTTOM BAR -->
 
 
@@ -175,23 +209,17 @@
 
 	<div class="form-horizontal">
 		<div class="modal-body">
-			<p>
-				<div class="control-group">
-					<label class="control-label" for="input-room-id">Room Code</label>
-					<div class="controls">
+			
+				
 						<input type="text" id="input-room-id" onkeypress="WBR.enterJoinRoom()"  placeholder="Room Code" class=" input input-large" autofocus/>
-					</div>
-				</div>
+					
 
-				<div class="control-group">
-					<label class="control-label" for="input-nickname">Nickname</label>
-					<div class="controls">
+				
 						<input type="text" id="input-nickname" onkeypress="WBR.enterJoinRoom()" placeholder="Nickname" class=" input input-large"/>
 						<script type="text/x-handlebars" data-template-name="nickname">
 							{{view Ember.TextField valueBinding="WBR.nickname"}}
 						</script>
-					</div>
-				</div>
+					
 				<!--
 				<div class="control-group">
 					<label class="control-label" for="input-role">Admin</label>
@@ -200,7 +228,7 @@
 					</div>
 				</div>
 				-->
-			</p>
+			
 		</div>
 
 		<div class="modal-footer">
@@ -322,7 +350,9 @@
 		<script src="./js/simplewebrtc.js"></script>
 
    	<script src="./js/lib/orbiter.js"></script>
-	<script src="./js/lib/bootstrap.min.js"></script>
+	<!--<script src="./js/lib/bootstrap.min.js"></script>-->
+	    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
   	<script src="./js/lib/ember-n.js"></script>
 	<script src="./js/app.js"></script>
 	<script src="./js/canvas.js"></script>

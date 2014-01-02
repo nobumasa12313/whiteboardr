@@ -71,7 +71,7 @@ WBR.Canvas = Ember.Object.create({
     	this.currentContext.lineJoin = 'round';
     	this.currentContext.lineCap = 'round';
 	      this.lineThickness  = document.getElementById("thickness").selectedIndex = 0;
-	      this.lineColor      = document.getElementById("color").selectedIndex = 0;
+	      //this.lineColor      = document.getElementById("color").selectedIndex = 0;
 
 	      this.registerEventListeners();
 
@@ -162,7 +162,7 @@ WBR.Canvas = Ember.Object.create({
 		document.ontouchmove 	= this.touchMoveListener;
 		document.ontouchend 	= this.touchUpListener;
 		document.getElementById("thickness").onchange = this.thicknessSelectListener;
-		document.getElementById("color").onchange = this.colorSelectListener;
+		//document.getElementById("color").onchange = this.colorSelectListener;
 	},
 
 
@@ -314,6 +314,28 @@ WBR.Canvas = Ember.Object.create({
 	},
 
 
+/*
+	changeColor: function(event) {
+		//this.color = $(event.target).css('background');
+		//this.plot(true);
+
+		var newColor = $(event.target).css('background');
+
+		WBR.Canvas.localLineColor = newColor;
+		// Share selected color with other users
+		WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+					WBR.Room.orbiter.getClientID(),
+					"",
+					WBR.Room.Attributes.COLOR,
+					newColor,
+					WBR.roomID,
+					"4");
+		WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
+		// Scroll the iPhone back to the top-left. 
+		WBR.iPhoneToTop();
+   	},
+
+
 
 	// Triggered when an option in the "line color" menu is selected
 	colorSelectListener: function(e) 
@@ -334,7 +356,7 @@ WBR.Canvas = Ember.Object.create({
 		// Scroll the iPhone back to the top-left. 
 		WBR.iPhoneToTop();
 	},
-
+*/
 
 	drawLine: function(color, thickness, x1, y1, x2, y2) 
 	{

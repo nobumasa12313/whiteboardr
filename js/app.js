@@ -5,6 +5,37 @@
 
 
 
+
+
+$( document ).ready(function() {
+      for (hue=6; hue<360; hue=hue+6) {
+            $('.drop-color').append('<li><a href="#" style="background:hsl('+ hue +', 70%, 40%);"></a></li>');
+      }
+
+      $('.drop-color').append('<li><a href="#" style="background:black"></a></li>');
+
+      $('.drop-color a').click(function(event) {
+            self.color = $(event.target).css('background-color');
+            $('#btn-color').css('background-color',self.color);
+
+            WBR.Canvas.localLineColor = self.color;
+            // Share selected color with other users
+            WBR.Room.msgManager.sendUPC(WBR.Room.UPC.SET_CLIENT_ATTR, 
+                              WBR.Room.orbiter.getClientID(),
+                              "",
+                              WBR.Room.Attributes.COLOR,
+                              newColor,
+                              WBR.roomID,
+                              "4");
+            WBR.Room.addCacheCommand(WBR.Room.DrawingCommands.SET_COLOR, newColor);
+            // Scroll the iPhone back to the top-left. 
+            WBR.iPhoneToTop();
+      });
+
+});
+
+
+
 // class Applicatiom
 WBR = Ember.Application.create({
 
@@ -23,6 +54,8 @@ WBR = Ember.Application.create({
             $('.modal').modal('hide');
             $('#login-modal').modal('show');    
             $('#video-chat').hide();
+
+
       },
 
       setDraw: function(isTouch) {
